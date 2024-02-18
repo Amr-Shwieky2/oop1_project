@@ -16,7 +16,6 @@ const int NUM_OF_SCREENS = 7; // noor you want to change this
 class Utilities
 {
 public:
-	Utilities();
 
 	std::vector<std::string>getLevels();
 
@@ -27,6 +26,8 @@ public:
 
 	static Utilities& instance();
 private:
+	Utilities();
+
 	void iconNames(std::string);
 	void setLevels(std::string);
 	void checkIfValid(std::ifstream&);

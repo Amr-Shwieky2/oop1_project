@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.26)
 
-project (oop1_ex03)
-set (MY_AUTHORS "")
+project (oop1_project)
+set (MY_AUTHORS "NOOR-AMR")
 
 include (cmake/CompilerSettings.cmake)
 
@@ -26,4 +26,3 @@ set_target_properties (sfml-main sfml-system sfml-window sfml-graphics sfml-audi
 target_link_libraries (${CMAKE_PROJECT_NAME} sfml-graphics sfml-main)
 
 include (cmake/SFML.cmake)
-
