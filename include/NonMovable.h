@@ -1,10 +1,10 @@
 #pragma once
 #include "Icon.h"
 
-class StaticIcon : public Icon
+class NonMovable : public Icon
 {
 public:
-	StaticIcon() :m_status(true) {};
+	NonMovable() :m_status(true) {};
 	void draw(sf::RenderWindow& window, sf::Vector2f pos);
 
 	bool getStatus()const;

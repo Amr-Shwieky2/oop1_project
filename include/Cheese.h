@@ -1,14 +1,16 @@
 #pragma once
-#include "StaticIcon.h"
+#include "NonMovable.h"
 
-class Cheese : public StaticIcon
+class Cheese : public NonMovable
 {
 public:
-
-	virtual void collide(Icon* object);
-	virtual void collide(Mouse* object);
+	Cheese() : NonMovable() {};
+	virtual void collide(Icon* object) { object->collide(this); };
+	virtual void collide(Mouse* object) { object->collide(this); };
 	virtual void collide(Cat* object) {};
 
-private:
+	sf::Vector2i getPosition()const { return m_position; };
 
+private:
+	sf::Vector2i m_position;
 };

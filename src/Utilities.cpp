@@ -20,3 +20,22 @@ Utilities::Utilities()
 
 	inputFile.close();
 }
+sf::Texture* Utilities::getCharactersTexture(size_t shape)
+{
+	return & m_CharactersTexture[shape];
+}
+sf::Texture* Utilities::getScreen(size_t screen)
+{
+	return &m_Screeen[screen];
+}
+sf::Texture* Utilities::getLifeTexture()
+{
+	return  &m_lifeCounter;
+}
+Utilities& Utilities::instance()
+{
+	static Utilities instance;
+	return instance;
+}
+
+

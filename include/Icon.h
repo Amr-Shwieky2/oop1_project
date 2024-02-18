@@ -20,6 +20,9 @@ const int SCORE_GIFT = 5;
 const int SCORE_LEVEL = 25;
 const int SCORE_CAT = 5;
 
+
+enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
+
 class Icon
 {
 public:
