@@ -1,11 +1,11 @@
-﻿configure_file ("./images/Names_images.txt" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/Cat.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/Cheese.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/Door.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/Gift.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/Key.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/Mouse.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./images/Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+﻿configure_file ("./icons/Names_images.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/Cat.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/Cheese.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/Door.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/Gift.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/Key.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/Mouse.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 
@@ -19,5 +19,7 @@ configure_file ("./levels/Level006.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./levels/Level007.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./levels/Level008.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 
+configure_file ("./images/Tom&Jerry.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/startGame.png" ${CMAKE_BINARY_DIR} COPYONLY)	
 
-#configure_file ("./levels/Level008.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./sounds/opening.wav" ${CMAKE_BINARY_DIR} COPYONLY)	
