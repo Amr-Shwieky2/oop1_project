@@ -1,19 +1,15 @@
 #pragma once
 
+#include "Screens.h"
+#include <thread>
+
 class Controller
 {
 public:
 	Controller();
-	~Controller();
+	//~Controller();
 
 private:
-
+	Board m_board;
+    Screens m_screens;
 };
-
-Controller::Controller()
-{
-}
-
-Controller::~Controller()
-{
-}
