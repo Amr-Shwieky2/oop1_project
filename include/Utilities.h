@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "Icon.h"
+
 enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
 //enum MouseSound { MUNCH, DEATH, HEALTH_GIFT, TIME_GIFT, DELETE };
 //enum gameSound { LEVEL_UP, GAME_OVER };
