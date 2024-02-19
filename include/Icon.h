@@ -38,7 +38,7 @@ public:
 	virtual void collide(Key* object) = 0;
 	virtual void collide(Gift* object) = 0;
 
-	virtual void draw(sf::RenderWindow& window) = 0;//??
+	//virtual void draw(sf::RenderWindow& window) = 0;//??
 
 protected:
 	sf::Sprite m_sprite;
