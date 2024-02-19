@@ -1,4 +1,5 @@
 #include "Utilities.h"
+#include "Icon.h"
 
 Utilities::Utilities() {
 	iconNames("Names_images.txt");
@@ -51,8 +52,7 @@ sf::Texture* Utilities::getLifeTexture()
 {
 	return  &m_lifeCounter;
 }
-Utilities& Utilities::instance()
-{
+Utilities& Utilities::instance() {
 	static Utilities instance;
 	return instance;
 }

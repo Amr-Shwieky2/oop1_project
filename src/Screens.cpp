@@ -23,6 +23,18 @@ void Screens::setOpeningGame() {
 	//m_openingSound.setBuffer(m_openingSoundBuffer);
 }
 
-void Screens::draw(sf::RenderWindow& window) const {
+void Screens::drawStarter(sf::RenderWindow& window) const {
+	window.draw(m_startTheGameSprite);
+}
+
+void Screens::drawBackground(sf::RenderWindow& window) const {
 	window.draw(m_backgroundSprite);
 }
+
+//void Screens::draw(sf::RenderWindow& window) const {
+//	window.draw(m_backgroundSprite);
+//}
+//
+//void Screens::draw(sf::RenderWindow& window) const {
+//	window.draw(m_backgroundSprite);
+//}

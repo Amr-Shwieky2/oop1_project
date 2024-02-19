@@ -10,6 +10,10 @@ public:
 	//~Controller();
 
 private:
-	Board m_board;
+	void handleEvents(sf::Event);
+
+
+	//Board m_board;
+	sf::RenderWindow m_window;
     Screens m_screens;
 };

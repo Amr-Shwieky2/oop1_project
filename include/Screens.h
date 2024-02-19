@@ -8,9 +8,13 @@ public:
 	Screens();
 
 	void draw(sf::RenderWindow&) const;
+	void drawBackground(sf::RenderWindow&) const;
+	void drawStarter(sf::RenderWindow&) const;
+
 private:
 	void setBackground();
 	void setOpeningGame();
+
 
 	sf::Texture m_backgroundTexture; // Texture for the background
 	sf::Sprite m_backgroundSprite; // Sprite for the background

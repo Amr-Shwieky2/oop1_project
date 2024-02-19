@@ -3,10 +3,10 @@
 #include <SFML\Graphics.hpp>
 #include <fstream>
 #include <iostream>
-
 #include "Icon.h"
 
-enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
+
+//enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
 //enum MouseSound { MUNCH, DEATH, HEALTH_GIFT, TIME_GIFT, DELETE };
 //enum gameSound { LEVEL_UP, GAME_OVER };
 
@@ -35,7 +35,6 @@ private:
 	sf::Texture m_CharactersTexture[NUM_OF_CHARACTERS];
 	std::vector<std::string> m_levels;
 
-	sf::Texture m_CharactersTexture[NUM_OF_CHARACTERS];
 	sf::Texture m_Screeen[NUM_OF_SCREENS];
 
 	sf::Texture m_lifeCounter;
