@@ -23,6 +23,7 @@ const char ROAD_CH = ' ';
 class Board
 {
 public:
+	Board();
 	Board(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel);
 	sf::Vector2f getBoardSize();
 	void readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel);
@@ -39,7 +40,7 @@ public:
 
 private:
 	
-	void openFile(std::ifstream& input);
+	void openFile();
 	void setBoardSize();
 	void pushToMap(const char& characters, size_t& row, size_t& col, 
 		Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats);
@@ -47,6 +48,7 @@ private:
 	std::vector<std::vector<std::unique_ptr<NonMovable>>> m_board;
 
 	std::ifstream m_file;
+
 	int m_row, m_col;
 
 	int m_numberOfLevel;
