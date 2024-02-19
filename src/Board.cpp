@@ -8,6 +8,8 @@
 #include "SmartCat.h"
 #include "RandomCat.h"
 
+Board::Board() {}
+
 Board::Board(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
 	: m_row(0), m_col(0), m_numberOfLevel(0), m_numberOfCats(0)
 {
@@ -25,7 +27,7 @@ sf::Vector2f Board::getBoardSize()
 void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
 {
 	m_numberOfLevel = numberOfLevel;
-	openFile(m_file);
+	openFile();
 	char nextChar;
 	m_file >> m_row >> m_col;
 	setBoardSize();
@@ -88,12 +90,12 @@ void Board::drawNonMovable(sf::RenderWindow& window)
 	}
 }
 
-void Board::openFile(std::ifstream& input)
+void Board::openFile()
 {
 	
 	std::string file = "level" + std::to_string(m_numberOfLevel) + ".txt";
-	input.open(file);
-	if (!input.is_open())
+	m_file.open(file);
+	if (!m_file.is_open())
 	{
 		std::cerr << "could not open file\n";
 		exit(EXIT_FAILURE);

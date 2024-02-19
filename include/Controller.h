@@ -12,6 +12,8 @@ public:
 private:
 	void handleEvents(sf::Event);
 
+	int levelsInGame(std::string str);
+
 
 	//Board m_board;
 	sf::RenderWindow m_window;
