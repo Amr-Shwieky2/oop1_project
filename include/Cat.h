@@ -13,13 +13,11 @@ public:
 	virtual void collide(Wall* object);
 	virtual void collide(Door* object);
 
-	void moveDirection(float moveDistance);
-
 protected:
 
 	//int m_sourceX = 0; //????
 	bool m_moving;
 	bool m_wallCollision; 
 	bool m_doorCollision;
-	Direction m_newDirection;
+	
 };

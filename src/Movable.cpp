@@ -27,7 +27,7 @@ sf::Vector2f Movable::getPosition() const
 	return m_position;
 }
 
-void Movable::setStartingPosition(sf::Vector2f position)
+void Movable::setStartPosition(sf::Vector2f position)
 {
 	m_startPosition = position;
 }
@@ -79,6 +79,25 @@ sf::Vector2f Movable::getCenter(sf::Vector2f pos)
 	newPostion.x = (pos.x - ((int)pos.x % P_SIZE)) + P_SIZE / 2;
 	newPostion.y = (pos.y - ((int)pos.y % P_SIZE)) + P_SIZE / 2;
 	return newPostion;
+}
+
+void Movable::moveDirection(float moveDistance)
+{
+	switch (m_direction)
+	{
+	case UP:
+		m_sprite.move(0, -moveDistance);
+		break;
+	case DOWN:
+		m_sprite.move(0, moveDistance);
+		break;
+	case RIGHT:
+		m_sprite.move(moveDistance, 0);
+		break;
+	case LEFT:
+		m_sprite.move(-moveDistance, 0);
+		break;
+	}
 }
 
 

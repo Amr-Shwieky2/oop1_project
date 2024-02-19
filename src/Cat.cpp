@@ -19,22 +19,3 @@ void Cat::collide(Door* object)
 	m_sprite.setPosition(getCenter(m_previousPostion));
 	m_doorCollision = true;
 }
-
-void Cat::moveDirection(float moveDistance)
-{
-    switch (m_direction)
-    {
-    case UP:
-        m_sprite.move(0, -moveDistance);
-        break;
-    case DOWN:
-        m_sprite.move(0, moveDistance);
-        break;
-    case RIGHT:
-        m_sprite.move(moveDistance, 0);
-        break;
-    case LEFT:
-        m_sprite.move(-moveDistance, 0);
-        break;
-    }
-}
