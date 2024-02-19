@@ -187,7 +187,7 @@ int Screens::checkButtons(int val) {
 }
 
 void Screens::drawMap(sf::RenderWindow& window) {
-	m_board.drawNonMovable(window);
+	//m_board.drawNonMovable(window);
 	//window.draw(m_backgroundSprite);
 }
 

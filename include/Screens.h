@@ -29,7 +29,7 @@ private:
 
 	int checkSoundIconPressed(int);
 
-	Board m_board;
+	//Board m_board;
 
 	sf::Texture m_backgroundTexture; // Texture for the background
 	sf::Sprite m_backgroundSprite; // Sprite for the background

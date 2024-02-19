@@ -14,6 +14,7 @@ private:
 
 	int levelsInGame(std::string str);
 
+	bool m_mainPage = true;
 
 	//Board m_board;
 	sf::RenderWindow m_window;

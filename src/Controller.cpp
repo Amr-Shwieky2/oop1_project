@@ -8,14 +8,17 @@ Controller::Controller() {
         m_screens.OpeningBackground(m_window);
     }
     
-    if (m_window.isOpen()) {
+    if (m_mainPage) {
         m_screens.drawBackground(m_window);
         m_screens.drawStarterSection(m_window);
         m_screens.drawSoundButton(m_window, true);
+        !m_mainPage;
         m_window.display();
     }
 
     while (m_window.isOpen()) {
+     //   m_window.clear();
+
         //m_screens.drawStarterSection(m_window);
         //    m_screens.drawMap(m_window);
         if (auto event = sf::Event{}; m_window.pollEvent(event)) {
