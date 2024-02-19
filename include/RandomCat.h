@@ -10,5 +10,6 @@ public:
 		const std::vector<std::vector<sf::Vector3i>>& Tree); //Tree do not use in this move 
 private:
 	Direction getRandomDirection();
+	///adacawsafcae
 };
 
