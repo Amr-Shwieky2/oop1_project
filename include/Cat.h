@@ -10,8 +10,15 @@ public:
 	
 	virtual void move(float passedTime, sf::Vector2f boardSize, const std::vector<std::vector<sf::Vector3i>>& Tree) {}; //???!!
 
+	virtual void collide(Icon* object) {};
+	virtual void collide(Mouse* object) {};
+	virtual void collide(Cat* object) {};
+	virtual void collide(Cheese* object) {};
 	virtual void collide(Wall* object);
 	virtual void collide(Door* object);
+	virtual void collide(Key* object) {};
+	virtual void collide(Gift* object) {};
+	
 
 protected:
 

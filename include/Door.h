@@ -1,5 +1,7 @@
 #pragma once
 #include "NonMovable.h"
+#include "Mouse.h"
+#include "Cat.h"
 
 class Door : public NonMovable
 {

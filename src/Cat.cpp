@@ -1,6 +1,6 @@
 #include "Cat.h"
 
-Cat::Cat() : m_doorCollision(false), m_wallCollision(false), m_moving(false), m_newDirection(RIGHT)
+Cat::Cat() : m_doorCollision(false), m_wallCollision(false), m_moving(false)
 {
     m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(CAT)));
     m_sprite.setOrigin(getCenter(m_sprite.getPosition()));

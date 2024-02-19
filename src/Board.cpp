@@ -42,6 +42,12 @@ void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, con
 	m_file.close();
 }
 
+void Board::setMouse(Mouse& mouse, sf::Vector2f position)
+{
+	mouse.SetPosition(position);
+	mouse.setStartPosition(position);
+}
+
 void Board::setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f position)
 {
 	
@@ -54,6 +60,31 @@ void Board::setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f positio
 	size_t catSize = cats.size() - 1;
 	cats[catSize]->SetPosition(position);
 	cats[catSize]->setStartPosition(position);
+}
+
+NonMovable* Board::getCharacters(sf::Vector2f position)
+{
+	int row = position.y / P_SIZE;
+	int col = position.x / P_SIZE;
+	return m_board[row][col].get();
+}
+
+std::vector<std::vector<std::unique_ptr<NonMovable>>>& Board::getMap()
+{
+	return m_board;
+}
+
+void Board::drawNonMovable(sf::RenderWindow& window)
+{
+	for (size_t i = 0; i < m_board.size(); i++)
+	{
+		for (size_t j = 0; j < m_board[i].size(); j++)
+		{
+			if (m_board[i][j] != nullptr)
+				m_board[i][j]->draw(window, sf::Vector2f(j * P_SIZE, i * P_SIZE));
+
+		}
+	}
 }
 
 void Board::openFile(std::ifstream& input)
@@ -96,6 +127,9 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 		m_board[row].at(col) = std::make_unique <Gift>();
 		break;
 	case CAT_CH:
+		setCat(cats, sf::Vector2f(col * P_SIZE, row * P_SIZE));
+	case MOUSE_CH:
+		setMouse(mouse, sf::Vector2f(col * P_SIZE, row * P_SIZE));
 	default:
 		break;
 	}

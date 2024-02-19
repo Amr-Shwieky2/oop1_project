@@ -1,5 +1,6 @@
 #pragma once
 #include "NonMovable.h"
+#include "Mouse.h"
 
 class Wall : public NonMovable
 {
