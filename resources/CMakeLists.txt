@@ -25,6 +25,7 @@ configure_file ("./images/Tom&Jerry.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./images/startGame.png" ${CMAKE_BINARY_DIR} COPYONLY)	
 
 configure_file ("./sounds/opening.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./sounds/click.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 configure_file ("./fonts/sectionFont.ttf" ${CMAKE_BINARY_DIR} COPYONLY)	

@@ -8,8 +8,6 @@
 #include "SmartCat.h"
 #include "RandomCat.h"
 
-Board::Board() {}
-
 Board::Board(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
 	: m_row(0), m_col(0), m_numberOfLevel(0), m_numberOfCats(0)
 {

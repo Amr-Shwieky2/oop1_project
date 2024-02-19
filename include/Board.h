@@ -23,7 +23,6 @@ const char ROAD_CH = ' ';
 class Board
 {
 public:
-	Board();
 	Board(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel);
 	sf::Vector2f getBoardSize();
 	void readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel);
