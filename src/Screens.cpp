@@ -3,6 +3,7 @@
 Screens::Screens() {
 	setOpeningGame();
 	setBackground();
+	setSound();
 }
 
 void Screens::setBackground() {
@@ -21,6 +22,25 @@ void Screens::setOpeningGame() {
 	m_startTheGameSprite.setPosition(640, 350);
 	//m_openingSoundBuffer.loadFromFile("opening.wav");
 	//m_openingSound.setBuffer(m_openingSoundBuffer);
+}
+
+void Screens::setSound() {
+	m_soundOn.loadFromFile("soundOn.png");
+	m_soundOnSprite.setTexture(m_soundOn);
+	m_sounOff.loadFromFile("soundOff.png");
+	m_soundOffSprite.setTexture(m_sounOff);
+
+	//sf::Vector2f buttonSize(5, P_SIZE);
+	sf::Vector2f buttonPosition(20, 20);
+
+	m_soundOnSprite.setScale(sf::Vector2f(((float)P_SIZE / m_soundOnSprite.getGlobalBounds().width),
+										((float)P_SIZE / m_soundOnSprite.getGlobalBounds().height)));
+	m_soundOnSprite.setPosition(20, 20);
+
+	m_soundOffSprite.setScale(sf::Vector2f(((float)P_SIZE / m_soundOffSprite.getGlobalBounds().width),
+										((float)P_SIZE / m_soundOffSprite.getGlobalBounds().height)));
+	
+	m_soundOffSprite.setPosition(20, 20);
 }
 
 void Screens::drawStarter(sf::RenderWindow& window) const {
@@ -56,35 +76,115 @@ void Screens::OpeningBackground(sf::RenderWindow& window) {
 	}
 }
 
-void Screens::drawBackground(sf::RenderWindow& window) const {
+void Screens::drawBackground(sf::RenderWindow& window) {
 	window.draw(m_backgroundSprite);
 }
 
 void Screens::drawStarterSection(sf::RenderWindow& window) {
 	sf::Font font;
+	font.loadFromFile("sectionFont.ttf");
 	if (!font.loadFromFile("sectionFont.ttf")) { // Load your desired font file
 		std::cerr << "Failed to load font." << std::endl;
 		return;
 	}
 
-	unsigned int fontSize = 18; // Set the desired font size
-	sf::Text newGameText = createText("New Game", font, fontSize, window);
-	sf::Text tableText = createText("Scores", font, fontSize, window);
-	sf::Text exitText = createText("Exit", font, fontSize, window);
+	//sf::Text newGameText, tableText, exitText;
+	unsigned int fontSize = 40; // Set the desired font size
+
+	m_newGameText = createText("New Game", font, fontSize);
+	m_tableText = createText("Scores", font, fontSize);
+	m_exitText = createText("Exit", font, fontSize);
+
 	// Draw the text objects
-	window.draw(newGameText);
-	window.draw(tableText);
-	window.draw(exitText);
+	drawTextInStarter(m_newGameText, window);
+	drawTextInStarter(m_tableText, window);
+	drawTextInStarter(m_exitText, window);
 }
 
-sf::Text Screens::createText(std::string str, sf::Font font, unsigned int fontSize, sf::RenderWindow& window) {
-	sf::Text text(str, font, fontSize);
-	text.setFillColor(sf::Color::White);
+void Screens::drawSoundButton(sf::RenderWindow& window, bool flag) {
+	flag ? window.draw(m_soundOnSprite) : window.draw(m_soundOffSprite);
+}
+
+sf::Text Screens::createText(const std::string& str,const sf::Font& font, unsigned int fontSize) {
+	sf::Text text;
+	text.setFont(font);
+	text.setString(str);
+	text.setFillColor(sf::Color::Black);
 	text.setStyle(sf::Text::Bold);
-	text.setPosition((window.getSize().x - text.getLocalBounds().width) / 2, window.getSize().y / 2 + 50);
+	text.setCharacterSize(fontSize);
 	return text;
 }
 
+void Screens::drawTextInStarter(sf::Text& text, sf::RenderWindow& window) {
+	static int i = 1;
+	// Get the size of the window
+	if (i <= 3) {
+		sf::Vector2u windowSize = window.getSize();
+		float xPos = (windowSize.x - text.getLocalBounds().width) / 2;
+		text.setPosition(xPos,100 +(120 * i) );
+		
+		window.draw(text);
+		
+		i++;
+	}
+	//window.display();
+}
+
+void Screens::buttonReleased(sf::Event event, sf::RenderWindow& window) {
+	int x = event.mouseButton.x;
+	int y = event.mouseButton.y;
+
+	sf::Vector2f pos((float)(x - (x % P_SIZE)), (float)(y - (y % P_SIZE)));
+
+	int newGameText = m_newGameText.getPosition().y;
+	int tableText = m_tableText.getPosition().y;
+	int exitText = m_exitText.getPosition().y;
+
+	if (pos.x == m_newGameText.getPosition().x) {
+		switch (checkButtons((int)pos.y))
+		{
+		case 220: 
+			break;
+
+		case 340:
+			break;
+
+		case 460:
+			break;
+
+		default:
+			break;
+		}
+	}
+	else if (checkSoundIconPressed(pos.x) == 20) {
+		std::cout << "Noor";
+		drawSoundButton(window, m_mute);
+		!m_mute;
+	}
+}
+
+int Screens::checkSoundIconPressed(int val) {
+	if (val >= 15 && val <= 55) return 20;
+	return 0;
+}
+
+int Screens::checkButtons(int val) {
+	int i;
+
+	if (val >= 200 && val <= 240) {
+		i = 1;
+	}
+	else if (val >= 320 && val <= 360) {
+		i = 2;
+	}
+	else if (val >= 440 && val <= 480) {
+		i = 3;
+	}
+	else
+		;
+
+	return ((i * 120) + 100);
+}
 
 void Screens::drawMap(sf::RenderWindow& window) {
 	m_board.drawNonMovable(window);

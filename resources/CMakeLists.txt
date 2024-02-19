@@ -6,6 +6,8 @@ configure_file ("./icons/Gift.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Key.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Mouse.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/soundOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/soundOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 

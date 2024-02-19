@@ -8,13 +8,16 @@ Controller::Controller() {
         m_screens.OpeningBackground(m_window);
     }
     
-    while (m_window.isOpen()) {
-        m_window.clear();
+    if (m_window.isOpen()) {
         m_screens.drawBackground(m_window);
         m_screens.drawStarterSection(m_window);
-        m_screens.drawMap(m_window);
+        m_screens.drawSoundButton(m_window, true);
         m_window.display();
+    }
 
+    while (m_window.isOpen()) {
+        //m_screens.drawStarterSection(m_window);
+        //    m_screens.drawMap(m_window);
         if (auto event = sf::Event{}; m_window.pollEvent(event)) {
             handleEvents(event);
         }
@@ -26,6 +29,10 @@ void Controller::handleEvents(sf::Event event) {
     case sf::Event::Closed:
         // Close the window if 'X' button is clicked
         m_window.close();
+        break;
+    case sf::Event::MouseButtonReleased:
+        std::cout << event.mouseButton.x;
+        m_screens.buttonReleased(event, m_window);
         break;
     case sf::Event::KeyReleased:
         if (event.key.code == sf::Keyboard::Left) {
