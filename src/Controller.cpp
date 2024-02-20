@@ -1,58 +1,70 @@
-
 #include "Controller.h"
 
 Controller::Controller() {
-    levelsInGame("Levels.txt");
+    int count_levels = levelsInGame("Levels.txt");
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
     setSoundBuffers(); m_openingSound.play();
     m_screens.OpeningBackground(m_window);
-
-    while (m_window.isOpen()) {
-        m_window.clear();
-        if (m_mainPage) {
+    for (size_t i = 0; i < count_levels; i++) {
+        Board board(m_mouse, m_cats, i + 1);
+        sf::Vector2f boardSize = board.getBoardSize();
+        while (m_window.isOpen() || m_levelWindow.isOpen()) {
+            m_mainPage ? m_window.clear() : m_levelWindow.clear();
             startTheGame();
+            openLevel(boardSize.x, boardSize.y, i + 1, board);
+            m_window.isOpen() ? handleMainEvents() : handleLevelEvents();
+            m_mainPage ? m_window.display() : m_levelWindow.display();
         }
-        if (auto event = sf::Event{}; m_window.pollEvent(event)) {
+    }
+}
 
-            handleEvents(event);
+void Controller::handleMainEvents() {
+    if (auto event = sf::Event{}; m_window.pollEvent(event)) {
+        switch (event.type) {
+        case sf::Event::Closed:
+            // Close the window if 'X' button is clicked
+            m_window.close();
+            break;
+        case sf::Event::MouseButtonReleased:
+            std::cout << event.mouseButton.x << " " << event.mouseButton.y;
+            buttonReleased(event);
+            break;
         }
-        m_window.display();
+    }
+}
+
+void Controller::handleLevelEvents() {
+    if (auto event = sf::Event{}; m_levelWindow.pollEvent(event)) {
+        switch (event.type) {
+        case sf::Event::Closed:
+            m_levelWindow.close();
+            m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
+            m_mainPage = true;
+            break;
+        case sf::Event::KeyReleased:
+            if (event.key.code == sf::Keyboard::Left) {
+                // Handle left key release
+            }
+            else if (event.key.code == sf::Keyboard::Right) {
+                // Handle right key release
+            }
+            else if (event.key.code == sf::Keyboard::Up) {
+                // Handle up key release
+            }
+            else if (event.key.code == sf::Keyboard::Down) {
+                // Handle down key release
+            }
+            std::cout << "Amro ";
+            break;
+        }
     }
 }
 
 void Controller::startTheGame() {
-    if (m_window.isOpen()) {
+    if (m_window.isOpen() && m_mainPage) {
         m_screens.drawBackground(m_window);
         m_screens.drawStarterSection(m_window);
         m_screens.drawSoundButton(m_window, m_mute);
-    }
-}
-
-void Controller::handleEvents(sf::Event event) {
-    switch (event.type) {
-    case sf::Event::Closed:
-        // Close the window if 'X' button is clicked
-        m_window.close();
-        break;
-    case sf::Event::MouseButtonReleased:
-        std::cout << event.mouseButton.x << " " << event.mouseButton.y;
-        buttonReleased(event);
-        
-        break;
-    case sf::Event::KeyReleased:
-        if (event.key.code == sf::Keyboard::Left) {
-            // Handle left key release
-        }
-        else if (event.key.code == sf::Keyboard::Right) {
-            // Handle right key release
-        }
-        else if (event.key.code == sf::Keyboard::Up) {
-            // Handle up key release
-        }
-        else if (event.key.code == sf::Keyboard::Down) {
-            // Handle down key release
-        }
-        break;
     }
 }
 
@@ -81,6 +93,7 @@ void Controller::buttonReleased(sf::Event event) {
     if (i == 1 && x < 725 && x > 550) { // new game
         m_clickSound.play();
         m_mainPage = false;
+        m_newGame = true;
         // board
     }
     else if (i == 2 && x < 690 && x > 590) {
@@ -93,7 +106,7 @@ void Controller::buttonReleased(sf::Event event) {
         m_mainPage = false;
         m_window.close();
     }
-    else if (checkSoundIconPressed(x) == 20) { // volume button
+    else if (i == 0 && checkSoundIconPressed(x) == 20) { // volume button
         m_clickSound.play();
         std::cout << "Noor";
         m_mute = !m_mute;
@@ -102,12 +115,16 @@ void Controller::buttonReleased(sf::Event event) {
     }
 }
 
-void Controller::setSoundBuffers() {
-    m_openingSoundBuffer.loadFromFile("opening.wav");
-    m_openingSound.setBuffer(m_openingSoundBuffer);
 
-    m_clickSoundBuffer.loadFromFile("click.wav");
-    m_clickSound.setBuffer(m_clickSoundBuffer);
+void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board& board) {
+    if (m_newGame) {
+        m_window.close();
+        m_levelWindow.create(sf::VideoMode(rowSize, colSize), "Level" + std::to_string(levelNumber));
+        //board.drawBoard(m_levelWindow);
+        board.drawNonMovable(m_levelWindow);
+        m_newGame = false;
+    }
+    // m_screens.drawBackground(m_window);
 }
 
 int Controller::checkSoundIconPressed(int val) {
@@ -116,9 +133,12 @@ int Controller::checkSoundIconPressed(int val) {
 }
 
 int Controller::checkButtons(int val) {
-    size_t j = 0;
+    int j = -1;
 
-    if (val >= 220 && val <= 260 ) {
+    if (val >= 20 && val <= 55) {
+        j = 0;
+    }
+    else if (val >= 220 && val <= 260 ) {
         j = 1;
     }
     else if (val >= 340 && val <= 380) {
@@ -130,4 +150,21 @@ int Controller::checkButtons(int val) {
     else ;
 
     return j;
+}
+
+void Controller::setSoundBuffers() {
+    m_openingSoundBuffer.loadFromFile("opening.wav");
+    m_openingSound.setBuffer(m_openingSoundBuffer);
+
+    m_clickSoundBuffer.loadFromFile("click.wav");
+    m_clickSound.setBuffer(m_clickSoundBuffer);   
+    
+    m_tomSoundBuffer.loadFromFile("tomRunning.wav");
+    m_tomSound.setBuffer(m_tomSoundBuffer);
+    
+    m_jerrySoundBuffer.loadFromFile("click.wav");
+    m_jerrySound.setBuffer(m_jerrySoundBuffer);
+
+    m_catchSoundBuffer.loadFromFile("catch.wav");
+    m_catchSound.setBuffer(m_catchSoundBuffer);
 }

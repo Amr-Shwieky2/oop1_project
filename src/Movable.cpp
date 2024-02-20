@@ -13,7 +13,7 @@ void Movable::draw(sf::RenderWindow& window, float passedTime)
 		m_frameCounter = 0;
 		m_sourceX++;
 	}
-	m_sprite.setTextureRect(sf::IntRect(m_sourceX * P_SIZE, m_direction * P_SIZE, P_SIZE, P_SIZE));
+	m_sprite.setTextureRect(sf::IntRect(m_sourceX * P_SIZE, m_direction * P_SIZE, P_SIZE, P_SIZE));//change the why 
 	window.draw(m_sprite);
 }
 

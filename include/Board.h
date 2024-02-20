@@ -25,6 +25,7 @@ class Board
 public:
 	Board(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel);
 	sf::Vector2f getBoardSize();
+	void drawBoard(sf::RenderWindow& window);
 	void readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel);
 
 	void setMouse(Mouse& mouse, sf::Vector2f position);
@@ -49,6 +50,7 @@ private:
 	std::ifstream m_file;
 
 	int m_row, m_col;
+	sf::Time m_time;
 
 	int m_numberOfLevel;
 	int m_numberOfCats;

@@ -72,7 +72,7 @@ void Screens::OpeningBackground(sf::RenderWindow& window) {
 	while (true) {
 		float elapsedTime = clock.getElapsedTime().asSeconds();
 		// If elapsed time is less than 6 seconds, wait
-		if (elapsedTime < 10.0f) {
+		if (elapsedTime < 1.0f) {
 			sf::sleep(sf::seconds(0.1f)); // Adjust sleep time as needed
 		}
 		else {
@@ -85,7 +85,7 @@ void Screens::OpeningBackground(sf::RenderWindow& window) {
 		}
 		drawStarter(window);
 		// after 3 secod stop oppening music
-		if (elapsedTime >= 10.0f && backgroundOpacity <= 0) {
+		if (elapsedTime >= 1.0f && backgroundOpacity <= 0) {
 			std::cout << "Background removed!" << std::endl;
 			// stop usic
 			break;
