@@ -120,10 +120,11 @@ void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, B
     if (m_newGame) {
         m_window.close();
         m_levelWindow.create(sf::VideoMode(rowSize, colSize), "Level" + std::to_string(levelNumber));
-        //board.drawBoard(m_levelWindow);
-        board.drawNonMovable(m_levelWindow);
+        
+        //board.drawNonMovable(m_levelWindow);
         m_newGame = false;
     }
+    board.drawBoard(m_levelWindow);
     // m_screens.drawBackground(m_window);
 }
 

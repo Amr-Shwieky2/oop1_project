@@ -12,11 +12,9 @@ public:
 	sf::Vector2f getPosition()const;
 	void setPosition(sf::Vector2f position);
 
-	virtual void draw(sf::RenderWindow& window, sf::Vector2f pos) {};
+	virtual void draw(sf::RenderWindow& window, sf::Vector2f pos);
 
-	virtual void collide(Icon* object) {};
-	virtual void collide(Mouse* object) {};
-	virtual void collide(Cat* object) {};//??
+
 
 	virtual void collide(Cheese* object) {};
 	virtual void collide(Wall* object) {};

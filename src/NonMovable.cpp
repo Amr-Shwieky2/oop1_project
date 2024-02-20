@@ -19,3 +19,12 @@ void NonMovable::setPosition(sf::Vector2f position)
 {
 	m_position = position;
 }
+
+void NonMovable::draw(sf::RenderWindow& window, sf::Vector2f pos)
+{
+	if (m_status) {
+		//m_sprite.setColor(m_color);
+		m_sprite.setPosition(pos);
+		window.draw(m_sprite);
+	}
+}

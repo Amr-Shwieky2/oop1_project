@@ -123,19 +123,19 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 	switch (characters)
 	{
 	case WALL_CH:
-		m_board[row][col] = std::make_unique <Wall>();
+		m_board[row][col] = std::make_unique <Wall>(sf::Vector2f(row, col));
 		break;
 	case DOOR_CH:
-		m_board[row][col] = std::make_unique <Door>();
+		m_board[row][col] = std::make_unique <Door>(sf::Vector2f(row, col));
 		break;
 	case CHEESE_CH:
-		m_board[row][col] = std::make_unique <Cheese>();
+		m_board[row][col] = std::make_unique <Cheese>(sf::Vector2f(row, col));
 		break;
 	case KEY_CH:
-		m_board[row][col] = std::make_unique <Key>();
+		m_board[row][col] = std::make_unique <Key>(sf::Vector2f(row, col));
 		break;
 	case GIFT_CH:
-		m_board[row][col] = std::make_unique <Gift>();
+		m_board[row][col] = std::make_unique <Gift>(sf::Vector2f(row, col));
 		break;
 	case CAT_CH:
 		setCat(cats, sf::Vector2f(col * P_SIZE, row * P_SIZE));
