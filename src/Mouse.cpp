@@ -11,8 +11,7 @@ Mouse::Mouse(): m_cookieCounter(0), m_score(0), m_life(3), m_numberKeys(0), m_is
 	SetPosition(m_sprite.getOrigin());
 }
 
-void Mouse::setDirection(sf::Keyboard::Key direction)
-{
+void Mouse::setDirection(sf::Keyboard::Key direction) {
 	switch (direction)
 	{
 	case sf::Keyboard::Left:
@@ -64,7 +63,7 @@ int Mouse::getScore() const
 
 void Mouse::setScore(const int& score)
 {
-	m_score = score;
+	m_score += score;
 }
 
 int Mouse::getLife() const
@@ -91,6 +90,7 @@ void Mouse::collide(Cat* object)
 {
 	m_life--;
 	m_isArrested = true;
+	//sound catch
 }
 
 void Mouse::collide(Cheese* object)
@@ -105,12 +105,14 @@ void Mouse::collide(Cheese* object)
 
 		setScore(SCORE_CHEESE);
 		object->setStatus(false);
+		// sound eat
 	}
 }
 
 void Mouse::collide(Wall* object)
 {
 	m_sprite.setPosition(getCenter(m_previousPostion));
+	//sound ouch
 }
 
 void Mouse::collide(Door* object)

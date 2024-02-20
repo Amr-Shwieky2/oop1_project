@@ -13,9 +13,9 @@ configure_file ("./icons/soundOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("./levels/Levels.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./levels/Level1.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level002.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level003.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level004.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./levels/Level2.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./levels/Level3.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./levels/Level4.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./levels/Level005.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./levels/Level006.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./levels/Level007.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
@@ -26,6 +26,8 @@ configure_file ("./images/startGame.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("./sounds/opening.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./sounds/click.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./sounds/tomRunning.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./sounds/catch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 configure_file ("./fonts/sectionFont.ttf" ${CMAKE_BINARY_DIR} COPYONLY)	

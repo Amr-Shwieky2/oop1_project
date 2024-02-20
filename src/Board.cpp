@@ -22,21 +22,32 @@ sf::Vector2f Board::getBoardSize()
 	return boardSize;
 }
 
+void Board::drawBoard(sf::RenderWindow &window) {
+	for (size_t i = 0; i < m_board.size(); i++) {
+		for (size_t j = 0; j < m_board[i].size(); j++) {
+			if (m_board[i][j] != nullptr) {
+				m_board[i][j]->draw(window, sf::Vector2f(j * P_SIZE, i * P_SIZE));
+			}
+		}
+	}
+}
+
 void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
 {
 	m_numberOfLevel = numberOfLevel;
 	openFile();
 	char nextChar;
-	m_file >> m_row >> m_col;
+	float timeInSeconds;
+	m_file >> m_row >> m_col >> timeInSeconds;
+	m_time = sf::seconds(timeInSeconds);
 	setBoardSize();
-
 	for (size_t i = 0; i < m_row; i++)
 	{
 		m_file.get();
 		for (size_t j = 0; j < m_col; j++)
 		{
 			nextChar = m_file.get();
-			//add_to_board(c, i, j, pac, m_demons);
+			pushToMap(nextChar, i, j, mouse, cats);
 		}
 	}
 	m_file.seekg(0, std::ios::beg);
@@ -83,7 +94,6 @@ void Board::drawNonMovable(sf::RenderWindow& window)
 		{
 			if (m_board[i][j] != nullptr)
 				m_board[i][j]->draw(window, sf::Vector2f(j * P_SIZE, i * P_SIZE));
-
 		}
 	}
 }
@@ -91,7 +101,7 @@ void Board::drawNonMovable(sf::RenderWindow& window)
 void Board::openFile()
 {
 	
-	std::string file = "level" + std::to_string(m_numberOfLevel) + ".txt";
+	std::string file = "Level" + std::to_string(m_numberOfLevel) + ".txt";
 	m_file.open(file);
 	if (!m_file.is_open())
 	{
@@ -113,24 +123,26 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 	switch (characters)
 	{
 	case WALL_CH:
-		m_board[row].at(col) = std::make_unique <Wall>();
+		m_board[row][col] = std::make_unique <Wall>();
 		break;
 	case DOOR_CH:
-		m_board[row].at(col) = std::make_unique <Door>();
+		m_board[row][col] = std::make_unique <Door>();
 		break;
 	case CHEESE_CH:
-		m_board[row].at(col) = std::make_unique <Cheese>();
+		m_board[row][col] = std::make_unique <Cheese>();
 		break;
 	case KEY_CH:
-		m_board[row].at(col) = std::make_unique <Key>();
+		m_board[row][col] = std::make_unique <Key>();
 		break;
 	case GIFT_CH:
-		m_board[row].at(col) = std::make_unique <Gift>();
+		m_board[row][col] = std::make_unique <Gift>();
 		break;
 	case CAT_CH:
 		setCat(cats, sf::Vector2f(col * P_SIZE, row * P_SIZE));
+		break;
 	case MOUSE_CH:
 		setMouse(mouse, sf::Vector2f(col * P_SIZE, row * P_SIZE));
+		break;
 	default:
 		break;
 	}

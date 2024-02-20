@@ -11,5 +11,5 @@ public:
 private:
 	sf::Text m_statusBar;
 	//sf::Font m_font; //????
-	sf::Sprite m_lifeSpirte;
+	sf::Sprite m_lifeSprite;
 };

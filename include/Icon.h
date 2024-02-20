@@ -20,28 +20,26 @@ const int SCORE_GIFT = 5;
 const int SCORE_LEVEL = 25;
 const int SCORE_CAT = 5;
 
-
 enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
 
-class Icon
-{
+class Icon {
 public:
 	Icon() {};
-	
 
-	virtual void collide(Icon* object) = 0;
-	virtual void collide(Mouse* object) = 0;
-	virtual void collide(Cat* object) = 0;
-	virtual void collide(Cheese* object) = 0;
-	virtual void collide(Wall* object) = 0;
-	virtual void collide(Door* object) = 0;
-	virtual void collide(Key* object) = 0;
-	virtual void collide(Gift* object) = 0;
+	virtual void collide(Icon* object)	=	0;
+	virtual void collide(Mouse* object)	=	0;
+	virtual void collide(Cat* object)	=	0;
+	virtual void collide(Cheese*object) =	0;
+	virtual void collide(Wall* object)	=	0;
+	virtual void collide(Door* object)	=	0;
+	virtual void collide(Key* object)	=	0;
+	virtual void collide(Gift* object)	=	0;
 
 	//virtual void draw(sf::RenderWindow& window) = 0;//??
 
 protected:
+
 	sf::Sprite m_sprite;
-	Characters m_Character;
+	Characters m_Character; //?
 };
 
