@@ -5,15 +5,15 @@
 Controller::Controller() {
     int count_levels = levelsInGame("Levels.txt");
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
-    setSoundBuffers(); m_openingSound.play();
     m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, i + 1);
         sf::Vector2f boardSize = board.getBoardSize();
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
-            m_mainPage ? m_window.clear() : m_levelWindow.clear();
+            m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
             startTheGame();
             openLevel(boardSize.x, boardSize.y, i + 1, board);
+            openInformation();
             m_window.isOpen() ? handleMainEvents() : handleLevelEvents();
             m_mainPage ? m_window.display() : m_levelWindow.display();
         }
@@ -56,14 +56,14 @@ void Controller::handleLevelEvents() {
             else if (event.key.code == sf::Keyboard::Down) {
                 // Handle down key release
             }
-            std::cout << "Amro ";
+            std::cout << "Level event\n";
             break;
         }
     }
 }
 
 void Controller::startTheGame() {
-    if (m_window.isOpen() && m_mainPage) {
+    if (m_window.isOpen() && m_mainPage && !m_information) {
         m_screens.drawBackground(m_window);
         m_screens.drawStarterSection(m_window);
         m_screens.drawSoundButton(m_window, m_mute);
@@ -132,27 +132,29 @@ void Controller::buttonReleased(sf::Event event) {
     int i = checkButtons(y);
 
     if (i == 1 && x < 725 && x > 550) { // new game
-        m_clickSound.play();
+        m_screens.playPauseSound(1, false); // play click
         m_mainPage = false;
         m_newGame = true;
-        // board
     }
-    else if (i == 2 && x < 690 && x > 590) {
-        m_clickSound.play();
-        m_mainPage = false; 
+    else if (i == 2 && x < 740 && x > 540) {
+        m_screens.playPauseSound(1, false); // play click
+        m_information = true;
+        //m_mainPage = false; 
         // score table
     }
     else if (i == 3 && x < 670 && x > 605) { // exit button
-        m_clickSound.play();
+        m_screens.playPauseSound(1, false); // play click
+
         m_mainPage = false;
         m_window.close();
     }
     else if (i == 0 && checkSoundIconPressed(x) == 20) { // volume button
-        m_clickSound.play();
-        std::cout << "Noor";
+        m_screens.playPauseSound(1, false); // play click
+        std::cout << "mute button\n";
         m_mute = !m_mute;
         m_screens.drawSoundButton(m_window, m_mute);
-        m_mute ? m_openingSound.stop() : m_openingSound.play();
+        m_screens.playPauseSound(0, m_mute);
+        /*m_mute ? m_openingSound.stop() : m_openingSound.play();*/
     }
 }
 
@@ -160,13 +162,16 @@ void Controller::buttonReleased(sf::Event event) {
 void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board& board) {
     if (m_newGame) {
         m_window.close();
-        m_levelWindow.create(sf::VideoMode(rowSize, colSize), "Level" + std::to_string(levelNumber));
-        
-        //board.drawNonMovable(m_levelWindow);
+        m_levelWindow.create(sf::VideoMode(colSize, rowSize), "Level" + std::to_string(levelNumber));
         m_newGame = false;
     }
     board.drawBoard(m_levelWindow);
-    // m_screens.drawBackground(m_window);
+}
+
+void Controller::openInformation() {
+    if (m_information && m_mainPage) {
+        m_screens.drawBackground(m_window);
+    }
 }
 
 int Controller::checkSoundIconPressed(int val) {
@@ -194,19 +199,3 @@ int Controller::checkButtons(int val) {
     return j;
 }
 
-void Controller::setSoundBuffers() {
-    m_openingSoundBuffer.loadFromFile("opening.wav");
-    m_openingSound.setBuffer(m_openingSoundBuffer);
-
-    m_clickSoundBuffer.loadFromFile("click.wav");
-    m_clickSound.setBuffer(m_clickSoundBuffer);   
-    
-    m_tomSoundBuffer.loadFromFile("tomRunning.wav");
-    m_tomSound.setBuffer(m_tomSoundBuffer);
-    
-    m_jerrySoundBuffer.loadFromFile("click.wav");
-    m_jerrySound.setBuffer(m_jerrySoundBuffer);
-
-    m_catchSoundBuffer.loadFromFile("catch.wav");
-    m_catchSound.setBuffer(m_catchSoundBuffer);
-}
