@@ -12,8 +12,9 @@ void Movable::draw(sf::RenderWindow& window, float passedTime)
 	{
 		m_frameCounter = 0;
 		m_sourceX++;
-	}
-	m_sprite.setTextureRect(sf::IntRect(m_sourceX * P_SIZE, m_direction * P_SIZE, P_SIZE, P_SIZE));//change the why 
+	} 
+	m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
+		((float)P_SIZE / m_sprite.getGlobalBounds().height)));
 	window.draw(m_sprite);
 }
 
@@ -56,7 +57,7 @@ sf::Vector2f Movable::getNextDirection(Direction direction)
 
 void Movable::SetPosition(sf::Vector2f newPosition)
 {
-	m_sprite.setPosition(getCenter(newPosition));
+	m_sprite.setPosition(newPosition);
 }
 
 bool Movable::isCentered(sf::Vector2f position, sf::Vector2f centerPosition)

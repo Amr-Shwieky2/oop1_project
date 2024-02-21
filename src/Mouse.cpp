@@ -34,7 +34,7 @@ void Mouse::move(float passedTime, sf::Vector2f boardSize)
 	m_previousPostion = m_sprite.getPosition();
 	float moveDistance = REGULAR_SPEED * passedTime;
 
-	if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
+	//if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
 		m_direction = m_newDirection;
 
 	moveDirection(moveDistance);

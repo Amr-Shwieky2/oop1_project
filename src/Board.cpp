@@ -30,6 +30,7 @@ void Board::drawBoard(sf::RenderWindow &window) {
 			}
 		}
 	}
+	
 }
 
 void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
@@ -57,7 +58,7 @@ void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, con
 
 void Board::setMouse(Mouse& mouse, sf::Vector2f position)
 {
-	mouse.SetPosition(position);
+	mouse.SetPosition( position);
 	mouse.setStartPosition(position);
 }
 

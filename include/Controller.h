@@ -44,6 +44,7 @@ private:
 	bool m_information = false;
 	bool m_inGame = false;
 	float m_passedTime;
+	bool first = true;
 
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_levelWindow;

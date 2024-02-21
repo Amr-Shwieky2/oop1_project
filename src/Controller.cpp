@@ -9,13 +9,22 @@ Controller::Controller() {
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, i+1);
         sf::Vector2f boardSize = board.getBoardSize();
-        while (m_window.isOpen() || m_levelWindow.isOpen()) {
-            m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
+        while (m_window.isOpen()) {
+            m_window.clear();
             startTheGame();
             openLevel(boardSize.x, boardSize.y, i + 1, board);
             openInformation();
-            m_window.isOpen() ? handleMainEvents() : handleLevelEvents(board);
-            m_mainPage ? m_window.display() : m_levelWindow.display();
+            handleMainEvents();
+            m_window.display(); 
+        }
+
+        while (m_levelWindow.isOpen())
+        {
+            m_levelWindow.clear(sf::Color(238, 232, 170));
+            handleLevelEvents(board);
+            board.drawBoard(m_levelWindow);
+            m_mouse.draw(m_levelWindow, m_passedTime);
+            m_levelWindow.display();
         }
     }
 }
@@ -46,16 +55,16 @@ void Controller::handleLevelEvents(Board & board) {
             break;
         case sf::Event::KeyReleased:
             if (event.key.code == sf::Keyboard::Left) {
-                // Handle left key release
+                m_mouse.setDirection(event.key.code);
             }
             else if (event.key.code == sf::Keyboard::Right) {
-                // Handle right key release
+                m_mouse.setDirection(event.key.code);
             }
             else if (event.key.code == sf::Keyboard::Up) {
-                // Handle up key release
+                m_mouse.setDirection(event.key.code);
             }
             else if (event.key.code == sf::Keyboard::Down) {
-                // Handle down key release
+                m_mouse.setDirection(event.key.code);
             }
             std::cout << "Level event\n";
             break;
@@ -100,7 +109,7 @@ void Controller::checkCollision(Movable* character, Direction direction, Board &
 
 void Controller::moveDynamic(float passedTime, Board& board)
 {
-    std::vector<std::vector<sf::Vector3i>> Tree;
+    //std::vector<std::vector<sf::Vector3i>> Tree;
 
     m_mouse.move(passedTime, board.getBoardSize());
     //checkCollision(&m_mouse, m_mouse.getDirection(), board);
@@ -129,15 +138,21 @@ void Controller::reternStartingPosition()
 
 void Controller::draw(float passedTime, Board& board)
 {
-    board.drawBoard(m_levelWindow);
-    drawMovable(passedTime, board);
+    /*if (m_mouse.getPosition().x != m_mouse.getPreviousPostion().x ||
+        m_mouse.getPosition().y != m_mouse.getPreviousPostion().y) {*/
+        
+    /*}*/
+    /*else if (first) {
+        drawMovable(passedTime, board);
+        first = false;
+    }*/
 }
 
 void Controller::drawMovable(float passedTime, Board& board)
 {
-    board.setMouse(m_mouse, m_mouse.getPosition());
-    m_mouse.draw(m_levelWindow, passedTime);
 
+       // board.setMouse(m_mouse, m_mouse.getPosition());
+       
 }
 
 
@@ -181,8 +196,15 @@ void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, B
         m_window.close();
         m_levelWindow.create(sf::VideoMode(colSize, rowSize), "Level" + std::to_string(levelNumber));
         m_newGame = false;
+        m_inGame = true;
     }
-     draw(m_passedTime, board);
+    //draw(m_passedTime, board);
+    if (m_inGame) {
+        drawMovable(m_passedTime, board);
+        
+        m_inGame = false;
+    }
+    
 }
 
 void Controller::openInformation() {

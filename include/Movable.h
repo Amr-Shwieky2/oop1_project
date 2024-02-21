@@ -21,6 +21,7 @@ public:
 
 	sf::Vector2f getStartPosition()const;
 	sf::Vector2f getPosition()const;
+	sf::Vector2f getPreviousPostion()const { return m_previousPostion; };
 	void setStartPosition(sf::Vector2f position);
 	Direction getDirection()const;
 	sf::Vector2f getNextDirection(Direction direction);
