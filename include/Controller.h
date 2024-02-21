@@ -3,6 +3,8 @@
 #include "Screens.h"
 #include <thread>
 
+
+
 class Controller
 {
 public:
@@ -27,6 +29,11 @@ private:
 
 
 	int levelsInGame(std::string str);
+
+	void checkCollision(Movable* character, Direction direction, Board& board);
+	void moveDynamic(sf::RenderWindow& window, float passedTime, Board& board);
+
+	void reternStartingPosition();
 
 	bool m_mainPage = true;
 	bool m_newGame = false;

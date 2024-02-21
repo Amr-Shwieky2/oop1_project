@@ -98,6 +98,12 @@ void Board::drawNonMovable(sf::RenderWindow& window)
 	}
 }
 
+bool Board::cheackOutOfMap(sf::Vector2f position)
+{
+	return !(position.x < 0 || position.y < 0 || position.x >= m_board[0].size() ||
+		position.y >= m_board.size());
+}
+
 void Board::openFile()
 {
 	
