@@ -15,6 +15,7 @@ public:
 private:
 	void startTheGame();
 	void handleMainEvents();
+	void skipButton(sf::Event);
 	void handleLevelEvents();
 
 

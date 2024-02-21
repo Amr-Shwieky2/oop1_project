@@ -65,6 +65,11 @@ void Screens::setInformation() {
 	while (std::getline(file, line)) {
 		m_informationTextStr += line + "\n";
 	}
+
+	m_skipTexture.loadFromFile("skip.png");
+	m_skipSprite.setTexture(m_skipTexture);
+	m_skipSprite.setPosition(1200, 40);
+	m_skipSprite.setScale(32 / m_skipSprite.getGlobalBounds().width, 32 / m_skipSprite.getGlobalBounds().height);
 }
 
 void Screens::drawInformation(sf::RenderWindow& window) {
@@ -74,6 +79,7 @@ void Screens::drawInformation(sf::RenderWindow& window) {
 	text.setCharacterSize(36); // Set the character size
 	text.setFillColor(sf::Color::Black); // Set the fill color
 	text.setPosition(20, 20); // Set the position
+	window.draw(m_skipSprite);
 	window.draw(text);
 }
 

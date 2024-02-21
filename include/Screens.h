@@ -55,6 +55,9 @@ private:
 	sf::Texture m_soundOn, m_soundOff;
 	sf::Sprite m_soundOnSprite, m_soundOffSprite;
 
+	sf::Texture m_skipTexture;
+	sf::Sprite m_skipSprite;
+
 	sf::SoundBuffer m_soundBuffer[Sounds];
 	sf::Sound m_sound[Sounds];
 

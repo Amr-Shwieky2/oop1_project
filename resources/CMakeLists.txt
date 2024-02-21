@@ -12,6 +12,7 @@ configure_file ("./icons/Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/soundOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/soundOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/life.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/skip.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 configure_file ("./counter/1.png" ${CMAKE_BINARY_DIR} COPYONLY)

@@ -35,6 +35,33 @@ void Controller::handleMainEvents() {
             }
         }
     }
+    else {
+        if (auto event = sf::Event{}; m_window.pollEvent(event)) {
+            switch (event.type) {
+            case sf::Event::Closed:
+                // Close the window if 'X' button is clicked
+                m_window.close();
+                break;
+            case sf::Event::MouseButtonReleased:
+                std::cout << event.mouseButton.x << " " << event.mouseButton.y;
+                skipButton(event);
+                break;
+            }
+        }
+    }
+}
+
+void Controller::skipButton(sf::Event event) {
+    int x = event.mouseButton.x;
+    int y = event.mouseButton.y;
+
+    if (x >= 1180 && x <= 1220) {
+        if (y >= 30 && y <= 60) {
+            startTheGame();
+            m_information = false;
+            m_mainPage = true;
+        }
+    }
 }
 
 void Controller::handleLevelEvents() {
