@@ -7,7 +7,7 @@ Controller::Controller() {
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
     m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
-        Board board(m_mouse, m_cats, 4);
+        Board board(m_mouse, m_cats, i + 1);
         sf::Vector2f boardSize = board.getBoardSize();
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
@@ -21,8 +21,8 @@ Controller::Controller() {
 }
 
 void Controller::handleMainEvents() {
-    if (auto event = sf::Event{}; m_window.pollEvent(event)) {
-        if (m_mainPage) {
+    if (m_mainPage) {
+        if (auto event = sf::Event{}; m_window.pollEvent(event)) {
             switch (event.type) {
             case sf::Event::Closed:
                 // Close the window if 'X' button is clicked
