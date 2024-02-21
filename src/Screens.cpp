@@ -2,8 +2,10 @@
 
 Screens::Screens() {
 	setOpeningGame();
+	setCounters();
 	setBackground();
-	setSound();
+	setSoundTexture();
+	setSoundBuffers();
 	setInformation();
 }
 
@@ -14,6 +16,19 @@ void Screens::setBackground() {
 	m_backgroundSprite.setTexture(m_backgroundTexture);
 
 }
+
+void Screens::setCounters() {
+	for (size_t i = 0; i < 5; i++) {
+		m_countersTexture[i].loadFromFile(std::to_string(i + 1) + ".png");
+		m_countersSprite[i].setTexture(m_countersTexture[i]);
+
+		// Resize the sprite to 64x64
+		m_countersSprite[i].setScale(64.0f / m_countersTexture[i].getSize().x, 64.0f / m_countersTexture[i].getSize().y);
+		m_countersSprite[i].setPosition(624, 600);
+	}
+}
+
+
 void Screens::setOpeningGame() {
 	m_startTheGame.loadFromFile("startGame.png");
 	m_startTheGameSprite.setTexture(m_startTheGame);
@@ -38,7 +53,7 @@ void Screens::setInformation() {
 	m_exitText = createText("Exit", font, fontSize);
 }
 
-void Screens::setSound() {
+void Screens::setSoundTexture() {
 
 
 	m_soundOn.loadFromFile("soundOn.png");
@@ -59,38 +74,35 @@ void Screens::setSound() {
 	m_soundOffSprite.setPosition(20, 20);
 }
 
-void Screens::drawStarter(sf::RenderWindow& window) const {
-	window.clear();
-	window.draw(m_startTheGameSprite);
-	window.display();
-}
-
 void Screens::OpeningBackground(sf::RenderWindow& window) {
 	float backgroundOpacity = 255;
 	sf::Clock clock;
-	//m_openingSound.play();
+	int spriteIndex = 0; // Variable to keep track of which sprite to draw
+	m_sound[0].play();
 	while (true) {
 		float elapsedTime = clock.getElapsedTime().asSeconds();
-		// If elapsed time is less than 6 seconds, wait
-		if (elapsedTime < 1.0f) {
-			sf::sleep(sf::seconds(0.1f)); // Adjust sleep time as needed
+		drawStarter(window, spriteIndex);
+		// Increment sprite index every second
+		if (elapsedTime >= 1.0f) {
+			spriteIndex++;
+			clock.restart(); // Restart the clock to accurately measure time for the next sprite
 		}
-		else {
-			// Gradually decrease background opacity
-			backgroundOpacity -= 5.0f; // Adjust decrement as needed
-			if (backgroundOpacity < 0) backgroundOpacity = 0;
-
-			// Set the background opacity
-			m_startTheGameSprite.setColor(sf::Color(255, 255, 255, backgroundOpacity));
-		}
-		drawStarter(window);
-		// after 3 secod stop oppening music
-		if (elapsedTime >= 1.0f && backgroundOpacity <= 0) {
+		if (spriteIndex == 5) {
 			std::cout << "Background removed!" << std::endl;
-			// stop usic
 			break;
 		}
 	}
+}
+
+void Screens::drawStarter(sf::RenderWindow& window, int spriteIndex) const {
+	window.clear();
+	// Draw the start sprite
+	window.draw(m_startTheGameSprite);
+	// Draw the current counter sprite
+	if (spriteIndex < 5) {
+		window.draw(m_countersSprite[4 - spriteIndex]);
+	}
+	window.display();
 }
 
 void Screens::drawBackground(sf::RenderWindow& window) {
@@ -108,7 +120,7 @@ void Screens::drawStarterSection(sf::RenderWindow& window) {
 	unsigned int fontSize = 40; // Set the desired font size
 
 	m_newGameText = createText("New Game", font, fontSize);
-	m_tableText = createText("Scores", font, fontSize);
+	m_tableText = createText("Information", font, fontSize);
 	m_exitText = createText("Exit", font, fontSize);
 	// Draw the text objects
 	drawTextInStarter(m_newGameText, window, 1);
@@ -142,12 +154,19 @@ void Screens::drawTextInStarter(sf::Text& text, sf::RenderWindow& window, int i)
 	window.draw(text);
 }
 
-void Screens::drawMap(sf::RenderWindow& window) {
-	//m_board.drawNonMovable(window);
-	//window.draw(m_backgroundSprite);
+void Screens::setSoundBuffers() {
+	std::vector<std::string> sounds = { "opening.wav" , "click.wav",  "tomRunning.wav" , "catch.wav" };
+	for (size_t i = 0; i < Sounds; i++) {
+		m_soundBuffer[i].loadFromFile(sounds.at(i));
+		m_sound[i].setBuffer(m_soundBuffer[i]);
+	}
+
+
+	//m_jerrySoundBuffer.loadFromFile("click.wav");
+	//m_jerrySound.setBuffer(m_jerrySoundBuffer);
+
 }
 
-//
-//void Screens::draw(sf::RenderWindow& window) const {
-//	window.draw(m_backgroundSprite);
-//}
+void Screens::playPauseSound(int i , bool mute) {
+	mute ? m_sound[i].stop() : m_sound[i].play();
+}

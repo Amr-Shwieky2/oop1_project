@@ -41,6 +41,7 @@ void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, con
 	m_file >> m_row >> m_col >> timeInSeconds;
 	m_time = sf::seconds(timeInSeconds);
 	setBoardSize();
+
 	for (size_t i = 0; i < m_row; i++)
 	{
 		m_file.get();
@@ -86,17 +87,17 @@ std::vector<std::vector<std::unique_ptr<NonMovable>>>& Board::getMap()
 	return m_board;
 }
 
-void Board::drawNonMovable(sf::RenderWindow& window)
-{
-	for (size_t i = 0; i < m_board.size(); i++)
-	{
-		for (size_t j = 0; j < m_board[i].size(); j++)
-		{
-			if (m_board[i][j] != nullptr)
-				m_board[i][j]->draw(window, sf::Vector2f(j * P_SIZE, i * P_SIZE));
-		}
-	}
-}
+//void Board::drawNonMovable(sf::RenderWindow& window)
+//{
+//	for (size_t i = 0; i < m_board.size(); i++)
+//	{
+//		for (size_t j = 0; j < m_board[i].size(); j++)
+//		{
+//			if (m_board[i][j] != nullptr)
+//				m_board[i][j]->draw(window, sf::Vector2f(j * P_SIZE, i * P_SIZE));
+//		}
+//	}
+//}
 
 void Board::openFile()
 {
