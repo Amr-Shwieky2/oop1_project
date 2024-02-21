@@ -18,8 +18,6 @@ Controller::Controller() {
             m_window.isOpen() ? handleMainEvents() : handleLevelEvents();
             m_mainPage ? m_window.display() : m_levelWindow.display();
         }
-        ;
-        m_board->readLevel(m_mouse, m_cats, i);
     }
 }
 
@@ -64,8 +62,8 @@ void Controller::handleLevelEvents() {
         }
     }
     static sf::Clock clock;
-    float passedTime = clock.restart().asSeconds();
-    moveDynamic(passedTime);
+    m_passedTime = clock.restart().asSeconds();
+    moveDynamic(m_passedTime);
 }
 
 void Controller::startTheGame() {
@@ -122,11 +120,24 @@ void Controller::moveDynamic(float passedTime)
 
 void Controller::reternStartingPosition()
 {
-    for (size_t i = 0; i < m_cats.size(); i++)
+    for (size_t i = 0; i < m_cats.size(); i++) {
         m_cats[i]->SetPosition(m_cats[i]->getStartPosition());
-
+    }
     m_mouse.SetPosition(m_mouse.getStartPosition());
     m_mouse.setMouseState();
+}
+
+void Controller::draw(float passedTime)
+{
+    m_board->drawBoard(m_levelWindow);
+    drawMovable(passedTime);
+}
+
+void Controller::drawMovable(float passedTime)
+{
+    m_board->setMouse(m_mouse, m_mouse.getPosition());
+    m_mouse.draw(m_levelWindow, passedTime);
+
 }
 
 
@@ -170,8 +181,11 @@ void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber) {
         m_window.close();
         m_levelWindow.create(sf::VideoMode(colSize, rowSize), "Level" + std::to_string(levelNumber));
         m_newGame = false;
+        m_inGame = true;
     }
-    m_board->drawBoard(m_levelWindow);
+    if (m_inGame) {
+        draw(m_passedTime);
+    }
 }
 
 void Controller::openInformation() {

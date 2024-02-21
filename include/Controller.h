@@ -34,12 +34,16 @@ private:
 	void moveDynamic(float passedTime);
 
 	void reternStartingPosition();
+	void draw(float passedTime);
+	void drawMovable(float passedTime);
 
 	bool m_mainPage = true;
 	bool m_newGame = false;
 	bool m_scoreTable = false;
 	bool m_mute = false;
 	bool m_information = false;
+	bool m_inGame = false;
+	float m_passedTime;
 
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_levelWindow;
