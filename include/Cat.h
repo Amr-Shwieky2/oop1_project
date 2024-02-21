@@ -1,11 +1,10 @@
 #pragma once
 #include "Movable.h"
-#include "NonMovable.h"
 
 #include <vector>
 #include <memory>
 
-class Board;
+
 
 class Cat : public Movable
 {

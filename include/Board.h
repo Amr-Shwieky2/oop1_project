@@ -38,6 +38,8 @@ public:
 
 	bool cheackOutOfMap(sf::Vector2f position);
 
+	sf::Time getTime()const;
+
 	//void clear_vector();//??!
 
 private:

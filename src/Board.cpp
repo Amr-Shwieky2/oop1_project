@@ -105,6 +105,11 @@ bool Board::cheackOutOfMap(sf::Vector2f position)
 		position.y >= m_board.size());
 }
 
+sf::Time Board::getTime() const
+{
+	return m_time;
+}
+
 void Board::openFile()
 {
 	

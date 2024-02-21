@@ -19,7 +19,7 @@ private:
 
 	void buttonReleased(sf::Event);
 
-	void openLevel(int, int, unsigned int, Board&);
+	void openLevel(int, int, unsigned int);
 
 	void openInformation();
 
@@ -30,8 +30,8 @@ private:
 
 	int levelsInGame(std::string str);
 
-	void checkCollision(Movable* character, Direction direction, Board& board);
-	void moveDynamic(sf::RenderWindow& window, float passedTime, Board& board);
+	void checkCollision(Movable* character, Direction direction);
+	void moveDynamic(float passedTime);
 
 	void reternStartingPosition();
 
@@ -45,7 +45,7 @@ private:
 	sf::RenderWindow m_levelWindow;
 
     Screens m_screens;
-
+	Board* m_board;
 	Mouse m_mouse;
 	std::vector<std::unique_ptr<Cat>> m_cats;
 };
