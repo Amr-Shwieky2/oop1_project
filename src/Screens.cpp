@@ -25,7 +25,7 @@ void Screens::setCounters() {
 
 		// Resize the sprite to 64x64
 		m_countersSprite[i].setScale(64.0f / m_countersTexture[i].getSize().x, 64.0f / m_countersTexture[i].getSize().y);
-		m_countersSprite[i].setPosition(645, 645);
+		m_countersSprite[i].setPosition(620, 600);
 	}
 }
 
