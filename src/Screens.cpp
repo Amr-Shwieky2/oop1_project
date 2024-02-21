@@ -102,7 +102,7 @@ void Screens::OpeningBackground(sf::RenderWindow& window) {
 	float backgroundOpacity = 255;
 	sf::Clock clock;
 	int spriteIndex = 0; // Variable to keep track of which sprite to draw
-	//m_sound[0].play();
+	m_sound[0].play();
 	while (true) {
 		float elapsedTime = clock.getElapsedTime().asSeconds();
 		drawStarter(window, spriteIndex);
