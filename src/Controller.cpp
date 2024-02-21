@@ -7,22 +7,22 @@ Controller::Controller() {
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
     m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
-        Board board(m_mouse, m_cats, i);
-        m_board = &board;
-        sf::Vector2f boardSize = m_board->getBoardSize();
+        Board board(m_mouse, m_cats, i+1);
+        sf::Vector2f boardSize = board.getBoardSize();
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
             startTheGame();
-            openLevel(boardSize.x, boardSize.y, i + 1);
+            openLevel(boardSize.x, boardSize.y, i + 1, board);
             openInformation();
-            m_window.isOpen() ? handleMainEvents() : handleLevelEvents();
+            m_window.isOpen() ? handleMainEvents() : handleLevelEvents(board);
             m_mainPage ? m_window.display() : m_levelWindow.display();
         }
     }
 }
 
 void Controller::handleMainEvents() {
-    if (auto event = sf::Event{}; m_window.pollEvent(event)) {
+    auto event = sf::Event{};
+    while (m_window.pollEvent(event)) {
         switch (event.type) {
         case sf::Event::Closed:
             // Close the window if 'X' button is clicked
@@ -36,7 +36,7 @@ void Controller::handleMainEvents() {
     }
 }
 
-void Controller::handleLevelEvents() {
+void Controller::handleLevelEvents(Board & board) {
     if (auto event = sf::Event{}; m_levelWindow.pollEvent(event)) {
         switch (event.type) {
         case sf::Event::Closed:
@@ -63,7 +63,7 @@ void Controller::handleLevelEvents() {
     }
     static sf::Clock clock;
     m_passedTime = clock.restart().asSeconds();
-    moveDynamic(m_passedTime);
+    moveDynamic(m_passedTime, board);
 }
 
 void Controller::startTheGame() {
@@ -91,19 +91,19 @@ int Controller::levelsInGame(std::string str) {
     return lineCount;
 }
 
-void Controller::checkCollision(Movable* character, Direction direction)
+void Controller::checkCollision(Movable* character, Direction direction, Board & board)
 {
-    Icon* icon = m_board->getCharacters(character->getNextDirection(direction));
+    Icon* icon = board.getCharacters(character->getNextDirection(direction));
     if (icon != nullptr)
         icon->collide(character);
 }
 
-void Controller::moveDynamic(float passedTime)
+void Controller::moveDynamic(float passedTime, Board& board)
 {
     std::vector<std::vector<sf::Vector3i>> Tree;
 
-    m_mouse.move(passedTime, m_board->getBoardSize());
-    checkCollision(&m_mouse, m_mouse.getDirection());
+    m_mouse.move(passedTime, board.getBoardSize());
+    //checkCollision(&m_mouse, m_mouse.getDirection(), board);
     if (m_mouse.getMouseState()) {
         reternStartingPosition();
     }
@@ -127,15 +127,15 @@ void Controller::reternStartingPosition()
     m_mouse.setMouseState();
 }
 
-void Controller::draw(float passedTime)
+void Controller::draw(float passedTime, Board& board)
 {
-    m_board->drawBoard(m_levelWindow);
-    drawMovable(passedTime);
+    board.drawBoard(m_levelWindow);
+    drawMovable(passedTime, board);
 }
 
-void Controller::drawMovable(float passedTime)
+void Controller::drawMovable(float passedTime, Board& board)
 {
-    m_board->setMouse(m_mouse, m_mouse.getPosition());
+    board.setMouse(m_mouse, m_mouse.getPosition());
     m_mouse.draw(m_levelWindow, passedTime);
 
 }
@@ -176,16 +176,13 @@ void Controller::buttonReleased(sf::Event event) {
 }
 
 
-void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber) {
+void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board & board) {
     if (m_newGame) {
         m_window.close();
         m_levelWindow.create(sf::VideoMode(colSize, rowSize), "Level" + std::to_string(levelNumber));
         m_newGame = false;
-        m_inGame = true;
     }
-    if (m_inGame) {
-        draw(m_passedTime);
-    }
+     draw(m_passedTime, board);
 }
 
 void Controller::openInformation() {

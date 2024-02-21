@@ -14,12 +14,12 @@ public:
 private:
 	void startTheGame();
 	void handleMainEvents();
-	void handleLevelEvents();
+	void handleLevelEvents(Board& board);
 
 
 	void buttonReleased(sf::Event);
 
-	void openLevel(int, int, unsigned int);
+	void openLevel(int, int, unsigned int, Board& board);
 
 	void openInformation();
 
@@ -30,12 +30,12 @@ private:
 
 	int levelsInGame(std::string str);
 
-	void checkCollision(Movable* character, Direction direction);
-	void moveDynamic(float passedTime);
+	void checkCollision(Movable* character, Direction direction, Board& board);
+	void moveDynamic(float passedTime, Board& board);
 
 	void reternStartingPosition();
-	void draw(float passedTime);
-	void drawMovable(float passedTime);
+	void draw(float passedTime, Board& board);
+	void drawMovable(float passedTime, Board& board);
 
 	bool m_mainPage = true;
 	bool m_newGame = false;
@@ -49,7 +49,7 @@ private:
 	sf::RenderWindow m_levelWindow;
 
     Screens m_screens;
-	Board* m_board;
+	
 	Mouse m_mouse;
 	std::vector<std::unique_ptr<Cat>> m_cats;
 };
