@@ -7,6 +7,11 @@ Cat::Cat() : m_doorCollision(false), m_wallCollision(false), m_moving(false) {
     m_direction = RIGHT;
 }
 
+//std::vector<std::vector<sf::Vector3i>> Cat::getBfsTree(sf::Vector2i start, const std::vector<std::vector<std::unique_ptr<NonMovable>>>& NonMovableIcon, Board& board)
+//{
+//    return std::vector<std::vector<sf::Vector3i>>();
+//}
+
 void Cat::collide(Wall* object) {
 	m_sprite.setPosition(getCenter(m_previousPostion));
 	m_wallCollision = true;

@@ -1,4 +1,6 @@
 #include "Controller.h"
+#include <memory>
+
 
 Controller::Controller() {
     int count_levels = levelsInGame("Levels.txt");
@@ -84,6 +86,45 @@ int Controller::levelsInGame(std::string str) {
     file.close();
     return lineCount;
 }
+
+void Controller::checkCollision(Movable* character, Direction direction, Board& board)
+{
+    Icon* icon = board.getCharacters(character->getNextDirection(direction));
+    if (icon != nullptr)
+        icon->collide(character);
+}
+
+void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& board)
+{
+    std::vector<std::vector<sf::Vector3i>> Tree;
+
+    m_mouse.move(passedTime, board.getBoardSize());
+    checkCollision(&m_mouse, m_mouse.getDirection(), board);
+    if (m_mouse.getMouseState()) {
+        reternStartingPosition();
+    }
+
+    /*for (size_t i = 0; i < m_cats.size(); i++) {
+        std::vector<std::vector<sf::Vector3i>> Tree = m_cats[i]->
+            getBfsTree(sf::Vector2i((int)(m_mouse.getPosition().x / P_SIZE),
+            (int)(m_mouse.getPosition().y / P_SIZE)), board.getMap(), board);
+
+        m_cats[i]->move(passedTime, board.getBoardSize(), Tree);
+
+    }*/
+}
+
+void Controller::reternStartingPosition()
+{
+    for (size_t i = 0; i < m_cats.size(); i++)
+        m_cats[i]->SetPosition(m_cats[i]->getStartPosition());
+
+    m_mouse.SetPosition(m_mouse.getStartPosition());
+    m_mouse.setMouseState();
+}
+
+
+//===============================================================================
 
 void Controller::buttonReleased(sf::Event event) {
     int x = event.mouseButton.x;

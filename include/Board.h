@@ -35,7 +35,9 @@ public:
 	NonMovable* getCharacters(sf::Vector2f position);
 	std::vector<std::vector<std::unique_ptr<NonMovable>>> &getMap();
 
-	//void drawNonMovable(sf::RenderWindow& window);
+
+	bool cheackOutOfMap(sf::Vector2f position);
+
 	//void clear_vector();//??!
 
 private:
