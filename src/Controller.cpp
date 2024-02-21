@@ -21,7 +21,7 @@ Controller::Controller() {
 }
 
 void Controller::handleMainEvents() {
-    if (m_mainPage) {
+    if (m_mainPage && !m_information) {
         if (auto event = sf::Event{}; m_window.pollEvent(event)) {
             switch (event.type) {
             case sf::Event::Closed:
