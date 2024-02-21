@@ -7,7 +7,7 @@ Controller::Controller() {
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
     m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
-        Board board(m_mouse, m_cats, i + 1);
+        Board board(m_mouse, m_cats, 4);
         sf::Vector2f boardSize = board.getBoardSize();
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
@@ -22,15 +22,17 @@ Controller::Controller() {
 
 void Controller::handleMainEvents() {
     if (auto event = sf::Event{}; m_window.pollEvent(event)) {
-        switch (event.type) {
-        case sf::Event::Closed:
-            // Close the window if 'X' button is clicked
-            m_window.close();
-            break;
-        case sf::Event::MouseButtonReleased:
-            std::cout << event.mouseButton.x << " " << event.mouseButton.y;
-            buttonReleased(event);
-            break;
+        if (m_mainPage) {
+            switch (event.type) {
+            case sf::Event::Closed:
+                // Close the window if 'X' button is clicked
+                m_window.close();
+                break;
+            case sf::Event::MouseButtonReleased:
+                std::cout << event.mouseButton.x << " " << event.mouseButton.y;
+                buttonReleased(event);
+                break;
+            }
         }
     }
 }
@@ -154,23 +156,23 @@ void Controller::buttonReleased(sf::Event event) {
         m_mute = !m_mute;
         m_screens.drawSoundButton(m_window, m_mute);
         m_screens.playPauseSound(0, m_mute);
-        /*m_mute ? m_openingSound.stop() : m_openingSound.play();*/
     }
 }
-
 
 void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board& board) {
     if (m_newGame) {
         m_window.close();
-        m_levelWindow.create(sf::VideoMode(colSize, rowSize), "Level" + std::to_string(levelNumber));
+        m_levelWindow.create(sf::VideoMode(colSize, rowSize + P_SIZE * 1.5), "Level" + std::to_string(levelNumber));
         m_newGame = false;
     }
     board.drawBoard(m_levelWindow);
+    m_player.draw(m_levelWindow, 3, 0, levelNumber, 5 ,board.getBoardSize(), m_screens.getFont());
 }
 
 void Controller::openInformation() {
     if (m_information && m_mainPage) {
         m_screens.drawBackground(m_window);
+        m_screens.drawInformation(m_window);
     }
 }
 

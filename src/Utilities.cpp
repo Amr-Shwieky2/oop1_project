@@ -44,6 +44,7 @@ std::vector<std::string> Utilities::getLevels() {
 sf::Texture* Utilities::getCharactersTexture(size_t shape) {
 	return &m_CharactersTexture[shape];
 }
+
 //sf::Texture* Utilities::getScreen(size_t screen)
 //{
 //	return &m_Screeen[screen];

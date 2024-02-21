@@ -15,10 +15,11 @@ public:
 	void drawBackground(sf::RenderWindow&);
 	void drawStarterSection(sf::RenderWindow&);
 	void drawSoundButton(sf::RenderWindow&, bool);
+	void drawInformation(sf::RenderWindow&);
 	void playPauseSound(int, bool);
 	void OpeningBackground(sf::RenderWindow&);
 
-
+	sf::Font getFont() const;
 
 
 private:
@@ -31,6 +32,7 @@ private:
 	void setBackground();
 	void setCounters();
 	void setOpeningGame();
+	void setMenu();
 	void setInformation();
 	void setSoundTexture();
 	void setSoundBuffers();
@@ -47,10 +49,15 @@ private:
 
 	sf::Text m_newGameText, m_tableText, m_exitText;
 
+	std::string m_informationTextStr;
+	sf::Text m_informationText;
+
 	sf::Texture m_soundOn, m_soundOff;
 	sf::Sprite m_soundOnSprite, m_soundOffSprite;
 
 	sf::SoundBuffer m_soundBuffer[Sounds];
 	sf::Sound m_sound[Sounds];
+
+	sf::Font m_font;
 };
 

@@ -6,6 +6,7 @@ Screens::Screens() {
 	setBackground();
 	setSoundTexture();
 	setSoundBuffers();
+	setMenu();
 	setInformation();
 }
 
@@ -24,7 +25,7 @@ void Screens::setCounters() {
 
 		// Resize the sprite to 64x64
 		m_countersSprite[i].setScale(64.0f / m_countersTexture[i].getSize().x, 64.0f / m_countersTexture[i].getSize().y);
-		m_countersSprite[i].setPosition(624, 600);
+		m_countersSprite[i].setPosition(645, 645);
 	}
 }
 
@@ -38,19 +39,42 @@ void Screens::setOpeningGame() {
 	m_startTheGameSprite.setPosition(640, 350);
 }
 
-void Screens::setInformation() {
-	sf::Font font;
-	font.loadFromFile("sectionFont.ttf");
-	if (!font.loadFromFile("sectionFont.ttf")) { // Load your desired font file
+void Screens::setMenu() {
+	m_font.loadFromFile("sectionFont.ttf");
+	if (!m_font.loadFromFile("sectionFont.ttf")) { // Load your desired font file
 		std::cerr << "Failed to load font." << std::endl;
 		return;
 	}
 
 	unsigned int fontSize = 40; // Set the desired font size
 
-	m_newGameText = createText("New Game", font, fontSize);
-	m_tableText = createText("Scores", font, fontSize);
-	m_exitText = createText("Exit", font, fontSize);
+	m_newGameText = createText("New Game", m_font, fontSize);
+	m_tableText = createText("Scores", m_font, fontSize);
+	m_exitText = createText("Exit", m_font, fontSize);
+}
+
+void Screens::setInformation() {
+	std::ifstream file("information.txt");
+	if (!file.is_open()) {
+		std::cerr << "Cannot open Information file\n";
+		exit (EXIT_FAILURE);
+	}
+
+	// Read the content of the file into a string
+	std::string line;
+	while (std::getline(file, line)) {
+		m_informationTextStr += line + "\n";
+	}
+}
+
+void Screens::drawInformation(sf::RenderWindow& window) {
+	sf::Text text;
+	text.setFont(m_font); // Set the font
+	text.setString(m_informationTextStr); // Set the text
+	text.setCharacterSize(36); // Set the character size
+	text.setFillColor(sf::Color::Black); // Set the fill color
+	text.setPosition(20, 20); // Set the position
+	window.draw(text);
 }
 
 void Screens::setSoundTexture() {
@@ -78,7 +102,7 @@ void Screens::OpeningBackground(sf::RenderWindow& window) {
 	float backgroundOpacity = 255;
 	sf::Clock clock;
 	int spriteIndex = 0; // Variable to keep track of which sprite to draw
-	m_sound[0].play();
+	//m_sound[0].play();
 	while (true) {
 		float elapsedTime = clock.getElapsedTime().asSeconds();
 		drawStarter(window, spriteIndex);
@@ -92,6 +116,10 @@ void Screens::OpeningBackground(sf::RenderWindow& window) {
 			break;
 		}
 	}
+}
+
+sf::Font Screens::getFont() const {
+	return m_font;
 }
 
 void Screens::drawStarter(sf::RenderWindow& window, int spriteIndex) const {
