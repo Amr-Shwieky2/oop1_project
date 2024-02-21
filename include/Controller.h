@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Screens.h"
+#include "PlayerStatus.h"
 #include <thread>
 
 
@@ -48,4 +49,6 @@ private:
 
 	Mouse m_mouse;
 	std::vector<std::unique_ptr<Cat>> m_cats;
+
+	PlayerStatus m_player;
 };

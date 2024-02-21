@@ -1,4 +1,7 @@
-﻿configure_file ("./icons/Names_images.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+﻿configure_file ("information.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+
+
+configure_file ("./icons/Names_images.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Cat.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Cheese.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Door.png" ${CMAKE_BINARY_DIR} COPYONLY)
@@ -8,6 +11,7 @@ configure_file ("./icons/Mouse.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/soundOn.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/soundOff.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/life.png" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 configure_file ("./counter/1.png" ${CMAKE_BINARY_DIR} COPYONLY)
