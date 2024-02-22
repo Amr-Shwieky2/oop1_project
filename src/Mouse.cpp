@@ -46,6 +46,8 @@ void Mouse::move(float passedTime, sf::Vector2f boardSize)
 
 
 
+
+
 bool Mouse::getMouseState() const
 {
 	return m_isArrested;

@@ -39,6 +39,8 @@ Direction SmartCat::getBfsMove(const sf::Vector2i& start, const sf::Vector2i& de
 
 	if (start.y < destination.y)
 		return DOWN;
+
+	return UP;
 }
 
 //// Function to perform Breadth-First Search (BFS) traversal on a 2D grid and return the BFS tree

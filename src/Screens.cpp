@@ -105,7 +105,7 @@ void Screens::setSoundTexture() {
 }
 
 void Screens::OpeningBackground(sf::RenderWindow& window) {
-	float backgroundOpacity = 255;
+	//float backgroundOpacity = 255;
 	sf::Clock clock;
 	int spriteIndex = 0; // Variable to keep track of which sprite to draw
 	m_sound[0].play();
@@ -184,7 +184,7 @@ sf::Text Screens::createText(const std::string& str,const sf::Font& font, unsign
 void Screens::drawTextInStarter(sf::Text& text, sf::RenderWindow& window, int i) {
 	sf::Vector2u windowSize = window.getSize();
 	float xPos = (windowSize.x - text.getLocalBounds().width) / 2;
-	text.setPosition(xPos,100 +(120 * i) );
+	text.setPosition(xPos,100 + float(120 * i) );
 	window.draw(text);
 }
 

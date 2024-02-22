@@ -7,6 +7,8 @@ class Mouse : public Movable
 {
 public:
 	Mouse();
+
+	
 	
 	void setDirection(sf::Keyboard::Key direction);
 	void move(float passedTime, sf::Vector2f boardSize);
