@@ -25,6 +25,7 @@ enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
 class Icon {
 public:
 	Icon() {};
+	virtual ~Icon(){};
 
 	virtual void collide(Icon* object)	=	0;
 	virtual void collide(Mouse* object)	=	0;
@@ -40,6 +41,6 @@ public:
 protected:
 
 	sf::Sprite m_sprite;
-	Characters m_Character; //?
+	//Characters m_Character; //?
 };
 

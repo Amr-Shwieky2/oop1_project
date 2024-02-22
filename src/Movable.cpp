@@ -52,6 +52,7 @@ sf::Vector2f Movable::getNextDirection(Direction direction)
 	case LEFT:
 		return sf::Vector2f(nextPosition.x - (P_SIZE / 2), nextPosition.y);
 	}
+	return nextPosition;
 }
 
 void Movable::SetPosition(sf::Vector2f newPosition)
