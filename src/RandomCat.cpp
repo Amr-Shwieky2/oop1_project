@@ -2,6 +2,7 @@
 
 void RandomCat::move(float passedTime, sf::Vector2f boardSize, const std::vector<std::vector<sf::Vector3i>>& Tree)
 {
+    //Tree.size();
     m_previousPostion = m_sprite.getPosition();
     float moveDistance = CAT_SPEED * passedTime;
     int randomSwitch = (rand() % 10);

@@ -9,7 +9,7 @@ public:
 		const std::vector<std::vector<std::unique_ptr<NonMovable>>>& NonMovableIcon,
 		Board& board);*/
 
-	void move(float passedTime, sf::Vector2f boardSize, const std::vector<std::vector<sf::Vector3i>>& Tree);
+	void move(float passedTime, sf::Vector2f boardSize, const std::vector<std::vector<sf::Vector3i>>& Tree) override;
 
 private:
 	Direction getBfsMove(const sf::Vector2i& start,

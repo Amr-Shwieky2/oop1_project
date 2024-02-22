@@ -13,9 +13,6 @@ class Movable : public Icon
 {
 public:
 	Movable();
-	
-
-	virtual void move(sf::Clock& clock, sf::Vector2f boardSize) {} //?????
 
 	void draw(sf::RenderWindow& window, float passedTime);//!!
 
