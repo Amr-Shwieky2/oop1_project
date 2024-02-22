@@ -43,7 +43,7 @@ void Screens::setMenu() {
 	m_font.loadFromFile("sectionFont.ttf");
 	if (!m_font.loadFromFile("sectionFont.ttf")) { // Load your desired font file
 		std::cerr << "Failed to load font." << std::endl;
-		return;
+		exit(EXIT_FAILURE);
 	}
 
 	unsigned int fontSize = 40; // Set the desired font size
