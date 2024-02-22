@@ -35,7 +35,7 @@ private:
 	void checkCollision(Movable* character, Direction direction, Board& board);
 	void moveDynamic(sf::RenderWindow& window, float passedTime, Board& board);
 
-	void reternStartingPosition();
+	void returnStartingPosition();
 
 	bool m_mainPage = true;
 	bool m_newGame = false;
@@ -52,4 +52,6 @@ private:
 	std::vector<std::unique_ptr<Cat>> m_cats;
 
 	PlayerStatus m_player;
+
+	int m_countCheese;
 };

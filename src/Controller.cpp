@@ -8,8 +8,9 @@ Controller::Controller() {
     m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, int(i + 1));
+        m_countCheese = board.getCheeseCounter();
         sf::Vector2f boardSize = board.getBoardSize();
-        while (m_window.isOpen() || m_levelWindow.isOpen()) {
+        while (m_window.isOpen() || m_levelWindow.isOpen()) { //&& m_countCheese < 50) {
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
             startTheGame();
             openLevel(int(boardSize.x), int(boardSize.y), int(i + 1), board);
@@ -130,7 +131,7 @@ void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& 
     m_mouse.move(passedTime, board.getBoardSize());
     checkCollision(&m_mouse, m_mouse.getDirection(), board);
     if (m_mouse.getMouseState()) {
-        reternStartingPosition();
+        returnStartingPosition();
     }
 
     /*for (size_t i = 0; i < m_cats.size(); i++) {
@@ -143,7 +144,7 @@ void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& 
     }*/
 }
 
-void Controller::reternStartingPosition()
+void Controller::returnStartingPosition()
 {
     for (size_t i = 0; i < m_cats.size(); i++)
         m_cats[i]->SetPosition(m_cats[i]->getStartPosition());
@@ -191,11 +192,12 @@ void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, B
         m_window.close();
         m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(colSize), static_cast<unsigned int>(rowSize + P_SIZE * 1.5)), "Level" + std::to_string(levelNumber));
 
-
         m_newGame = false;
     }
-    board.drawBoard(m_levelWindow);
-    m_player.draw(m_levelWindow, 3, 0, levelNumber, 5 ,board.getBoardSize(), m_screens.getFont());
+    if (m_levelWindow.isOpen()) {
+        board.drawBoard(m_levelWindow);
+        m_player.draw(m_levelWindow, 3, 0, levelNumber, 5, board.getBoardSize(), m_screens.getFont());
+    }
 }
 
 void Controller::openInformation() {

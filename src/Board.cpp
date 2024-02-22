@@ -9,7 +9,7 @@
 #include "RandomCat.h"
 
 Board::Board(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
-	: m_row(0), m_col(0), m_numberOfLevel(0), m_numberOfCats(0)
+	: m_row(0), m_col(0), m_numberOfLevel(0), m_numberOfCats(0), m_numberOfCheese(0)
 {
 	readLevel(mouse, cats, numberOfLevel);
 }
@@ -75,6 +75,10 @@ void Board::setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f positio
 	cats[catSize]->setStartPosition(position);
 }
 
+int Board::getCheeseCounter() const {
+	return m_numberOfCheese;
+}
+
 NonMovable* Board::getCharacters(sf::Vector2f position)
 {
 	int row = static_cast<int>(position.y / P_SIZE);
@@ -89,17 +93,6 @@ std::vector<std::vector<std::unique_ptr<NonMovable>>>& Board::getMap()
 	return m_board;
 }
 
-//void Board::drawNonMovable(sf::RenderWindow& window)
-//{
-//	for (size_t i = 0; i < m_board.size(); i++)
-//	{
-//		for (size_t j = 0; j < m_board[i].size(); j++)
-//		{
-//			if (m_board[i][j] != nullptr)
-//				m_board[i][j]->draw(window, sf::Vector2f(j * P_SIZE, i * P_SIZE));
-//		}
-//	}
-//}
 
 bool Board::cheackOutOfMap(sf::Vector2f position)
 {
@@ -139,6 +132,7 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 		break;
 	case CHEESE_CH:
 		m_board[row][col] = std::make_unique <Cheese>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
+		m_numberOfCheese++;
 		break;
 	case KEY_CH:
 		m_board[row][col] = std::make_unique <Key>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));

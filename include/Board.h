@@ -31,6 +31,7 @@ public:
 	void setMouse(Mouse& mouse, sf::Vector2f position);
 	void setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f position);
 
+	int getCheeseCounter() const;
 
 	NonMovable* getCharacters(sf::Vector2f position);
 	std::vector<std::vector<std::unique_ptr<NonMovable>>> &getMap();
@@ -56,6 +57,7 @@ private:
 
 	int m_numberOfLevel;
 	int m_numberOfCats;
+	int m_numberOfCheese;
 };
 
 
