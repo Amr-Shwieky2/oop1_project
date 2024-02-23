@@ -8,6 +8,7 @@ Screens::Screens() {
 	setSoundBuffers();
 	setMenu();
 	setInformation();
+	setStory();
 }
 
 void Screens::setBackground() {
@@ -16,6 +17,17 @@ void Screens::setBackground() {
 		(float)(22 * P_SIZE) / m_backgroundTexture.getSize().y);
 	m_backgroundSprite.setTexture(m_backgroundTexture);
 
+}
+
+void Screens::setLevelsOpenings(float colSize, float rowSize, unsigned int numberOfLevel){
+	sf::Texture text;
+	text.loadFromFile("new-level" + std::to_string((numberOfLevel % 5) + 1) + ".png");
+	m_levelsBackgroundsTexture.push_back(text);
+
+	sf::Sprite sprite;
+	sprite.setScale(colSize, rowSize);
+	sprite.setTexture(text); // Set the texture for the sprite
+	m_levelsBackgroundsSprite.push_back(sprite);
 }
 
 void Screens::setCounters() {
@@ -83,9 +95,50 @@ void Screens::drawInformation(sf::RenderWindow& window) {
 	window.draw(text);
 }
 
+void Screens::drawStory(sf::RenderWindow& window, unsigned int i, float interpolation, int animationIndex) {
+	if (interpolation >= 1.0f) { 	// Calculate interpolation factor
+		interpolation = 1.0f;
+	}
+
+	sf::Uint8 alpha = static_cast<sf::Uint8>(255 * interpolation);
+	float rotation = 360.0f * interpolation; // Rotate 360 degrees
+
+	switch (animationIndex) {
+	case 0: // Animation 1: Change opacity
+		m_storySprite[i].setColor(sf::Color(255, 255, 255, alpha));
+		break;
+	case 1: // Animation 2: Rotate
+		m_storySprite[i].setRotation(rotation);
+		break;
+	default: // Default to animation 1
+		m_storySprite[i].setColor(sf::Color(255, 255, 255, alpha));
+		break;
+	}
+	window.draw(m_storySprite[i]);
+}
+
+void Screens::drawLevelOpenning(sf::RenderWindow& window, unsigned int openingNum) {
+	sf::Clock clock;
+	int seconds = 0;
+	m_sound[4].play();
+	while (true) {
+		float elapsedTime = clock.getElapsedTime().asSeconds();
+		window.clear();
+		window.draw(m_levelsBackgroundsSprite.at(openingNum - 1));
+		window.display();
+		// Increment sprite index every second
+		if (elapsedTime >= 1.0f) {
+			seconds++;
+			clock.restart(); // Restart the clock to accurately measure time for the next sprite
+		}
+		if (seconds == 5) {
+			break;
+		}
+	}
+}
+
+
 void Screens::setSoundTexture() {
-
-
 	m_soundOn.loadFromFile("soundOn.png");
 	m_soundOnSprite.setTexture(m_soundOn);
 	m_soundOff.loadFromFile("soundOff.png");
@@ -105,7 +158,6 @@ void Screens::setSoundTexture() {
 }
 
 void Screens::OpeningBackground(sf::RenderWindow& window) {
-	//float backgroundOpacity = 255;
 	sf::Clock clock;
 	int spriteIndex = 0; // Variable to keep track of which sprite to draw
 	m_sound[0].play();
@@ -189,16 +241,20 @@ void Screens::drawTextInStarter(sf::Text& text, sf::RenderWindow& window, int i)
 }
 
 void Screens::setSoundBuffers() {
-	std::vector<std::string> sounds = { "opening.wav" , "click.wav",  "tomRunning.wav" , "catch.wav" };
-	for (size_t i = 0; i < Sounds; i++) {
+	std::vector<std::string> sounds = { "opening.wav" , "click.wav",  "tomRunning.wav" , "catch.wav" , "tom-lose.wav"};
+	for (size_t i = 0; i < SOUNDS; i++) {
 		m_soundBuffer[i].loadFromFile(sounds.at(i));
 		m_sound[i].setBuffer(m_soundBuffer[i]);
 	}
+}
 
-
-	//m_jerrySoundBuffer.loadFromFile("click.wav");
-	//m_jerrySound.setBuffer(m_jerrySoundBuffer);
-
+void Screens::setStory() {
+	for (size_t i = 0; i < STORY_SCREENS; i++) {
+		m_storyTexture[i].loadFromFile("story" + std::to_string(i + 1) + ".png");
+		m_storySprite[i].setScale((float)(40 * P_SIZE) / m_storyTexture[i].getSize().x,
+			(float)(22 * P_SIZE) / m_storyTexture[i].getSize().y);
+		m_storySprite[i].setTexture(m_storyTexture[i]);
+	}
 }
 
 void Screens::playPauseSound(int i , bool mute) {

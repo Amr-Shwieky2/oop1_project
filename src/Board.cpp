@@ -100,9 +100,7 @@ bool Board::cheackOutOfMap(sf::Vector2f position)
 		position.y >= m_board.size());
 }
 
-void Board::openFile()
-{
-	
+void Board::openFile() {
 	std::string file = "Level" + std::to_string(m_numberOfLevel) + ".txt";
 	m_file.open(file);
 	if (!m_file.is_open())

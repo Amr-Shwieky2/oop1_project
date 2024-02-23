@@ -18,10 +18,13 @@ private:
 	void skipButton(sf::Event);
 	void handleLevelEvents();
 
+	bool levelEnded(const Board& board, unsigned int levelNum);
 
 	void buttonReleased(sf::Event);
 
 	void openLevel(int, int, unsigned int, Board&);
+
+	void gameStory();
 
 	void openInformation();
 
@@ -42,6 +45,8 @@ private:
 	bool m_scoreTable = false;
 	bool m_mute = false;
 	bool m_information = false;
+	
+	int m_newGamePresses = 0;
 
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_levelWindow;

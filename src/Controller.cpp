@@ -8,62 +8,35 @@ Controller::Controller() {
     m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, int(i + 1));
-        m_countCheese = board.getCheeseCounter();
         sf::Vector2f boardSize = board.getBoardSize();
-        while (m_window.isOpen() || m_levelWindow.isOpen()) { //&& m_countCheese < 50) {
+        m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
+        while (m_window.isOpen() || m_levelWindow.isOpen()) {
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
             startTheGame();
             openLevel(int(boardSize.x), int(boardSize.y), int(i + 1), board);
             openInformation();
             m_window.isOpen() ? handleMainEvents() : handleLevelEvents();
+            if (levelEnded(board, i)) break; // ????
             m_mainPage ? m_window.display() : m_levelWindow.display();
         }
     }
 }
 
 void Controller::handleMainEvents() {
-    if (m_mainPage && !m_information) {
-        if (auto event = sf::Event{}; m_window.pollEvent(event)) {
-            switch (event.type) {
-            case sf::Event::Closed:
-                // Close the window if 'X' button is clicked
-                m_window.close();
-                break;
-            case sf::Event::MouseButtonReleased:
-                std::cout << event.mouseButton.x << " " << event.mouseButton.y;
-                buttonReleased(event);
-                break;
-            }
-        }
-    }
-    else {
-        if (auto event = sf::Event{}; m_window.pollEvent(event)) {
-            switch (event.type) {
-            case sf::Event::Closed:
-                // Close the window if 'X' button is clicked
-                m_window.close();
-                break;
-            case sf::Event::MouseButtonReleased:
-                std::cout << event.mouseButton.x << " " << event.mouseButton.y;
-                skipButton(event);
-                break;
-            }
+    if (auto event = sf::Event{}; m_window.pollEvent(event)) {
+        switch (event.type) {
+        case sf::Event::Closed:
+            // Close the window if 'X' button is clicked
+            m_window.close();
+            break;
+        case sf::Event::MouseButtonReleased:
+            //std::cout << event.mouseButton.x << " " << event.mouseButton.y;
+            (m_mainPage && !m_information) ? buttonReleased(event) : skipButton(event);
+            break;
         }
     }
 }
 
-void Controller::skipButton(sf::Event event) {
-    int x = event.mouseButton.x;
-    int y = event.mouseButton.y;
-
-    if (x >= 1180 && x <= 1220) {
-        if (y >= 30 && y <= 60) {
-            startTheGame();
-            m_information = false;
-            m_mainPage = true;
-        }
-    }
-}
 
 void Controller::handleLevelEvents() {
     if (auto event = sf::Event{}; m_levelWindow.pollEvent(event)) {
@@ -92,6 +65,18 @@ void Controller::handleLevelEvents() {
     }
 }
 
+bool Controller::levelEnded(const Board& board, unsigned int levelNum) {
+    if (m_levelWindow.isOpen() && m_countCheese == board.getCheeseCounter()) {
+        m_levelWindow.clear();
+        m_screens.drawLevelOpenning(m_levelWindow, levelNum + 1); /// ??????????
+        m_levelWindow.display();
+        m_newGame = true;
+        m_mainPage = false;
+        return true;
+    }
+    return false;
+}
+
 void Controller::startTheGame() {
     if (m_window.isOpen() && m_mainPage && !m_information) {
         m_screens.drawBackground(m_window);
@@ -99,6 +84,7 @@ void Controller::startTheGame() {
         m_screens.drawSoundButton(m_window, m_mute);
     }
 }
+
 
 int Controller::levelsInGame(std::string str) {
     std::ifstream file(str);
@@ -117,44 +103,20 @@ int Controller::levelsInGame(std::string str) {
     return lineCount;
 }
 
-void Controller::checkCollision(Movable* character, Direction direction, Board& board)
-{
-    Icon* icon = board.getCharacters(character->getNextDirection(direction));
-    if (icon != nullptr)
-        icon->collide(character);
-}
 
-void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& board)
-{
-    std::vector<std::vector<sf::Vector3i>> Tree;
+void Controller::skipButton(sf::Event event) {
+    int x = event.mouseButton.x;
+    int y = event.mouseButton.y;
 
-    m_mouse.move(passedTime, board.getBoardSize());
-    checkCollision(&m_mouse, m_mouse.getDirection(), board);
-    if (m_mouse.getMouseState()) {
-        returnStartingPosition();
+    if (x >= 1180 && x <= 1220) {
+        if (y >= 30 && y <= 60) {
+            m_screens.playPauseSound(1, false); // play click
+            startTheGame();
+            m_information = false;
+            m_mainPage = true;
+        }
     }
-
-    /*for (size_t i = 0; i < m_cats.size(); i++) {
-        std::vector<std::vector<sf::Vector3i>> Tree = m_cats[i]->
-            getBfsTree(sf::Vector2i((int)(m_mouse.getPosition().x / P_SIZE),
-            (int)(m_mouse.getPosition().y / P_SIZE)), board.getMap(), board);
-
-        m_cats[i]->move(passedTime, board.getBoardSize(), Tree);
-
-    }*/
 }
-
-void Controller::returnStartingPosition()
-{
-    for (size_t i = 0; i < m_cats.size(); i++)
-        m_cats[i]->SetPosition(m_cats[i]->getStartPosition());
-
-    m_mouse.SetPosition(m_mouse.getStartPosition());
-    m_mouse.setMouseState();
-}
-
-
-//===============================================================================
 
 void Controller::buttonReleased(sf::Event event) {
     int x = event.mouseButton.x;
@@ -165,6 +127,7 @@ void Controller::buttonReleased(sf::Event event) {
         m_screens.playPauseSound(1, false); // play click
         m_mainPage = false;
         m_newGame = true;
+        m_newGamePresses++;
     }
     else if (i == 2 && x < 740 && x > 540) {
         m_screens.playPauseSound(1, false); // play click
@@ -189,15 +152,37 @@ void Controller::buttonReleased(sf::Event event) {
 
 void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board& board) {
     if (m_newGame) {
+        gameStory();
         m_window.close();
-        m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(colSize), static_cast<unsigned int>(rowSize + P_SIZE * 1.5)), "Level" + std::to_string(levelNumber));
-
+        m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(colSize), static_cast<unsigned int>(rowSize + P_SIZE * 3)), "Level" + std::to_string(levelNumber));
         m_newGame = false;
     }
     if (m_levelWindow.isOpen()) {
         board.drawBoard(m_levelWindow);
         m_player.draw(m_levelWindow, 3, 0, levelNumber, 5, board.getBoardSize(), m_screens.getFont());
     }
+}
+
+void Controller::gameStory() {
+    size_t i = 0;
+    float transitionDuration = 0.5f; // Transition duration in seconds
+    sf::Clock transitionClock;
+
+    while (m_window.isOpen() && i != STORY_SCREENS && m_newGamePresses == 1) {
+        m_window.clear();
+        if (auto event = sf::Event{}; m_window.pollEvent(event)) {
+            if (event.type == sf::Event::MouseButtonReleased) {
+                m_screens.playPauseSound(1, false);
+                i++; // Move to the next screen after transition
+                transitionClock.restart();
+            }
+        }
+        float interpolation = transitionClock.getElapsedTime().asSeconds() / transitionDuration;
+        // Draw the current story screen
+        m_screens.drawStory(m_window, i, interpolation, i % 2); 
+        m_window.display();
+    }
+    m_newGamePresses++; // to valid not to enter again
 }
 
 void Controller::openInformation() {
@@ -232,3 +217,29 @@ int Controller::checkButtons(int val) {
     return j;
 }
 
+void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& board)
+{
+    std::vector<std::vector<sf::Vector3i>> Tree;
+
+    m_mouse.move(passedTime, board.getBoardSize());
+    checkCollision(&m_mouse, m_mouse.getDirection(), board);
+    if (m_mouse.getMouseState()) {
+        returnStartingPosition();
+    }
+}
+
+void Controller::returnStartingPosition()
+{
+    for (size_t i = 0; i < m_cats.size(); i++)
+        m_cats[i]->SetPosition(m_cats[i]->getStartPosition());
+
+    m_mouse.SetPosition(m_mouse.getStartPosition());
+    m_mouse.setMouseState();
+}
+
+void Controller::checkCollision(Movable* character, Direction direction, Board& board)
+{
+    Icon* icon = board.getCharacters(character->getNextDirection(direction));
+    if (icon != nullptr)
+        icon->collide(character);
+}

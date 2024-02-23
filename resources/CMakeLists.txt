@@ -34,11 +34,25 @@ configure_file ("./levels/Level008.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 
 configure_file ("./images/Tom&Jerry.png" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./images/startGame.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/new-level1.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/new-level2.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/new-level3.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/new-level4.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/new-level5.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story1.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story2.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story3.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story4.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story5.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story6.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story7.png" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("./images/story8.png" ${CMAKE_BINARY_DIR} COPYONLY)	
 
-configure_file ("./sounds/opening.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+
 configure_file ("./sounds/click.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./sounds/tomRunning.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./sounds/catch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./sounds/tom-lose.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 configure_file ("./fonts/sectionFont.ttf" ${CMAKE_BINARY_DIR} COPYONLY)	
