@@ -67,7 +67,7 @@ void Board::setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f positio
 {
 	m_numberOfCats++;
 	if (!(cats.size() % 2 == 0))
-		cats.push_back(std::make_unique < RandomCat >()); // SmartCat
+		cats.push_back(std::make_unique < SmartCat >());
 	else
 		cats.push_back(std::make_unique < RandomCat >());
 

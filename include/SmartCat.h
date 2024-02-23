@@ -1,7 +1,7 @@
 #pragma once
 #include "Cat.h"
 
-class SmartCat : Cat
+class SmartCat : public Cat
 {
 public:
 	SmartCat() : Cat() {};
