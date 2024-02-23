@@ -16,7 +16,7 @@ private:
 	void startTheGame();
 	void handleMainEvents();
 	void skipButton(sf::Event);
-	void handleLevelEvents();
+	void handleLevelEvents(sf::Clock& clock);
 
 
 	void buttonReleased(sf::Event);
@@ -29,13 +29,17 @@ private:
 	//sf::Vector2i checkButtons(sf::Vector2i vaL);
 	int checkButtons(int val);
 
-
+	//======================================================================
 	int levelsInGame(std::string str);
-
 	void checkCollision(Movable* character, Direction direction, Board& board);
-	void moveDynamic(sf::RenderWindow& window, float passedTime, Board& board);
-
+	void moveDynamic(float passedTime, Board& board);
+	bool catchMouse(Cat* cat);
 	void reternStartingPosition();
+	bool isMouseDied();
+	bool finshCheese();// noor add the logic
+	void draw(float passedTime, Board& board);
+	void movableDraw(float passedTime);
+	//======================================================================
 
 	bool m_mainPage = true;
 	bool m_newGame = false;
@@ -52,4 +56,7 @@ private:
 	std::vector<std::unique_ptr<Cat>> m_cats;
 
 	PlayerStatus m_player;
+
+
+	int m_gameTime;
 };
