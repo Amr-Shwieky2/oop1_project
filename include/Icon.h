@@ -13,6 +13,8 @@ class Key;
 class Gift;
 
 
+
+
 const int P_SIZE = 32; //cell size
 const int SCORE_CHEESE = 10;
 const int SCORE_OREN_DOOR = 2;
@@ -20,7 +22,7 @@ const int SCORE_GIFT = 5;
 const int SCORE_LEVEL = 25;
 const int SCORE_CAT = 5;
 
-enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
+enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, HEART_GIFT , CAT_GIFT, TIME_GIFT};
 
 class Icon {
 public:

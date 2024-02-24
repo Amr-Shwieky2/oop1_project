@@ -4,4 +4,6 @@ Cheese.png
 Wall.png
 Key.png
 Door.png
-Gift.png
+Gift1.png
+Gift2.png
+Gift3.png

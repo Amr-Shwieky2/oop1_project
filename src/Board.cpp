@@ -94,7 +94,7 @@ std::vector<std::vector<std::unique_ptr<NonMovable>>>& Board::getMap()
 }
 
 
-bool Board::cheackOutOfMap(sf::Vector2f position)
+bool Board::checkOutOfMap(sf::Vector2f position)
 {
 	return !(position.x < 0 || position.y < 0 || position.x >= m_board[0].size() ||
 		position.y >= m_board.size());
@@ -135,7 +135,7 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 	case KEY_CH:
 		m_board[row][col] = std::make_unique <Key>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
 		break;
-	case GIFT_CH:
+	case REMOVE_CAT_GIFT_CH: case ADD_HEART_GIFT_CH: case ADD_TIME_GIFT_CH:
 		m_board[row][col] = std::make_unique <Gift>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
 		break;
 	case CAT_CH:

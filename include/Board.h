@@ -17,7 +17,9 @@ const char DOOR_CH = 'D';
 const char WALL_CH = '#';
 const char KEY_CH = 'F';
 const char CHEESE_CH = '*';
-const char GIFT_CH = '$';
+const char REMOVE_CAT_GIFT_CH = '-';
+const char ADD_HEART_GIFT_CH = '+';
+const char ADD_TIME_GIFT_CH = '$';
 const char ROAD_CH = ' ';
 
 class Board
@@ -37,7 +39,7 @@ public:
 	std::vector<std::vector<std::unique_ptr<NonMovable>>> &getMap();
 
 
-	bool cheackOutOfMap(sf::Vector2f position);
+	bool checkOutOfMap(sf::Vector2f position);
 
 	//void clear_vector();//??!
 
@@ -45,8 +47,7 @@ private:
 	
 	void openFile();
 	void setBoardSize();
-	void pushToMap(const char& characters, size_t& row, size_t& col, 
-		Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats);
+	void pushToMap(const char&, size_t&, size_t&, Mouse&, std::vector<std::unique_ptr<Cat>>& );
 
 	std::vector<std::vector<std::unique_ptr<NonMovable>>> m_board;
 
