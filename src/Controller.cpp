@@ -20,6 +20,7 @@ Controller::Controller() {
             m_mainPage ? m_window.display() : m_levelWindow.display();
         }
     }
+    m_window.close(); m_levelWindow.close();
 }
 
 void Controller::handleMainEvents() {
@@ -30,7 +31,7 @@ void Controller::handleMainEvents() {
             m_window.close();
             break;
         case sf::Event::MouseButtonReleased:
-            //std::cout << event.mouseButton.x << " " << event.mouseButton.y;
+            std::cout << event.mouseButton.x << " " << event.mouseButton.y << std::endl;
             (m_mainPage && !m_information) ? buttonReleased(event) : skipButton(event);
             break;
         }
@@ -68,7 +69,7 @@ void Controller::handleLevelEvents() {
 bool Controller::levelEnded(const Board& board, unsigned int levelNum) {
     if (m_levelWindow.isOpen() && m_countCheese == board.getCheeseCounter()) {
         m_levelWindow.clear();
-        m_screens.drawLevelOpenning(m_levelWindow, levelNum + 1); /// ??????????
+        m_screens.drawLevelOpening(m_levelWindow, levelNum + 1); /// ??????????
         m_levelWindow.display();
         m_newGame = true;
         m_mainPage = false;
@@ -82,6 +83,9 @@ void Controller::startTheGame() {
         m_screens.drawBackground(m_window);
         m_screens.drawStarterSection(m_window);
         m_screens.drawSoundButton(m_window, m_mute);
+    }
+    if (m_storyShowed == true) {
+        m_screens.drawInfoButton(m_window);   
     }
 }
 
@@ -121,33 +125,70 @@ void Controller::skipButton(sf::Event event) {
 void Controller::buttonReleased(sf::Event event) {
     int x = event.mouseButton.x;
     int y = event.mouseButton.y;
-    int i = checkButtons(y);
 
-    if (i == 1 && x < 725 && x > 550) { // new game
-        m_screens.playPauseSound(1, false); // play click
-        m_mainPage = false;
-        m_newGame = true;
-        m_newGamePresses++;
-    }
-    else if (i == 2 && x < 740 && x > 540) {
-        m_screens.playPauseSound(1, false); // play click
-        m_information = true;
-        //m_mainPage = false; 
-        // score table
-    }
-    else if (i == 3 && x < 670 && x > 605) { // exit button
-        m_screens.playPauseSound(1, false); // play click
+    int buttonId = checkButtons(x, y);
 
-        m_mainPage = false;
-        m_window.close();
-    }
-    else if (i == 0 && checkSoundIconPressed(x) == 20) { // volume button
+    if (buttonId == 0) { // volume button
         m_screens.playPauseSound(1, false); // play click
         std::cout << "mute button\n";
         m_mute = !m_mute;
         m_screens.drawSoundButton(m_window, m_mute);
         m_screens.playPauseSound(0, m_mute);
     }
+    else if (buttonId == 1) { // new game button
+        m_screens.playPauseSound(1, false); // play click
+        m_mainPage = false;
+        m_newGame = true;
+        //m_storyShowed = true;
+    }
+    else if (buttonId == 2) { // information button
+        m_screens.playPauseSound(1, false); // play click
+        m_information = true;
+        //m_mainPage = false; 
+        // score table
+    }
+    else if (buttonId == 3) { // exit button
+        m_screens.playPauseSound(1, false); // play click
+        m_mainPage = false;
+        m_window.close();
+    }
+    else if (buttonId == 4) { // show story
+        if (m_storyShowed) {
+            m_screens.playPauseSound(1, false); // play click
+            std::cout << "story information button\n";
+            m_storyShowed = false;
+            gameStory();
+        }
+    }
+}
+
+int Controller::checkButtons(int x, int y) {
+    if (y >= 20 && y <= 55) { 
+        if (x >= 15 && x <= 55) {
+            return 0; // volume button
+        }
+    }
+    else if (y >= 220 && y <= 260) {
+        if (x >= 550 && x <= 725) {
+            return 1; // new game button
+        }
+    }
+    else if (y >= 340 && y <= 380) {
+        if (x >= 540 && x <= 740) {
+            return 2; // information button
+        }
+    }
+    else if (y >= 460 && y <= 500) {
+        if (x >= 605 && x <= 670) {
+            return 3; // exit button
+        }
+    }
+    else if (y >= 640 && y <= 680) {
+        if (x >= 15 && x <= 55) {
+            return 4; // volume button
+        }
+    }
+    return -1; // No button pressed
 }
 
 void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board& board) {
@@ -168,7 +209,7 @@ void Controller::gameStory() {
     float transitionDuration = 0.5f; // Transition duration in seconds
     sf::Clock transitionClock;
 
-    while (m_window.isOpen() && i != STORY_SCREENS && m_newGamePresses == 1) {
+    while (m_window.isOpen() && i != STORY_SCREENS && !m_storyShowed) {
         m_window.clear();
         if (auto event = sf::Event{}; m_window.pollEvent(event)) {
             if (event.type == sf::Event::MouseButtonReleased) {
@@ -182,7 +223,7 @@ void Controller::gameStory() {
         m_screens.drawStory(m_window, i, interpolation, i % 2); 
         m_window.display();
     }
-    m_newGamePresses++; // to valid not to enter again
+    m_storyShowed = true;
 }
 
 void Controller::openInformation() {
@@ -197,25 +238,7 @@ int Controller::checkSoundIconPressed(int val) {
     return 0;
 }
 
-int Controller::checkButtons(int val) {
-    int j = -1;
 
-    if (val >= 20 && val <= 55) {
-        j = 0;
-    }
-    else if (val >= 220 && val <= 260 ) {
-        j = 1;
-    }
-    else if (val >= 340 && val <= 380) {
-        j = 2;
-    }
-    else if (val >= 460 && val <= 500) {
-        j = 3;
-    }
-    else ;
-
-    return j;
-}
 
 void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& board)
 {

@@ -16,9 +16,10 @@ public:
 	void drawBackground(sf::RenderWindow&);
 	void drawStarterSection(sf::RenderWindow&);
 	void drawSoundButton(sf::RenderWindow&, bool);
-	void drawInformation(sf::RenderWindow&);
+	void drawInformation(sf::RenderWindow&) const;
 	void drawStory(sf::RenderWindow&, unsigned int, float, int);
-	void drawLevelOpenning(sf::RenderWindow&, unsigned int);
+	void drawInfoButton(sf::RenderWindow& window) const;
+	void drawLevelOpening(sf::RenderWindow&, unsigned int);
 
 	void playPauseSound(int, bool);
 	void OpeningBackground(sf::RenderWindow&);
@@ -74,5 +75,8 @@ private:
 
 	sf::Texture m_storyTexture[STORY_SCREENS];
 	sf::Sprite m_storySprite[STORY_SCREENS];
+
+	sf::Texture m_storyInfoIconTexture;
+	sf::Sprite m_storyInfoIconSprite;
 };
 

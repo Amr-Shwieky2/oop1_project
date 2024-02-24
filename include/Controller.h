@@ -22,6 +22,9 @@ private:
 
 	void buttonReleased(sf::Event);
 
+	int checkButtons(int x, int y);
+
+
 	void openLevel(int, int, unsigned int, Board&);
 
 	void gameStory();
@@ -29,8 +32,6 @@ private:
 	void openInformation();
 
 	int checkSoundIconPressed(int val);
-	//sf::Vector2i checkButtons(sf::Vector2i vaL);
-	int checkButtons(int val);
 
 
 	int levelsInGame(std::string str);
@@ -46,7 +47,7 @@ private:
 	bool m_mute = false;
 	bool m_information = false;
 	
-	int m_newGamePresses = 0;
+	bool m_storyShowed = false;
 
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_levelWindow;

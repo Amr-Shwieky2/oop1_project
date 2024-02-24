@@ -105,7 +105,7 @@ void Board::openFile() {
 	m_file.open(file);
 	if (!m_file.is_open())
 	{
-		std::cerr << "could not open file\n";
+		std::cerr << "could not open level file\n";
 		exit(EXIT_FAILURE);
 	}
 }
