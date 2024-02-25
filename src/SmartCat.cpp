@@ -22,6 +22,7 @@ void SmartCat::move(float passedTime, sf::Vector2f boardSize, const std::vector<
 	if (outOfBoard(boardSize)) {
 		m_sprite.setPosition(m_previousPostion);
 	}
+	else 
 	m_position = m_sprite.getPosition();
 }
 

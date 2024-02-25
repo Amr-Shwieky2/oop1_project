@@ -38,13 +38,13 @@ sf::Vector2f Movable::getNextDirection(Direction direction)
 	switch (direction)
 	{
 	case UP:
-		return sf::Vector2f(nextPosition.x, nextPosition.y - (P_SIZE / 2));
+		return sf::Vector2f(nextPosition.x, nextPosition.y - (P_SIZE));
 	case DOWN:
-		return sf::Vector2f(nextPosition.x, nextPosition.y + (P_SIZE / 2));
+		return sf::Vector2f(nextPosition.x, nextPosition.y + (P_SIZE));
 	case RIGHT:
-		return sf::Vector2f(nextPosition.x + (P_SIZE / 2), nextPosition.y);
+		return sf::Vector2f(nextPosition.x + (P_SIZE), nextPosition.y);
 	case LEFT:
-		return sf::Vector2f(nextPosition.x - (P_SIZE / 2), nextPosition.y);
+		return sf::Vector2f(nextPosition.x - (P_SIZE), nextPosition.y);
 	}
 	return nextPosition;
 }
@@ -61,7 +61,7 @@ bool Movable::isCentered(sf::Vector2f position, sf::Vector2f centerPosition)
 
 bool Movable::outOfBoard(sf::Vector2f size)
 {
-	int distance = P_SIZE / 2;
+	int distance = P_SIZE;
 	return m_sprite.getPosition().x + distance > size.y || m_sprite.getPosition().y + distance > size.x ||
 		m_sprite.getPosition().x - distance < 0 || m_sprite.getPosition().y - distance < 0;
 }

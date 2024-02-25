@@ -4,12 +4,12 @@
 Controller::Controller() {
     int count_levels = levelsInGame("Levels.txt");
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
-    m_screens.OpeningBackground(m_window);
+   // m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, int(i + 1));
         sf::Vector2f boardSize = board.getBoardSize();
         static sf::Clock clock;
-        m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
+    //    m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
           
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
@@ -19,12 +19,12 @@ Controller::Controller() {
             openInformation();
 
 
-            //static sf::Clock timer;
-            //timer.restart();
-            //static sf::Time allottedTime = board.getTime();
-            //m_gameTime = allottedTime.asSeconds() - timer.getElapsedTime().asSeconds();
+            static sf::Clock timer;
+            timer.restart();
+            static sf::Time allottedTime = board.getTime();
+            m_gameTime = allottedTime.asSeconds() - timer.getElapsedTime().asSeconds();
 
-            //if (m_gameTime == 0) break;
+            if (m_gameTime == 0) break;
 
             m_window.isOpen() ? handleMainEvents() : handleLevelEvents(clock);
 
