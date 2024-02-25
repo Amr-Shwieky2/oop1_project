@@ -1,13 +1,14 @@
-﻿configure_file ("information.txt" ${CMAKE_BINARY_DIR} COPYONLY)
+﻿configure_file ("sectionFont.ttf" ${CMAKE_BINARY_DIR} COPYONLY)	
+configure_file ("information.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 
 
 configure_file ("./icons/Names_images.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Cat.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Cheese.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Door.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./icons/Gift1.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./icons/Gift2.png" ${CMAKE_BINARY_DIR} COPYONLY)
-configure_file ("./icons/Gift3.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/HeartGift.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/CatGift.png" ${CMAKE_BINARY_DIR} COPYONLY)
+configure_file ("./icons/TimeGift.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Key.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Mouse.png" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./icons/Wall.png" ${CMAKE_BINARY_DIR} COPYONLY)
@@ -56,6 +57,3 @@ configure_file ("./sounds/click.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./sounds/tomRunning.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./sounds/catch.wav" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./sounds/tom-lose.wav" ${CMAKE_BINARY_DIR} COPYONLY)
-
-
-configure_file ("./fonts/sectionFont.ttf" ${CMAKE_BINARY_DIR} COPYONLY)	

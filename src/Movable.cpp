@@ -1,20 +1,13 @@
 #include "Movable.h"
 #include <math.h>
 
-Movable::Movable(): m_frameCounter(0), m_sourceX(0)
-{
-}
+Movable::Movable(): m_frameCounter(0), m_sourceX(0) {}
 
-void Movable::draw(sf::RenderWindow& window, float passedTime)
-{
+void Movable::draw(sf::RenderWindow& window, float passedTime) {
 	m_frameCounter += passedTime * REGULAR_SPEED;
-	if (m_frameCounter > SWITCH_FRAME)
-	{
+	if (m_frameCounter > SWITCH_FRAME) {
 		m_frameCounter = 0;
-		//m_sourceX++;
 	}
-	//m_sprite.setTextureRect(sf::IntRect(m_sourceX * P_SIZE, m_direction * P_SIZE, P_SIZE, P_SIZE));//change the why 
-
 	window.draw(m_sprite);
 }
 
