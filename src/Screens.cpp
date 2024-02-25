@@ -268,3 +268,36 @@ void Screens::drawTextInStarter(sf::Text& text, sf::RenderWindow& window, int i)
 void Screens::playPauseSound(int i , bool mute) {
 	mute ? m_sound[i].stop() : m_sound[i].play();
 }
+
+Buttons Screens::checkButtons(int x, int y) {
+	if (y >= 20 && y <= 55) {
+		if (x >= 15 && x <= 55) {
+			return SOUND; // volume button
+		}
+		else if (x >= 1180 && x <= 1220) {
+			return SKIP;
+		}
+	}
+	else if (y >= 220 && y <= 260) {
+		if (x >= 550 && x <= 725) {
+			return NEW_GAME; // new game button
+		}
+	}
+	else if (y >= 340 && y <= 380) {
+		if (x >= 540 && x <= 740) {
+			return INFORMATION; // information button
+		}
+	}
+	else if (y >= 460 && y <= 500) {
+		if (x >= 605 && x <= 670) {
+			return EXIT; // exit button
+		}
+	}
+	else if (y >= 640 && y <= 680) {
+		if (x >= 15 && x <= 55) {
+			return STORY; // volume button
+		}
+	}
+
+	return 	NILL; // No button pressed
+}

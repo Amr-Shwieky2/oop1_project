@@ -2,30 +2,25 @@
 #include "NonMovable.h"
 #include "Mouse.h"
 
-class FirstGift;
-class SecondGift;
-class ThirdGift;
+class HeartGift;
+class HideCatGift;
+class TimeGift;
 
-class Gift : public NonMovable
-{
+enum TypeGift {
+	ADD_HEART_GIFT,
+	HIDE_CAT_GIFT,
+	ADD_TIME_GIFT
+};
+
+class Gift : public NonMovable {
 public:
-	Gift(sf::Vector2f position, GiftType gift) : NonMovable(), m_position(position) {
-		m_position = position;
-		switch (gift)
-		{
-		case AddHeart: std::make_unique<FirstGift>(); break;
-		case RemoveCat: std::make_unique<SecondGift>(); break;
-		case AddTime: std::make_unique<ThirdGift>(); break;
-		default: break;
-		}
-	};
+	Gift() : NonMovable() {};
 
 	virtual void collide(Icon* object) { object->collide(this); };
 	virtual void collide(Mouse* object) { object->collide(this); };
 	virtual void collide(Cat* object) {};
 
-	
-
+	TypeGift getType() { return m_typegift; };
 protected:
-	sf::Vector2f m_position;
+	TypeGift m_typegift;
 };

@@ -2,14 +2,13 @@
 
 #include "Gift.h"
 
-class ThirdGift : public Gift {
+class HideCatGift : public Gift {
 public:
-	ThirdGift() : Gift(m_position, AddTime) {
-		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(TIME_GIFT)));
+	HideCatGift() : Gift() {
+		m_typegift = HIDE_CAT_GIFT;
+		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(CAT_GIFT)));
 		m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
 			((float)P_SIZE / m_sprite.getGlobalBounds().height)));
 	};
-
-private:
 
 };

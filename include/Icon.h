@@ -22,15 +22,7 @@ const int SCORE_GIFT = 5;
 const int SCORE_LEVEL = 25;
 const int SCORE_CAT = 5;
 
-enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT};
-
-
-enum GiftType {
-	AddHeart,
-	RemoveCat,
-	AddTime
-	// Add more types if needed
-};
+enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, HEART_GIFT, CAT_GIFT, TIME_GIFT};
 
 class Icon {
 public:

@@ -7,6 +7,16 @@ const int STORY_SCREENS = 8;
 
 enum Sounds {OPEN , CLICK, TOMRUN, CATCH};
 
+enum Buttons {
+	NILL,
+	SOUND,
+	NEW_GAME,
+	INFORMATION,
+	EXIT,
+	STORY, 
+	SKIP
+};
+
 class Screens
 {
 public:
@@ -22,6 +32,7 @@ public:
 	void drawLevelOpening(sf::RenderWindow&, unsigned int);
 
 	void playPauseSound(int, bool);
+	Buttons checkButtons(int x, int y);
 	void OpeningBackground(sf::RenderWindow&);
 
 	void setLevelsOpenings(float, float, unsigned int);

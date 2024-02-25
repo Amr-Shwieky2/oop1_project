@@ -2,14 +2,13 @@
 
 #include "Gift.h"
 
-class SecondGift : public Gift {
+class HeartGift : public Gift {
 public:
-	SecondGift() : Gift(position, RemoveCat) {
-		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(CAT_GIFT)));
+	HeartGift() : Gift() {
+		m_typegift = ADD_HEART_GIFT;
+		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(HEART_GIFT)));
 		m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
 			((float)P_SIZE / m_sprite.getGlobalBounds().height)));
 	};
-
-private:
 
 };
