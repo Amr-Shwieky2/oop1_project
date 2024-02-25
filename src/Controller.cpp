@@ -1,27 +1,24 @@
 #include "Controller.h"
 #include <memory>
 
-//m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
-   // m_screens.OpeningBackground(m_window);
-    //m_window.isOpen() ||
-        //m_mainPage ? m_window.clear() :
-        //startTheGame();
-    //openInformation();
-    //m_window.isOpen() ? handleMainEvents() :
-    //m_mainPage ? m_window.display() :
-
 Controller::Controller() {
     int count_levels = levelsInGame("Levels.txt");
+    m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
+    m_screens.OpeningBackground(m_window);
 
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, int(i + 1));
         sf::Vector2f boardSize = board.getBoardSize();
 
-        m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(boardSize.y), static_cast<unsigned int>(boardSize.x + 50)), "Level" + std::to_string(int(i + 1)));
+        
         static sf::Clock clock;
-        while (m_levelWindow.isOpen() && !isMouseDied() && !finshCheese()) {
-            m_levelWindow.clear(sf::Color(238, 232, 170));
-            
+        while(m_window.isOpen() || m_levelWindow.isOpen()){
+        //while (!isMouseDied() && !finshCheese()) {
+            m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
+            startTheGame();
+
+            openLevel(static_cast<unsigned int>(boardSize.x), static_cast<unsigned int>(boardSize.y + 50), int(i + 1), board);
+            openInformation();
 
             static sf::Clock timer;
             timer.restart();
@@ -31,12 +28,12 @@ Controller::Controller() {
             if (m_gameTime == 0)
                 break;
 
-            handleLevelEvents(clock);
+            m_window.isOpen() ? handleMainEvents() : handleLevelEvents(clock);
 
             float passedTime = clock.restart().asSeconds();
             moveDynamic(passedTime, board);
-            draw(passedTime, board);
-            m_levelWindow.display();
+            movableDraw(passedTime);
+            m_mainPage ? m_window.display() : m_levelWindow.display();
 
         }
 
@@ -96,7 +93,7 @@ void Controller::handleLevelEvents(sf::Clock& clock) {
         switch (event.type) {
         case sf::Event::Closed:
             m_levelWindow.close();
-           // m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
+            m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
             m_mainPage = true;
             break;
         case sf::Event::KeyReleased:
@@ -188,16 +185,7 @@ bool Controller::finshCheese()
     return false;
 }
 
-void Controller::draw(float passedTime, Board& board)
-{
-    board.drawBoard(m_levelWindow);
 
-    m_player.draw(m_levelWindow, m_mouse.getLife(), m_mouse.getScore(), board.getnumberOfLevel(),
-                    m_gameTime, board.getBoardSize(), m_screens.getFont());
-
-    movableDraw(passedTime);
-
-}
 
 void Controller::movableDraw(float passedTime)
 {
