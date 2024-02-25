@@ -13,8 +13,9 @@ public:
 private:
 	void startTheGame();
 	void handleMainEvents();
-	void skipButton(sf::Event);
-	void handleLevelEvents(sf::Clock& clock);
+
+	void handleLevelEvents(sf::Clock&);
+
 
 	bool levelEnded(const Board& board, unsigned int levelNum);
 
@@ -26,7 +27,6 @@ private:
 
 	void openInformation();
 
-	int checkSoundIconPressed(int val);
 
 	//======================================================================
 	int levelsInGame(std::string str);
@@ -34,11 +34,13 @@ private:
 
 	void moveDynamic(float passedTime, Board& board);
 	bool catchMouse(Cat* cat);
-	void reternStartingPosition();
+	void returnStartingPosition();
 	bool isMouseDied();
 	bool finshCheese();// noor add the logic
-	void draw(float passedTime, Board& board);
+
+	//void draw(float passedTime, Board& board);
 	void movableDraw(float passedTime);
+
 	//======================================================================
 
 
@@ -47,13 +49,13 @@ private:
 	bool m_scoreTable = false;
 	bool m_mute = false;
 	bool m_information = false;
-	
+
 	bool m_storyShowed = false;
 
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_levelWindow;
 
-    Screens m_screens;
+	Screens m_screens;
 
 	Mouse m_mouse;
 	std::vector<std::unique_ptr<Cat>> m_cats;
@@ -64,4 +66,5 @@ private:
 
 	int m_countCheese;
 
+	// 
 };

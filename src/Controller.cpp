@@ -9,7 +9,6 @@ Controller::Controller() {
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, int(i + 1));
         sf::Vector2f boardSize = board.getBoardSize();
-        
         static sf::Clock clock;
         m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
@@ -17,7 +16,7 @@ Controller::Controller() {
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
             startTheGame();
 
-            openLevel(static_cast<unsigned int>(boardSize.x), static_cast<unsigned int>(boardSize.y + 50), int(i + 1), board);
+            openLevel(static_cast<unsigned int>(boardSize.x), static_cast<unsigned int>(boardSize.y), int(i + 1), board);
             openInformation();
 
 
@@ -26,13 +25,13 @@ Controller::Controller() {
             static sf::Time allottedTime = board.getTime();
             m_gameTime = allottedTime.asSeconds() - timer.getElapsedTime().asSeconds();
 
-            if (m_gameTime == 0)
-                break;
+            if (m_gameTime == 0) break;
 
             m_window.isOpen() ? handleMainEvents() : handleLevelEvents(clock);
 
             float passedTime = clock.restart().asSeconds();
             moveDynamic(passedTime, board);
+            
             movableDraw(passedTime);
 
             if (levelEnded(board, i)) break; // ????
@@ -62,6 +61,8 @@ void Controller::handleMainEvents() {
         }
     }
 }
+
+
 
 
 void Controller::handleLevelEvents(sf::Clock& clock) {
@@ -142,7 +143,7 @@ void Controller::moveDynamic(float passedTime, Board& board)
 
 
     if (m_mouse.getMouseState()) {
-        reternStartingPosition();
+        returnStartingPosition();
     }
 
     for (size_t i = 0; i < m_cats.size(); i++) {
@@ -159,7 +160,7 @@ bool Controller::catchMouse(Cat* cat)
         abs(m_mouse.getPosition().y - cat->getPosition().y) < P_SIZE);
 }
 
-void Controller::reternStartingPosition()
+void Controller::returnStartingPosition()
 {
     for (size_t i = 0; i < m_cats.size(); i++)
         m_cats[i]->SetPosition(m_cats[i]->getStartPosition());
@@ -177,6 +178,17 @@ bool Controller::finshCheese()
 {
     return false;
 }
+
+
+void Controller::movableDraw(float passedTime)
+{
+    m_mouse.draw(m_levelWindow, passedTime);
+    for (size_t i = 0; i < m_cats.size(); i++)
+    {
+        m_cats[i]->draw(m_levelWindow, passedTime);
+    }
+}
+
 
 
 //===============================================================================
@@ -275,31 +287,4 @@ void Controller::openInformation() {
         m_screens.drawBackground(m_window);
         m_screens.drawInformation(m_window);
     }
-}
-
-void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& board)
-{
-    std::vector<std::vector<sf::Vector3i>> Tree;
-
-    m_mouse.move(passedTime, board.getBoardSize());
-    checkCollision(&m_mouse, m_mouse.getDirection(), board);
-    if (m_mouse.getMouseState()) {
-        returnStartingPosition();
-    }
-}
-
-void Controller::returnStartingPosition()
-{
-    for (size_t i = 0; i < m_cats.size(); i++)
-        m_cats[i]->SetPosition(m_cats[i]->getStartPosition());
-
-    m_mouse.SetPosition(m_mouse.getStartPosition());
-    m_mouse.setMouseState();
-}
-
-void Controller::checkCollision(Movable* character, Direction direction, Board& board)
-{
-    Icon* icon = board.getCharacters(character->getNextDirection(direction));
-    if (icon != nullptr)
-        icon->collide(character);
 }

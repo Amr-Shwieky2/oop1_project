@@ -179,7 +179,7 @@ std::vector<sf::Vector2i> Board::searchNeighbors(const sf::Vector2i center)
 		nextCoord = center + directions[i];
 
 		// Check if the next coordinate is within the board boundaries and is not a wall
-		if (cheackOutOfMap(sf::Vector2f(nextCoord)) &&
+		if (checkOutOfMap(sf::Vector2f(nextCoord)) &&
 			!dynamic_cast<Wall*> (m_board[nextCoord.y][nextCoord.x].get()))
 		{
 			// Add the valid neighboring coordinate to the list
