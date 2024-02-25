@@ -14,8 +14,6 @@ public:
 
 	virtual void draw(sf::RenderWindow& window, sf::Vector2f pos);
 
-
-
 	virtual void collide(Cheese* object) {};
 	virtual void collide(Wall* object) {};
 	virtual void collide(Door* object) {};

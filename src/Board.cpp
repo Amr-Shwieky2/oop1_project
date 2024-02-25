@@ -4,7 +4,9 @@
 #include "Door.h"
 #include "Wall.h"
 #include "Key.h"
-#include "Gift.h"
+#include "HideCatGift.h"
+#include "HeartGift.h"
+#include "TimeGift.h"
 #include "SmartCat.h"
 #include "RandomCat.h"
 
@@ -94,7 +96,7 @@ std::vector<std::vector<std::unique_ptr<NonMovable>>>& Board::getMap()
 }
 
 
-bool Board::cheackOutOfMap(sf::Vector2f position)
+bool Board::checkOutOfMap(sf::Vector2f position)
 {
 	return !(position.x < 0 || position.y < 0 || position.x >= m_board[0].size() ||
 		position.y >= m_board.size());
@@ -135,8 +137,14 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 	case KEY_CH:
 		m_board[row][col] = std::make_unique <Key>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
 		break;
-	case GIFT_CH:
-		m_board[row][col] = std::make_unique <Gift>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
+	case REMOVE_CAT_GIFT_CH:  
+		m_board[row][col] = std::make_unique <HideCatGift>();
+		break;
+	case ADD_HEART_GIFT_CH: 
+		m_board[row][col] = std::make_unique <HeartGift>();
+		break;
+	case ADD_TIME_GIFT_CH: 
+		m_board[row][col] = std::make_unique <TimeGift>();
 		break;
 	case CAT_CH:
 		setCat(cats, sf::Vector2f(static_cast<float>(col) * P_SIZE, static_cast<float>(row) * P_SIZE));

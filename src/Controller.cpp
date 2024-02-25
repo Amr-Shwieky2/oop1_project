@@ -1,7 +1,6 @@
 #include "Controller.h"
 #include <memory>
 
-
 Controller::Controller() {
     int count_levels = levelsInGame("Levels.txt");
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
@@ -32,7 +31,7 @@ void Controller::handleMainEvents() {
             break;
         case sf::Event::MouseButtonReleased:
             std::cout << event.mouseButton.x << " " << event.mouseButton.y << std::endl;
-            (m_mainPage && !m_information) ? buttonReleased(event) : skipButton(event);
+            buttonReleased(event);
             break;
         }
     }
@@ -107,89 +106,58 @@ int Controller::levelsInGame(std::string str) {
     return lineCount;
 }
 
-
-void Controller::skipButton(sf::Event event) {
-    int x = event.mouseButton.x;
-    int y = event.mouseButton.y;
-
-    if (x >= 1180 && x <= 1220) {
-        if (y >= 30 && y <= 60) {
-            m_screens.playPauseSound(1, false); // play click
-            startTheGame();
-            m_information = false;
-            m_mainPage = true;
-        }
-    }
-}
-
 void Controller::buttonReleased(sf::Event event) {
     int x = event.mouseButton.x;
     int y = event.mouseButton.y;
 
-    int buttonId = checkButtons(x, y);
+    Buttons buttonId = m_screens.checkButtons(x, y);
 
-    if (buttonId == 0) { // volume button
+    switch (buttonId) {
+    case SOUND:
         m_screens.playPauseSound(1, false); // play click
         std::cout << "mute button\n";
         m_mute = !m_mute;
         m_screens.drawSoundButton(m_window, m_mute);
         m_screens.playPauseSound(0, m_mute);
-    }
-    else if (buttonId == 1) { // new game button
+        break;
+    case NEW_GAME:
         m_screens.playPauseSound(1, false); // play click
         m_mainPage = false;
         m_newGame = true;
         //m_storyShowed = true;
-    }
-    else if (buttonId == 2) { // information button
+        break;
+    case INFORMATION:
         m_screens.playPauseSound(1, false); // play click
         m_information = true;
         //m_mainPage = false; 
         // score table
-    }
-    else if (buttonId == 3) { // exit button
+        break;
+    case EXIT:
         m_screens.playPauseSound(1, false); // play click
         m_mainPage = false;
         m_window.close();
-    }
-    else if (buttonId == 4) { // show story
+        break;
+    case STORY:
         if (m_storyShowed) {
             m_screens.playPauseSound(1, false); // play click
             std::cout << "story information button\n";
             m_storyShowed = false;
             gameStory();
         }
+        break;
+    case SKIP:
+        if (m_information) {
+            m_screens.playPauseSound(1, false); // play click
+            startTheGame();
+            m_information = false;
+            m_mainPage = true;
+        }
+        break;
+    case NILL: default:
+        break;
     }
 }
 
-int Controller::checkButtons(int x, int y) {
-    if (y >= 20 && y <= 55) { 
-        if (x >= 15 && x <= 55) {
-            return 0; // volume button
-        }
-    }
-    else if (y >= 220 && y <= 260) {
-        if (x >= 550 && x <= 725) {
-            return 1; // new game button
-        }
-    }
-    else if (y >= 340 && y <= 380) {
-        if (x >= 540 && x <= 740) {
-            return 2; // information button
-        }
-    }
-    else if (y >= 460 && y <= 500) {
-        if (x >= 605 && x <= 670) {
-            return 3; // exit button
-        }
-    }
-    else if (y >= 640 && y <= 680) {
-        if (x >= 15 && x <= 55) {
-            return 4; // volume button
-        }
-    }
-    return -1; // No button pressed
-}
 
 void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board& board) {
     if (m_newGame) {
@@ -232,13 +200,6 @@ void Controller::openInformation() {
         m_screens.drawInformation(m_window);
     }
 }
-
-int Controller::checkSoundIconPressed(int val) {
-    if (val >= 15 && val <= 55) return 20;
-    return 0;
-}
-
-
 
 void Controller::moveDynamic(sf::RenderWindow& window, float passedTime, Board& board)
 {

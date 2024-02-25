@@ -4,8 +4,6 @@
 #include "PlayerStatus.h"
 #include <thread>
 
-
-
 class Controller
 {
 public:
@@ -21,9 +19,6 @@ private:
 	bool levelEnded(const Board& board, unsigned int levelNum);
 
 	void buttonReleased(sf::Event);
-
-	int checkButtons(int x, int y);
-
 
 	void openLevel(int, int, unsigned int, Board&);
 
