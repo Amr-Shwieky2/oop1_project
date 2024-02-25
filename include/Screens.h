@@ -2,9 +2,20 @@
 
 #include "Board.h"
 
-const int Sounds = 4;
+const int SOUNDS = 5;
+const int STORY_SCREENS = 8;
 
 enum Sounds {OPEN , CLICK, TOMRUN, CATCH};
+
+enum Buttons {
+	NILL,
+	SOUND,
+	NEW_GAME,
+	INFORMATION,
+	EXIT,
+	STORY, 
+	SKIP
+};
 
 class Screens
 {
@@ -15,9 +26,16 @@ public:
 	void drawBackground(sf::RenderWindow&);
 	void drawStarterSection(sf::RenderWindow&);
 	void drawSoundButton(sf::RenderWindow&, bool);
-	void drawInformation(sf::RenderWindow&);
+	void drawInformation(sf::RenderWindow&) const;
+	void drawStory(sf::RenderWindow&, unsigned int, float, int);
+	void drawInfoButton(sf::RenderWindow& window) const;
+	void drawLevelOpening(sf::RenderWindow&, unsigned int);
+
 	void playPauseSound(int, bool);
+	Buttons checkButtons(int x, int y);
 	void OpeningBackground(sf::RenderWindow&);
+
+	void setLevelsOpenings(float, float, unsigned int);
 
 	sf::Font getFont() const;
 
@@ -36,8 +54,11 @@ private:
 	void setInformation();
 	void setSoundTexture();
 	void setSoundBuffers();
+	void setStory();
 
-	//Board m_board;
+	std::vector<sf::Texture> m_levelsBackgroundsTexture;
+	std::vector<sf::Sprite> m_levelsBackgroundsSprite;
+
 	sf::Texture m_countersTexture[5];
 	sf::Sprite m_countersSprite[5];
 
@@ -58,9 +79,15 @@ private:
 	sf::Texture m_skipTexture;
 	sf::Sprite m_skipSprite;
 
-	sf::SoundBuffer m_soundBuffer[Sounds];
-	sf::Sound m_sound[Sounds];
+	sf::SoundBuffer m_soundBuffer[SOUNDS];
+	sf::Sound m_sound[SOUNDS];
 
 	sf::Font m_font;
+
+	sf::Texture m_storyTexture[STORY_SCREENS];
+	sf::Sprite m_storySprite[STORY_SCREENS];
+
+	sf::Texture m_storyInfoIconTexture;
+	sf::Sprite m_storyInfoIconSprite;
 };
 

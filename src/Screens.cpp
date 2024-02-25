@@ -8,6 +8,7 @@ Screens::Screens() {
 	setSoundBuffers();
 	setMenu();
 	setInformation();
+	setStory();
 }
 
 void Screens::setBackground() {
@@ -16,6 +17,17 @@ void Screens::setBackground() {
 		(float)(22 * P_SIZE) / m_backgroundTexture.getSize().y);
 	m_backgroundSprite.setTexture(m_backgroundTexture);
 
+}
+
+void Screens::setLevelsOpenings(float colSize, float rowSize, unsigned int numberOfLevel){
+	sf::Texture text;
+	text.loadFromFile("new-level" + std::to_string((numberOfLevel % 5) + 1) + ".png");
+	m_levelsBackgroundsTexture.push_back(text);
+
+	sf::Sprite sprite;
+	sprite.setScale(colSize, rowSize);
+	sprite.setTexture(text); // Set the texture for the sprite
+	m_levelsBackgroundsSprite.push_back(sprite);
 }
 
 void Screens::setCounters() {
@@ -43,7 +55,7 @@ void Screens::setMenu() {
 	m_font.loadFromFile("sectionFont.ttf");
 	if (!m_font.loadFromFile("sectionFont.ttf")) { // Load your desired font file
 		std::cerr << "Failed to load font." << std::endl;
-		return;
+		exit(EXIT_FAILURE);
 	}
 
 	unsigned int fontSize = 40; // Set the desired font size
@@ -72,27 +84,12 @@ void Screens::setInformation() {
 	m_skipSprite.setScale(32 / m_skipSprite.getGlobalBounds().width, 32 / m_skipSprite.getGlobalBounds().height);
 }
 
-void Screens::drawInformation(sf::RenderWindow& window) {
-	sf::Text text;
-	text.setFont(m_font); // Set the font
-	text.setString(m_informationTextStr); // Set the text
-	text.setCharacterSize(36); // Set the character size
-	text.setFillColor(sf::Color::Black); // Set the fill color
-	text.setPosition(20, 20); // Set the position
-	window.draw(m_skipSprite);
-	window.draw(text);
-}
 
 void Screens::setSoundTexture() {
-
-
 	m_soundOn.loadFromFile("soundOn.png");
 	m_soundOnSprite.setTexture(m_soundOn);
 	m_soundOff.loadFromFile("soundOff.png");
 	m_soundOffSprite.setTexture(m_soundOff);
-
-	//sf::Vector2f buttonSize(5, P_SIZE);
-	sf::Vector2f buttonPosition(20, 20);
 
 	m_soundOnSprite.setScale(sf::Vector2f(((float)P_SIZE / m_soundOnSprite.getGlobalBounds().width),
 										((float)P_SIZE / m_soundOnSprite.getGlobalBounds().height)));
@@ -104,8 +101,40 @@ void Screens::setSoundTexture() {
 	m_soundOffSprite.setPosition(20, 20);
 }
 
+sf::Text Screens::createText(const std::string& str, const sf::Font& font, unsigned int fontSize) {
+	sf::Text text;
+	text.setFont(font);
+	text.setString(str);
+	text.setFillColor(sf::Color::Black);
+	text.setStyle(sf::Text::Bold);
+	text.setCharacterSize(fontSize);
+	return text;
+}
+
+
+void Screens::setSoundBuffers() {
+	std::vector<std::string> sounds = { "opening.wav" , "click.wav",  "tomRunning.wav" , "catch.wav" , "tom-lose.wav" };
+	for (size_t i = 0; i < SOUNDS; i++) {
+		m_soundBuffer[i].loadFromFile(sounds.at(i));
+		m_sound[i].setBuffer(m_soundBuffer[i]);
+	}
+}
+
+void Screens::setStory() {
+	for (size_t i = 0; i < STORY_SCREENS; i++) {
+		m_storyTexture[i].loadFromFile("story" + std::to_string(i + 1) + ".png");
+		m_storySprite[i].setScale((float)(40 * P_SIZE) / m_storyTexture[i].getSize().x,
+			(float)(22 * P_SIZE) / m_storyTexture[i].getSize().y);
+		m_storySprite[i].setTexture(m_storyTexture[i]);
+	}
+	m_storyInfoIconTexture.loadFromFile("story.png");
+	m_storyInfoIconSprite.setTexture(m_storyInfoIconTexture);
+	m_storyInfoIconSprite.setScale(sf::Vector2f(((float)P_SIZE / m_storyInfoIconSprite.getGlobalBounds().width),
+		((float)P_SIZE / m_storyInfoIconSprite.getGlobalBounds().height)));
+	m_storyInfoIconSprite.setPosition(20, 645);
+}
+
 void Screens::OpeningBackground(sf::RenderWindow& window) {
-	//float backgroundOpacity = 255;
 	sf::Clock clock;
 	int spriteIndex = 0; // Variable to keep track of which sprite to draw
 	m_sound[0].play();
@@ -127,6 +156,64 @@ void Screens::OpeningBackground(sf::RenderWindow& window) {
 sf::Font Screens::getFont() const {
 	return m_font;
 }
+
+void Screens::drawInformation(sf::RenderWindow& window) const {
+	sf::Text text;
+	text.setFont(m_font); // Set the font
+	text.setString(m_informationTextStr); // Set the text
+	text.setCharacterSize(36); // Set the character size
+	text.setFillColor(sf::Color::Black); // Set the fill color
+	text.setPosition(20, 20); // Set the position
+	window.draw(m_skipSprite);
+	window.draw(text);
+}
+
+void Screens::drawStory(sf::RenderWindow& window, unsigned int i, float interpolation, int animationIndex) {
+	if (interpolation >= 1.0f) { 	// Calculate interpolation factor
+		interpolation = 1.0f;
+	}
+
+	sf::Uint8 alpha = static_cast<sf::Uint8>(255 * interpolation);
+	float rotation = 360.0f * interpolation; // Rotate 360 degrees
+
+	switch (animationIndex) {
+	case 0: // Animation 1: Change opacity
+		m_storySprite[i].setColor(sf::Color(255, 255, 255, alpha));
+		break;
+	case 1: // Animation 2: Rotate
+		m_storySprite[i].setRotation(rotation);
+		break;
+	default: // Default to animation 1
+		m_storySprite[i].setColor(sf::Color(255, 255, 255, alpha));
+		break;
+	}
+	if (i < STORY_SCREENS) window.draw(m_storySprite[i]);
+}
+
+void Screens::drawInfoButton(sf::RenderWindow& window) const {
+	window.draw(m_storyInfoIconSprite);
+}
+
+void Screens::drawLevelOpening(sf::RenderWindow& window, unsigned int openingNum) {
+	sf::Clock clock;
+	int seconds = 0;
+	m_sound[4].play();
+	while (true) {
+		float elapsedTime = clock.getElapsedTime().asSeconds();
+		window.clear();
+		window.draw(m_levelsBackgroundsSprite.at(openingNum - 1));
+		window.display();
+		// Increment sprite index every second
+		if (elapsedTime >= 1.0f) {
+			seconds++;
+			clock.restart(); // Restart the clock to accurately measure time for the next sprite
+		}
+		if (seconds == 5) {
+			break;
+		}
+	}
+}
+
 
 void Screens::drawStarter(sf::RenderWindow& window, int spriteIndex) const {
 	window.clear();
@@ -171,16 +258,6 @@ void Screens::drawSoundButton(sf::RenderWindow& window, bool flag) {
 	}
 }
 
-sf::Text Screens::createText(const std::string& str,const sf::Font& font, unsigned int fontSize) {
-	sf::Text text;
-	text.setFont(font);
-	text.setString(str);
-	text.setFillColor(sf::Color::Black);
-	text.setStyle(sf::Text::Bold);
-	text.setCharacterSize(fontSize);
-	return text;
-}
-
 void Screens::drawTextInStarter(sf::Text& text, sf::RenderWindow& window, int i) {
 	sf::Vector2u windowSize = window.getSize();
 	float xPos = (windowSize.x - text.getLocalBounds().width) / 2;
@@ -188,19 +265,39 @@ void Screens::drawTextInStarter(sf::Text& text, sf::RenderWindow& window, int i)
 	window.draw(text);
 }
 
-void Screens::setSoundBuffers() {
-	std::vector<std::string> sounds = { "opening.wav" , "click.wav",  "tomRunning.wav" , "catch.wav" };
-	for (size_t i = 0; i < Sounds; i++) {
-		m_soundBuffer[i].loadFromFile(sounds.at(i));
-		m_sound[i].setBuffer(m_soundBuffer[i]);
-	}
-
-
-	//m_jerrySoundBuffer.loadFromFile("click.wav");
-	//m_jerrySound.setBuffer(m_jerrySoundBuffer);
-
-}
-
 void Screens::playPauseSound(int i , bool mute) {
 	mute ? m_sound[i].stop() : m_sound[i].play();
+}
+
+Buttons Screens::checkButtons(int x, int y) {
+	if (y >= 20 && y <= 55) {
+		if (x >= 15 && x <= 55) {
+			return SOUND; // volume button
+		}
+		else if (x >= 1180 && x <= 1220) {
+			return SKIP;
+		}
+	}
+	else if (y >= 220 && y <= 260) {
+		if (x >= 550 && x <= 725) {
+			return NEW_GAME; // new game button
+		}
+	}
+	else if (y >= 340 && y <= 380) {
+		if (x >= 540 && x <= 740) {
+			return INFORMATION; // information button
+		}
+	}
+	else if (y >= 460 && y <= 500) {
+		if (x >= 605 && x <= 670) {
+			return EXIT; // exit button
+		}
+	}
+	else if (y >= 640 && y <= 680) {
+		if (x >= 15 && x <= 55) {
+			return STORY; // volume button
+		}
+	}
+
+	return 	NILL; // No button pressed
 }

@@ -151,30 +151,12 @@ void Mouse::collide(Gift* object)
 	sf::Vector2f objectPosition;
 	objectPosition.x = object->getPosition().x * P_SIZE + P_SIZE / 2;
 	objectPosition.y = object->getPosition().y * P_SIZE + P_SIZE / 2;
-
+	//object->getType();
 	if (abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE / 2 &&
 		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE / 2 &&
 		object->getStatus()) {
 
 		setScore(SCORE_GIFT);
 		object->setStatus(false);
-
-		int randomGift = (rand() % 3);
-		switch (randomGift)
-		{
-		case INCREASE_TIME:
-			/*setLife(1);*/
-			break;
-		case STOP_CATS:
-			/*m_stopDemonTimer = STOP_DEMON_TIME;
-			setStop(true);*/
-			break;
-		case ADD_LIFE:
-			if (m_life < 3)
-				m_life++;
-			break;
-		default:
-			break;
-		}
 	}
 }
