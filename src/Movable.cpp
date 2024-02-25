@@ -11,9 +11,10 @@ void Movable::draw(sf::RenderWindow& window, float passedTime)
 	if (m_frameCounter > SWITCH_FRAME)
 	{
 		m_frameCounter = 0;
-		m_sourceX++;
+		//m_sourceX++;
 	}
-	m_sprite.setTextureRect(sf::IntRect(m_sourceX * P_SIZE, m_direction * P_SIZE, P_SIZE, P_SIZE));//change the why 
+	//m_sprite.setTextureRect(sf::IntRect(m_sourceX * P_SIZE, m_direction * P_SIZE, P_SIZE, P_SIZE));//change the why 
+
 	window.draw(m_sprite);
 }
 
@@ -57,7 +58,7 @@ sf::Vector2f Movable::getNextDirection(Direction direction)
 
 void Movable::SetPosition(sf::Vector2f newPosition)
 {
-	m_sprite.setPosition(getCenter(newPosition));
+	m_sprite.setPosition(newPosition);
 }
 
 bool Movable::isCentered(sf::Vector2f position, sf::Vector2f centerPosition)
@@ -77,8 +78,8 @@ bool Movable::outOfBoard(sf::Vector2f size)
 sf::Vector2f Movable::getCenter(sf::Vector2f pos)
 {
 	sf::Vector2f newPostion;
-	newPostion.x = (pos.x - ((int)pos.x % P_SIZE)) + P_SIZE / 2;
-	newPostion.y = (pos.y - ((int)pos.y % P_SIZE)) + P_SIZE / 2;
+	newPostion.x = (pos.x - ((int)pos.x % P_SIZE)) + static_cast<float>(P_SIZE) / 2;
+	newPostion.y = (pos.y - ((int)pos.y % P_SIZE)) + static_cast<float>(P_SIZE) / 2;
 	return newPostion;
 }
 

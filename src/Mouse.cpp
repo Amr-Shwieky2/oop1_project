@@ -8,6 +8,8 @@ Mouse::Mouse(): m_cookieCounter(0), m_score(0), m_life(3), m_numberKeys(0), m_is
 {
 	m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(MOUSE)));
 	m_sprite.setOrigin(getCenter(m_sprite.getPosition()));
+	m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
+		((float)P_SIZE / m_sprite.getGlobalBounds().height)));
 	SetPosition(m_sprite.getOrigin());
 }
 
@@ -34,13 +36,14 @@ void Mouse::move(float passedTime, sf::Vector2f boardSize)
 	m_previousPostion = m_sprite.getPosition();
 	float moveDistance = REGULAR_SPEED * passedTime;
 
-	if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
+	//if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
 		m_direction = m_newDirection;
 
 	moveDirection(moveDistance);
-
+	
 	if (outOfBoard(boardSize))
 		m_sprite.setPosition(m_previousPostion);
+
 	m_position = m_sprite.getPosition();
 }
 

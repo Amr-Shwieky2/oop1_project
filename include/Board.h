@@ -43,8 +43,14 @@ public:
 
 	//void clear_vector();//??!
 
+	sf::Time getTime()const;
+	int getnumberOfLevel()const;
+
+
+	std::vector<std::vector<sf::Vector3i>> getBfsTree(sf::Vector2i start);
+
 private:
-	
+	std::vector<sf::Vector2i> searchNeighbors(const sf::Vector2i center);
 	void openFile();
 	void setBoardSize();
 	void pushToMap(const char&, size_t&, size_t&, Mouse&, std::vector<std::unique_ptr<Cat>>& );
