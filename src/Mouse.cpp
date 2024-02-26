@@ -34,7 +34,7 @@ void Mouse::setDirection(sf::Keyboard::Key direction) {
 void Mouse::move(float passedTime, sf::Vector2f boardSize)
 {
 	m_previousPostion = m_sprite.getPosition();
-	float moveDistance = REGULAR_SPEED * passedTime;
+	float moveDistance = (REGULAR_SPEED * passedTime);
 
 	//if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
 		m_direction = m_newDirection;
@@ -42,8 +42,8 @@ void Mouse::move(float passedTime, sf::Vector2f boardSize)
 	moveDirection(moveDistance);
 	
 
-	//if (outOfBoard(boardSize))
-	//	m_sprite.setPosition(m_previousPostion);
+	if (outOfBoard(boardSize))
+		m_sprite.setPosition(m_previousPostion);
 
 	m_position = m_sprite.getPosition();
 
@@ -106,8 +106,10 @@ void Mouse::collide(Cheese* object)
 	objectPosition.x = object->getPosition().x * P_SIZE;
 	objectPosition.y = object->getPosition().y * P_SIZE;
 
-	if (abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE &&
-		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE &&
+	//float x = abs(m_sprite.getPosition().x - objectPosition.x);
+	//float y = abs(m_sprite.getPosition().y - objectPosition.y);
+	if (/*abs(m_sprite.getPosition().x - objectPosition.x) <= P_SIZE &&
+		abs(m_sprite.getPosition().y - objectPosition.y) <= P_SIZE &&*/
 		object->getStatus()) {
 
 		setScore(SCORE_CHEESE);
@@ -126,7 +128,7 @@ void Mouse::collide(Wall* object)
 		newY = std::floor(m_previousPostion.y / P_SIZE) * P_SIZE;
 		break;
 	case LEFT: 
-		newX = std::floor(m_previousPostion.x / P_SIZE) * P_SIZE;
+		newX = std::floor(m_previousPostion.x / P_SIZE)  * P_SIZE;
 		newY = std::ceil(m_previousPostion.y / P_SIZE) * P_SIZE;
 		break;
 	case UP:

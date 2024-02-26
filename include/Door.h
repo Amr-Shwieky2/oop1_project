@@ -6,8 +6,7 @@
 class Door : public NonMovable
 {
 public:
-	Door(sf::Vector2f position) : NonMovable() {
-		m_position = position;
+	Door() : NonMovable() {
 		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(DOOR)));
 		m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
 			((float)P_SIZE / m_sprite.getGlobalBounds().height)));

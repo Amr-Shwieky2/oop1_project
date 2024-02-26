@@ -8,9 +8,9 @@ Controller::Controller() {
     for (size_t i = 0; i < count_levels; i++) {
         Board board(m_mouse, m_cats, int(i + 1));
         sf::Vector2f boardSize = board.getBoardSize();
-        static sf::Clock clock;
     //    m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
+            sf::Clock clock;
           
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
             startTheGame();
@@ -28,10 +28,11 @@ Controller::Controller() {
 
             m_window.isOpen() ? handleMainEvents() : handleLevelEvents(clock);
 
-            float passedTime = clock.restart().asSeconds();
-            moveDynamic(passedTime, board);
+            sf::Time passedTime = clock.restart();
+            float time = passedTime.asSeconds();
+            moveDynamic(time, board);
             
-            movableDraw(passedTime);
+            movableDraw(time);
 
             if (levelEnded(board, i)) break; // ????
             m_mainPage ? m_window.display() : m_levelWindow.display();
@@ -75,8 +76,8 @@ void Controller::handleLevelEvents(sf::Clock& clock) {
         case sf::Event::KeyReleased:
             if ((event.key.code == sf::Keyboard::Left) || (event.key.code == sf::Keyboard::Right) ||
                 (event.key.code == sf::Keyboard::Up) || (event.key.code == sf::Keyboard::Down)) {
+                //clock.restart();
                 m_mouse.setDirection(event.key.code);
-                clock.restart();
             }
             break;
         }

@@ -5,8 +5,7 @@
 class Key : public NonMovable
 {
 public:
-	Key(sf::Vector2f position) : NonMovable() {
-		m_position = position;
+	Key() : NonMovable() {
 		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(KEY)));
 		m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
 			((float)P_SIZE / m_sprite.getGlobalBounds().height)));
