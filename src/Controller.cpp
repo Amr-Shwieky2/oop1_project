@@ -9,8 +9,8 @@ Controller::Controller() {
         Board board(m_mouse, m_cats, int(i + 1));
         sf::Vector2f boardSize = board.getBoardSize();
     //    m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
+        sf::Clock clock;
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
-            sf::Clock clock;
           
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
             startTheGame();

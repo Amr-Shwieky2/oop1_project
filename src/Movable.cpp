@@ -78,7 +78,7 @@ sf::Vector2f Movable::getCenter(sf::Vector2f pos)
 
 void Movable::moveDirection(float moveDistance)
 {
-	switch (m_direction)
+	switch (m_newDirection)
 	{
 	case UP:
 		m_sprite.move(0, -moveDistance);

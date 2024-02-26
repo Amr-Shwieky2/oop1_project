@@ -121,7 +121,7 @@ void Mouse::collide(Cheese* object)
 void Mouse::collide(Wall* object)
 {
 	float newX, newY;
-	switch (m_direction)
+	switch (m_newDirection)
 	{
 	case RIGHT: 
 		newX = std::ceil(m_previousPostion.x / P_SIZE) * P_SIZE;
