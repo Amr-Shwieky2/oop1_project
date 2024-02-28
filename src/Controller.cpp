@@ -4,12 +4,17 @@
 Controller::Controller() {
     int count_levels = levelsInGame("Levels.txt");
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
+    static sf::Clock clock;
    // m_screens.OpeningBackground(m_window);
-    for (size_t i = 0; i < count_levels; i++) {
-        Board board(m_mouse, m_cats, int(i + 1));
+    for (int i = 0; i < count_levels; i++) {
+        Board board(m_mouse, m_cats, i + 1);
         sf::Vector2f boardSize = board.getBoardSize();
     //    m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
-        sf::Clock clock;
+        static sf::Clock timer;
+        timer.restart();
+        static sf::Time allottedTime = board.getTime();
+       
+
         while (m_window.isOpen() || m_levelWindow.isOpen()) {
           
             m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
@@ -18,20 +23,17 @@ Controller::Controller() {
             openLevel(static_cast<unsigned int>(boardSize.x), static_cast<unsigned int>(boardSize.y), int(i + 1), board);
             openInformation();
 
-
-            static sf::Clock timer;
-            timer.restart();
-            static sf::Time allottedTime = board.getTime();
             m_gameTime = allottedTime.asSeconds() - timer.getElapsedTime().asSeconds();
-
             if (m_gameTime == 0) break;
 
             m_window.isOpen() ? handleMainEvents() : handleLevelEvents(clock);
 
             sf::Time passedTime = clock.restart();
             float time = passedTime.asSeconds();
+
+
             moveDynamic(time, board);
-            
+            //////////////////////////////////////////
             movableDraw(time);
 
             if (levelEnded(board, i)) break; // ????
@@ -63,10 +65,8 @@ void Controller::handleMainEvents() {
 }
 
 
-
-
 void Controller::handleLevelEvents(sf::Clock& clock) {
-    if (auto event = sf::Event{}; m_levelWindow.pollEvent(event)) {
+    if(auto event = sf::Event{}; m_levelWindow.pollEvent(event)) {
         switch (event.type) {
         case sf::Event::Closed:
             m_levelWindow.close();
@@ -77,7 +77,10 @@ void Controller::handleLevelEvents(sf::Clock& clock) {
             if ((event.key.code == sf::Keyboard::Left) || (event.key.code == sf::Keyboard::Right) ||
                 (event.key.code == sf::Keyboard::Up) || (event.key.code == sf::Keyboard::Down)) {
                 //clock.restart();
-                m_mouse.setDirection(event.key.code);
+                if (!m_nowMove) {
+                    m_mouse.setDirection(event.key.code);
+                    m_nowMove = true;
+                }
             }
             break;
         }
@@ -128,7 +131,8 @@ int Controller::levelsInGame(std::string str) {
 
 void Controller::checkCollision(Movable* character, Direction direction, Board& board)
 {
-    Icon* icon = board.getCharacters(character->getNextDirection(direction));
+
+    Icon* icon = board.getCharacters(character->getNextDirection(direction), character->getDirection());
     if (icon != nullptr)
         icon->collide(character);
 }
@@ -137,10 +141,13 @@ void Controller::moveDynamic(float passedTime, Board& board)
 {
     std::vector<std::vector<sf::Vector3i>> Tree = board.getBfsTree(sf::Vector2i((int)(m_mouse.getPosition().x / P_SIZE),
                                                                                 (int)(m_mouse.getPosition().y / P_SIZE)));
-
-    m_mouse.move(passedTime, board.getBoardSize());
+    
+    if (m_nowMove) {
+        m_mouse.move(passedTime, board.getBoardSize());
+        
+        m_nowMove = false;
+    }
     checkCollision(&m_mouse, m_mouse.getDirection(), board);
-
 
     if (m_mouse.getMouseState()) {
         returnStartingPosition();
@@ -174,10 +181,6 @@ bool Controller::isMouseDied()
     return m_mouse.getLife() <= 0 ? true : false;
 }
 
-bool Controller::finshCheese()
-{
-    return false;
-}
 
 
 void Controller::movableDraw(float passedTime)
@@ -256,12 +259,12 @@ void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, B
     }
     if (m_levelWindow.isOpen()) {
         board.drawBoard(m_levelWindow);
-        m_player.draw(m_levelWindow, 3, 0, levelNumber, 5, board.getBoardSize(), m_screens.getFont());
+        m_player.draw(m_levelWindow, m_mouse.getLife(), m_mouse.getScore(), levelNumber, m_gameTime, board.getBoardSize(), m_screens.getFont());
     }
 }
 
 void Controller::gameStory() {
-    size_t i = 0;
+    int i = 0;
     float transitionDuration = 0.5f; // Transition duration in seconds
     sf::Clock transitionClock;
 

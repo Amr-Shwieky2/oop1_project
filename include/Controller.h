@@ -36,7 +36,6 @@ private:
 	bool catchMouse(Cat* cat);
 	void returnStartingPosition();
 	bool isMouseDied();
-	bool finshCheese();// noor add the logic
 
 	//void draw(float passedTime, Board& board);
 	void movableDraw(float passedTime);
@@ -50,7 +49,8 @@ private:
 	bool m_mute = false;
 	bool m_information = false;
 
-	bool m_storyShowed = false;
+	bool m_storyShowed = true;// to change when I want to push 
+	bool m_nowMove = false;
 
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_levelWindow;
@@ -65,6 +65,4 @@ private:
 	int m_gameTime;
 
 	int m_countCheese;
-
-	// 
 };

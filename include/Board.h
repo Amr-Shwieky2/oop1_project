@@ -35,13 +35,11 @@ public:
 
 	int getCheeseCounter() const;
 
-	NonMovable* getCharacters(sf::Vector2f position);
+	NonMovable* getCharacters(sf::Vector2f position, Direction direction);
 	std::vector<std::vector<std::unique_ptr<NonMovable>>> &getMap();
 
 
 	bool checkOutOfMap(sf::Vector2f position);
-
-	//void clear_vector();//??!
 
 	sf::Time getTime()const;
 	int getnumberOfLevel()const;

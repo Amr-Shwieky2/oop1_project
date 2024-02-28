@@ -13,12 +13,13 @@ public:
 	void setPosition(sf::Vector2f position);
 
 	virtual void draw(sf::RenderWindow& window, sf::Vector2f pos);
+	sf::FloatRect getGlobalBounds() const;
 
-	virtual void collide(Cheese* object) {};
-	virtual void collide(Wall* object) {};
-	virtual void collide(Door* object) {};
-	virtual void collide(Key* object) {};
-	virtual void collide(Gift* object) {};
+	virtual void collide(Cheese*) {};
+	virtual void collide(Wall*) {};
+	virtual void collide(Door*) {};
+	virtual void collide(Key*) {};
+	virtual void collide(Gift*) {};
 
 protected:
 	bool m_status;

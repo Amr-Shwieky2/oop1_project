@@ -13,7 +13,7 @@ public:
 
 	virtual void collide(Icon* object) { object->collide(this); };
 	virtual void collide(Mouse* object) { object->collide(this); };
-	virtual void collide(Cat* object) {};
+	virtual void collide(Cat*) {};
 	
 	
 

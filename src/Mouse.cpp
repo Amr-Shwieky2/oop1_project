@@ -13,6 +13,7 @@ Mouse::Mouse(): m_cookieCounter(0), m_score(0), m_life(3), m_numberKeys(0), m_is
 	SetPosition(m_sprite.getOrigin());
 }
 
+
 void Mouse::setDirection(sf::Keyboard::Key direction) {
 	switch (direction)
 	{
@@ -34,23 +35,23 @@ void Mouse::setDirection(sf::Keyboard::Key direction) {
 void Mouse::move(float passedTime, sf::Vector2f boardSize)
 {
 	m_previousPostion = m_sprite.getPosition();
+	//
 	float moveDistance = (REGULAR_SPEED * passedTime);
 
-	//if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
+	if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
 		m_direction = m_newDirection;
-
-	moveDirection(moveDistance);
+	/*else
+		m_sprite.setPosition(getCenter(m_position));*/
+		//std::cout << moveDistance << "\n"; in 3 - 6 in range
+		moveDirection(moveDistance);
 	
 
-	if (outOfBoard(boardSize))
-		m_sprite.setPosition(m_previousPostion);
+	if (!outOfBoard(boardSize))
+		m_sprite.setPosition(getCenter(m_previousPostion));
 
 	m_position = m_sprite.getPosition();
 
 }
-
-
-
 
 
 bool Mouse::getMouseState() const
@@ -97,6 +98,7 @@ void Mouse::collide(Cat* object)
 {
 	m_life--;
 	m_isArrested = true;
+	m_position = m_startPosition;
 	//sound catch
 }
 
@@ -106,8 +108,8 @@ void Mouse::collide(Cheese* object)
 	objectPosition.x = object->getPosition().x * P_SIZE;
 	objectPosition.y = object->getPosition().y * P_SIZE;
 
-	//float x = abs(m_sprite.getPosition().x - objectPosition.x);
-	//float y = abs(m_sprite.getPosition().y - objectPosition.y);
+	/*float x = abs(m_sprite.getPosition().x - objectPosition.x);
+	float y = abs(m_sprite.getPosition().y - objectPosition.y);*/
 	if (/*abs(m_sprite.getPosition().x - objectPosition.x) <= P_SIZE &&
 		abs(m_sprite.getPosition().y - objectPosition.y) <= P_SIZE &&*/
 		object->getStatus()) {
@@ -118,9 +120,10 @@ void Mouse::collide(Cheese* object)
 	}
 }
 
-void Mouse::collide(Wall* object)
+void Mouse::collide(Wall* object) // mapy this 
 {
-	float newX, newY;
+	m_sprite.setPosition(m_previousPostion); //getCenter(m_prevPos)
+	/*float newX, newY;
 	switch (m_newDirection)
 	{
 	case RIGHT: 
@@ -142,7 +145,7 @@ void Mouse::collide(Wall* object)
 	default:
 		break;
 	}
-	m_sprite.setPosition(newX, newY);
+	m_sprite.setPosition(newX, newY);*/
 	//sound ouch
 }
 
@@ -159,27 +162,28 @@ void Mouse::collide(Door* object)
 
 void Mouse::collide(Key* object)
 {
-	sf::Vector2f objectPosition;
+	/*sf::Vector2f objectPosition;
 	objectPosition.x = object->getPosition().x * P_SIZE + P_SIZE;
-	objectPosition.y = object->getPosition().y * P_SIZE + P_SIZE;
+	objectPosition.y = object->getPosition().y * P_SIZE + P_SIZE;*/
 
-	if (abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE &&
-		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE &&
+	if (/*abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE &&
+		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE &&*/
 		object->getStatus()) {
 
 		object->setStatus(false);
+		m_numberKeys++;
 		//m_level.clearBoard(m_level.getNumberOfLevel(), '%');//to cler from the bord
 	}
 }
 
 void Mouse::collide(Gift* object)
 {
-	sf::Vector2f objectPosition;
+	/*sf::Vector2f objectPosition;
 	objectPosition.x = object->getPosition().x * P_SIZE + P_SIZE;
-	objectPosition.y = object->getPosition().y * P_SIZE + P_SIZE;
+	objectPosition.y = object->getPosition().y * P_SIZE + P_SIZE;*/
 	//object->getType();
-	if (abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE &&
-		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE &&
+	if (/*abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE &&
+		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE &&*/
 		object->getStatus()) {
 
 		setScore(SCORE_GIFT);

@@ -23,8 +23,12 @@ void NonMovable::setPosition(sf::Vector2f position)
 void NonMovable::draw(sf::RenderWindow& window, sf::Vector2f pos)
 {
 	if (m_status) {
-		//m_sprite.setColor(m_color);
 		m_sprite.setPosition(pos);
 		window.draw(m_sprite);
 	}
+}
+
+sf::FloatRect NonMovable::getGlobalBounds() const
+{
+	return m_sprite.getGlobalBounds();
 }
