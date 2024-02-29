@@ -8,20 +8,22 @@ class Controller
 {
 public:
 	Controller();
-	//~Controller();
+	~Controller();
 
 private:
+	void runGame();
+
 	void startTheGame();
 	void handleMainEvents();
 
-	void handleLevelEvents(sf::Clock&);
+	void handleLevelEvents();
 
 
-	bool levelEnded(const Board& board, unsigned int levelNum);
+	bool levelEnded(const Board& board, int levelNum);
 
 	void buttonReleased(sf::Event);
 
-	void openLevel(int, int, unsigned int, Board&);
+	void openLevel();
 
 	void gameStory();
 
@@ -32,11 +34,10 @@ private:
 	int levelsInGame(std::string str);
 	void checkCollision(Movable* character, Direction direction, Board& board);
 
-	void moveDynamic(float passedTime, Board& board);
+	void moveMovable(float passedTime, Board& board);
 	bool catchMouse(Cat* cat);
 	void returnStartingPosition();
 	bool isMouseDied();
-	bool finshCheese();// noor add the logic
 
 	//void draw(float passedTime, Board& board);
 	void movableDraw(float passedTime);
@@ -50,7 +51,8 @@ private:
 	bool m_mute = false;
 	bool m_information = false;
 
-	bool m_storyShowed = false;
+	bool m_storyShowed = false;// to change when I want to push 
+	bool m_nowMove = false;
 
 	sf::RenderWindow m_window;
 	sf::RenderWindow m_levelWindow;
@@ -59,12 +61,8 @@ private:
 
 	Mouse m_mouse;
 	std::vector<std::unique_ptr<Cat>> m_cats;
-
 	PlayerStatus m_player;
 
 	int m_gameTime;
-
-	int m_countCheese;
-
-	// 
+	int m_count_levels = 0;
 };

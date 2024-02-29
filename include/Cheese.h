@@ -5,8 +5,7 @@
 class Cheese : public NonMovable
 {
 public:
-	Cheese(sf::Vector2f position) : NonMovable() {
-		m_position = position;
+	Cheese() : NonMovable() {
 		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(CHEESE)));
 		m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
 			((float)P_SIZE / m_sprite.getGlobalBounds().height)));
@@ -14,7 +13,7 @@ public:
 
 	virtual void collide(Icon* object) { object->collide(this); };
 	virtual void collide(Mouse* object) { object->collide(this); };
-	virtual void collide(Cat* object) {};
+	virtual void collide(Cat*) {};
 	
 	
 

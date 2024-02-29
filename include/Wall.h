@@ -6,8 +6,7 @@
 class Wall : public NonMovable
 {
 public:
-	Wall(sf::Vector2f position) : NonMovable() {
-		m_position = position;
+	Wall() : NonMovable() {
 		m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(WALL)));
 		m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
 			((float)P_SIZE / m_sprite.getGlobalBounds().height)));

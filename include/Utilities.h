@@ -29,11 +29,11 @@ private:
 	Utilities();
 
 	void iconNames(std::string);
-	void setLevels(std::string);
+	//void setLevels(std::string);
 	void checkIfValid(std::ifstream&);
 
 	sf::Texture m_CharactersTexture[NUM_OF_CHARACTERS];
-	sf::Sprite m_CharactersSprite[NUM_OF_CHARACTERS];
+	
 
 	std::vector<std::string> m_levels;
 

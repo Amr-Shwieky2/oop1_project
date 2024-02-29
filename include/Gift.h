@@ -18,9 +18,9 @@ public:
 
 	virtual void collide(Icon* object) { object->collide(this); };
 	virtual void collide(Mouse* object) { object->collide(this); };
-	virtual void collide(Cat* object) {};
+	virtual void collide(Cat*) {};
 
-	TypeGift getType() { return m_typegift; };
+	TypeGift getType()const { return m_typegift; };
 protected:
 	TypeGift m_typegift;
 };

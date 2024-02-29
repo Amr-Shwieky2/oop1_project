@@ -21,7 +21,7 @@ void Screens::setBackground() {
 
 void Screens::setLevelsOpenings(float colSize, float rowSize, unsigned int numberOfLevel){
 	sf::Texture text;
-	text.loadFromFile("new-level" + std::to_string((numberOfLevel % 5) + 1) + ".png");
+	text.loadFromFile("new-level" + std::to_string((numberOfLevel % 5)) + ".png");
 	m_levelsBackgroundsTexture.push_back(text);
 
 	sf::Sprite sprite;
@@ -201,7 +201,7 @@ void Screens::drawLevelOpening(sf::RenderWindow& window, unsigned int openingNum
 	while (true) {
 		float elapsedTime = clock.getElapsedTime().asSeconds();
 		window.clear();
-		window.draw(m_levelsBackgroundsSprite.at(openingNum - 1));
+		window.draw(m_levelsBackgroundsSprite.at(openingNum));
 		window.display();
 		// Increment sprite index every second
 		if (elapsedTime >= 1.0f) {

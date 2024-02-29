@@ -82,11 +82,42 @@ int Board::getCheeseCounter() const {
 	return m_numberOfCheese;
 }
 
-NonMovable* Board::getCharacters(sf::Vector2f position)
+int Board::getCatsNumber() const
 {
-	int row = static_cast<int>(position.y / P_SIZE);
-	int col = static_cast<int>(position.x / P_SIZE);
+	return m_numberOfCats;
+}
 
+NonMovable* Board::getCharacters(sf::Vector2f position, Direction direction)
+{
+	int row = 0, col = 0;
+	//if (direction == LEFT || direction == UP) {
+	//	row = static_cast<int>(position.y / P_SIZE);
+	//	col = static_cast<int>(position.x / P_SIZE);
+	//}
+	//else {
+	//	
+	//}
+	//switch (direction)
+	//{
+	//case RIGHT:
+	//	col = std::ceil(position.x / P_SIZE) ;
+	//	row = std::floor(position.y / P_SIZE);
+	//	break;
+	//case LEFT:
+	//	col = std::floor(position.x / P_SIZE);
+	//	row = std::ceil(position.y / P_SIZE);
+	//	break;
+	//case UP: 
+	//	col = std::floor(position.x / P_SIZE);
+	//	row = std::floor(position.y / P_SIZE);
+	//	break;
+	//case DOWN:
+	//	col = std::ceil(position.x / P_SIZE);
+	//	row = std::ceil(position.y / P_SIZE);
+	//	break;
+	//}
+	row = static_cast<int>(std::round(position.y / P_SIZE));
+	col = static_cast<int>(std::round(position.x / P_SIZE ));
 
 	return m_board[row][col].get();
 }
@@ -112,6 +143,65 @@ int Board::getnumberOfLevel() const
 {
 	return m_numberOfLevel;
 }
+
+void Board::openFile() {
+
+	std::string file = "Level" + std::to_string(m_numberOfLevel) + ".txt";
+	m_file.open(file);
+	if (!m_file.is_open())
+	{
+		std::cerr << "could not open level file\n";
+		exit(EXIT_FAILURE);
+	}
+}
+
+void Board::setBoardSize()
+{
+	m_board.resize(m_row);
+	for (size_t i = 0; i < m_row; i++)
+		m_board[i].resize(m_col);
+}
+
+void Board::pushToMap(const char& characters, size_t& row, size_t& col,
+	Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats)
+{
+	switch (characters)
+	{
+	case WALL_CH:
+		m_board[row][col] = std::make_unique <Wall>();
+		break;
+	case DOOR_CH:
+		m_board[row][col] = std::make_unique <Door>();
+		break;
+	case CHEESE_CH:
+		m_board[row][col] = std::make_unique <Cheese>();
+		m_numberOfCheese++;
+		break;
+	case KEY_CH:
+		m_board[row][col] = std::make_unique <Key>();
+		break;
+	case REMOVE_CAT_GIFT_CH:  
+		m_board[row][col] = std::make_unique <HideCatGift>();
+		break;
+	case ADD_HEART_GIFT_CH: 
+		m_board[row][col] = std::make_unique <HeartGift>();
+		break;
+	case ADD_TIME_GIFT_CH: 
+		m_board[row][col] = std::make_unique <TimeGift>();
+		break;
+	case CAT_CH:
+		setCat(cats, sf::Vector2f(static_cast<float>(col) * P_SIZE, static_cast<float>(row) * P_SIZE));
+		break;
+	case MOUSE_CH:
+		setMouse(mouse, sf::Vector2f(static_cast<float>(col) * P_SIZE, static_cast<float>(row) * P_SIZE));
+		break;
+	default:
+		break;
+	}
+}
+
+
+
 
 std::vector<std::vector<sf::Vector3i>> Board::getBfsTree(sf::Vector2i start)
 {
@@ -189,61 +279,4 @@ std::vector<sf::Vector2i> Board::searchNeighbors(const sf::Vector2i center)
 
 	// Return the neighboring coordinates
 	return neighbors;
-}
-
-
-void Board::openFile() {
-
-	std::string file = "Level" + std::to_string(m_numberOfLevel) + ".txt";
-	m_file.open(file);
-	if (!m_file.is_open())
-	{
-		std::cerr << "could not open level file\n";
-		exit(EXIT_FAILURE);
-	}
-}
-
-void Board::setBoardSize()
-{
-	m_board.resize(m_row);
-	for (size_t i = 0; i < m_row; i++)
-		m_board[i].resize(m_col);
-}
-
-void Board::pushToMap(const char& characters, size_t& row, size_t& col,
-	Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats)
-{
-	switch (characters)
-	{
-	case WALL_CH:
-		m_board[row][col] = std::make_unique <Wall>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
-		break;
-	case DOOR_CH:
-		m_board[row][col] = std::make_unique <Door>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
-		break;
-	case CHEESE_CH:
-		m_board[row][col] = std::make_unique <Cheese>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
-		m_numberOfCheese++;
-		break;
-	case KEY_CH:
-		m_board[row][col] = std::make_unique <Key>(sf::Vector2f(static_cast<float>(row), static_cast<float>(col)));
-		break;
-	case REMOVE_CAT_GIFT_CH:  
-		m_board[row][col] = std::make_unique <HideCatGift>();
-		break;
-	case ADD_HEART_GIFT_CH: 
-		m_board[row][col] = std::make_unique <HeartGift>();
-		break;
-	case ADD_TIME_GIFT_CH: 
-		m_board[row][col] = std::make_unique <TimeGift>();
-		break;
-	case CAT_CH:
-		setCat(cats, sf::Vector2f(static_cast<float>(col) * P_SIZE, static_cast<float>(row) * P_SIZE));
-		break;
-	case MOUSE_CH:
-		setMouse(mouse, sf::Vector2f(static_cast<float>(col) * P_SIZE, static_cast<float>(row) * P_SIZE));
-		break;
-	default:
-		break;
-	}
 }

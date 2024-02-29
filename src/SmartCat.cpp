@@ -4,13 +4,13 @@
 
 void SmartCat::move(float passedTime, sf::Vector2f boardSize, const std::vector<std::vector<sf::Vector3i>>& Tree)
 {
-    //std::vector<std::vector<sf::Vector3i>> Tree = getBfsTree();
 
 	sf::Vector2i start = sf::Vector2i((int)(m_sprite.getPosition().x / P_SIZE),
 									  (int)(m_sprite.getPosition().y / P_SIZE));
 
 	m_previousPostion = m_sprite.getPosition();
-	float moveDistance = CAT_SPEED * passedTime;
+	float moveDistance = CAT_SPEED* passedTime;
+	//
 
 	//if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition()))) {
 		m_direction = getBfsMove(start,
@@ -19,9 +19,10 @@ void SmartCat::move(float passedTime, sf::Vector2f boardSize, const std::vector<
 
 	moveDirection(moveDistance);
 
-	if (outOfBoard(boardSize)) {
+	if (!outOfBoard(boardSize)) 
 		m_sprite.setPosition(m_previousPostion);
-	}
+	
+	
 	m_position = m_sprite.getPosition();
 }
 

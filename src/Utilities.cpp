@@ -3,7 +3,6 @@
 
 Utilities::Utilities() {
 	iconNames("Names_images.txt");
-	setLevels("Levels.txt");
 }
 
 
@@ -14,20 +13,11 @@ void Utilities::iconNames(std::string str) {
 	int i = 0;
 	while (std::getline(inputFile, line)) {
 		m_CharactersTexture[i].loadFromFile(line);
-		m_CharactersSprite[i].setTexture(m_CharactersTexture[i]);
+		
 		i++;
 	}
 }
 
-void Utilities::setLevels(std::string str) {
-	std::ifstream inputFile(str);
-	checkIfValid(inputFile);
-	std::string line;
-	while (std::getline(inputFile, line)) {
-		m_levels.push_back(line);
-	}
-	inputFile.close();
-}
 
 void Utilities::checkIfValid(std::ifstream &inputFile) {
 	// Check if the file is successfully opened
