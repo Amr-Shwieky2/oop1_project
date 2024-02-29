@@ -8,8 +8,8 @@ PlayerStatus::PlayerStatus() {
 
 void PlayerStatus::draw(sf::RenderWindow& window, int life, int score, int level, int timer, sf::Vector2f BoardSize, sf::Font font) {
 	std::string status = "Lives: \nScore " + std::to_string(score) +
-						 "in level " + std::to_string(level) + "\nTime Left " +
-						 std::to_string(timer) + "Seconds";
+						 " in level " + std::to_string(level) + "\nTime Left " +
+						 std::to_string(timer) + "  Seconds";
 
 	m_statusBar.setPosition(20, BoardSize.x + 5.f);
 	m_statusBar.setString(status);

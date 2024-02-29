@@ -2,11 +2,10 @@
 #include <memory>
 
 Controller::Controller() {
-    int count_levels = levelsInGame("Levels.txt");
-    //m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
-    runGame(count_levels);
+    m_count_levels = levelsInGame("Levels.txt");
+    m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
     
-    /*m_screens.OpeningBackground(m_window); 
+    //m_screens.OpeningBackground(m_window); 
     
     while (m_window.isOpen()) {
         m_window.clear();
@@ -14,65 +13,75 @@ Controller::Controller() {
         openInformation();
 
         openLevel();
+
         handleMainEvents();
         m_window.display(); 
     }
-    m_window.close(); */
 }
 
-void Controller::runGame(const int& numberOfLevel)
+Controller::~Controller() {
+    m_window.close();
+    m_levelWindow.close();
+}
+
+void Controller::runGame()
 {
-    for (int Level = 1; Level < numberOfLevel; Level++) {
+    int level = 1;
+    for (; level <= m_count_levels; level++) {
         
-        Board board(m_mouse, m_cats, Level);
+        Board board(m_mouse, m_cats, level);
         sf::Vector2f boardSize = board.getBoardSize();
+        //m_screens.setLevelsOpenings(boardSize.x, boardSize.y, level);
 
         m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(boardSize.y),
             static_cast<unsigned int>(boardSize.x + P_SIZE * 3)),
-            "Level" + std::to_string(Level));
+            "Level" + std::to_string(level));
 
-        while (m_levelWindow.isOpen()) {
-            static sf::Clock clock;
-            static sf::Clock timer;
-            timer.restart();
-            static sf::Time allottedTime = board.getTime();
+        static sf::Clock clock;
+        static sf::Clock timer;
+        timer.restart();
+        static sf::Time allottedTime = board.getTime();
 
-            while (!isMouseDied()) {
-                m_levelWindow.clear(sf::Color(238, 232, 170));
+        while (m_levelWindow.isOpen() && !isMouseDied()) {
+            
 
-                m_gameTime = static_cast<int>(allottedTime.asSeconds() -
-                    timer.getElapsedTime().asSeconds() +
-                    m_mouse.getMoreTime());
+            m_levelWindow.clear(sf::Color(238, 232, 170));
 
-                if (levelEnded(board, Level)) break;
+            m_gameTime = static_cast<int>(allottedTime.asSeconds() - timer.getElapsedTime().asSeconds()) + m_mouse.getMoreTime();
 
-                handleLevelEvents();
 
-                sf::Time passedTime = clock.restart();
-                float time = passedTime.asSeconds();
-                moveMovable(time, board);
+            if (levelEnded(board, level)) break;
+
+            handleLevelEvents();
+
+            sf::Time passedTime = clock.restart();
+            float time = passedTime.asSeconds();
+            moveMovable(time, board);
 
                 
-                board.drawBoard(m_levelWindow);
-                m_player.draw(m_levelWindow, m_mouse.getLife(), m_mouse.getScore(), Level, m_gameTime, board.getBoardSize(), m_screens.getFont());
-                movableDraw(time);
-                m_levelWindow.display();
-            }
-            break;
+            board.drawBoard(m_levelWindow);
+            m_player.draw(m_levelWindow, m_mouse.getLife(), m_mouse.getScore(), level, m_gameTime, board.getBoardSize(), m_screens.getFont());
+            movableDraw(time);
+            m_levelWindow.display();
         }
+
         if ((!isMouseDied()) && m_gameTime > 0)
             m_mouse.setScore(SCORE_LEVEL + SCORE_CAT * board.getCatsNumber());
-        m_levelWindow.close();
-        // m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
+        
+        
         // +score 
     }
-    m_levelWindow.close();
+    if (level < m_count_levels) {
+        m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
+        m_mainPage = true;
+    }
 }
 
 void Controller::openLevel() {
     if (m_newGame) {
         gameStory();
         m_window.close();
+        runGame();
         m_newGame = false;
     }
 
@@ -99,8 +108,6 @@ void Controller::handleLevelEvents() {
         switch (event.type) {
         case sf::Event::Closed:
             m_levelWindow.close();
-            m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
-            m_mainPage = true;
             break;
         case sf::Event::KeyReleased:
             if ((event.key.code == sf::Keyboard::Left) || (event.key.code == sf::Keyboard::Right) ||
@@ -171,6 +178,7 @@ void Controller::checkCollision(Movable* character, Direction direction, Board& 
 void Controller::moveMovable(float passedTime, Board& board)
 {
     
+    
     if (m_nowMove) {
         m_mouse.move(passedTime, board.getBoardSize());
         m_nowMove = false;
@@ -184,10 +192,26 @@ void Controller::moveMovable(float passedTime, Board& board)
     std::vector<std::vector<sf::Vector3i>> Tree = board.getBfsTree(sf::Vector2i((int)(m_mouse.getPosition().x / P_SIZE),
         (int)(m_mouse.getPosition().y / P_SIZE)));
 
+    // Use a static clock to measure real-time seconds
+    static sf::Clock realTimeClock;
+    static float realTimePassed = 0.0f;
+
+    // Update real-time passed
+    realTimePassed += realTimeClock.restart().asSeconds();
+
+    // Decrease the timer every second
+    while (realTimePassed >= 1.0f) {
+        if (m_mouse.getTimerCatsStop() > 0)
+            m_mouse.decTimerCatsStop();
+
+        realTimePassed -= 1.0f; // Subtract one second
+    }
+
     if (m_mouse.getStoppingPower()) {
         if (m_mouse.getTimerCatsStop() <= 0)
             m_mouse.setStoppingPower(false);
-    }else{
+    }
+    else{
         for (size_t i = 0; i < m_cats.size(); i++) {
             m_cats[i]->move(passedTime, board.getBoardSize(), Tree);
             checkCollision(m_cats[i].get(), m_cats[i].get()->getDirection(), board);
@@ -260,7 +284,7 @@ void Controller::buttonReleased(sf::Event event) {
         break;
     case EXIT:
         m_screens.playPauseSound(1, false); // play click
-        m_mainPage = false;
+        m_mainPage = true;
         m_window.close();
         break;
     case STORY:

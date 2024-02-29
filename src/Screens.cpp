@@ -201,7 +201,7 @@ void Screens::drawLevelOpening(sf::RenderWindow& window, unsigned int openingNum
 	while (true) {
 		float elapsedTime = clock.getElapsedTime().asSeconds();
 		window.clear();
-		window.draw(m_levelsBackgroundsSprite.at(openingNum - 1));
+		window.draw(m_levelsBackgroundsSprite.at(openingNum));
 		window.display();
 		// Increment sprite index every second
 		if (elapsedTime >= 1.0f) {

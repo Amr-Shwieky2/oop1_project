@@ -89,17 +89,36 @@ int Board::getCatsNumber() const
 
 NonMovable* Board::getCharacters(sf::Vector2f position, Direction direction)
 {
-	int row, col;
-	if (direction == LEFT || direction == UP) {
-		row = static_cast<int>(position.y / P_SIZE);
-		col = static_cast<int>(position.x / P_SIZE);
-	}
-	else
-	{
-		row = static_cast<int>(std::round(position.y / P_SIZE ));
-		col = static_cast<int>(std::round(position.x / P_SIZE ));
-	}
-
+	int row = 0, col = 0;
+	//if (direction == LEFT || direction == UP) {
+	//	row = static_cast<int>(position.y / P_SIZE);
+	//	col = static_cast<int>(position.x / P_SIZE);
+	//}
+	//else {
+	//	row = static_cast<int>(std::round(position.y / P_SIZE ));
+	//	col = static_cast<int>(std::round(position.x / P_SIZE ));
+	//}
+	//switch (direction)
+	//{
+	//case RIGHT:
+	//	col = std::ceil(position.x / P_SIZE) ;
+	//	row = std::floor(position.y / P_SIZE);
+	//	break;
+	//case LEFT:
+	//	col = std::floor(position.x / P_SIZE);
+	//	row = std::ceil(position.y / P_SIZE);
+	//	break;
+	//case UP: 
+	//	col = std::floor(position.x / P_SIZE);
+	//	row = std::floor(position.y / P_SIZE);
+	//	break;
+	//case DOWN:
+	//	col = std::ceil(position.x / P_SIZE);
+	//	row = std::ceil(position.y / P_SIZE);
+	//	break;
+	//}
+	col = std::round(position.x / P_SIZE);
+	row = std::round(position.y / P_SIZE);
 	return m_board[row][col].get();
 }
 

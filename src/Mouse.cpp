@@ -8,8 +8,8 @@ Mouse::Mouse()
 {
 	m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(MOUSE)));
 	m_sprite.setOrigin(m_sprite.getPosition());
-	m_sprite.setScale(sf::Vector2f(((float)P_SIZE / m_sprite.getGlobalBounds().height),
-		((float)P_SIZE / m_sprite.getGlobalBounds().height)));
+	m_sprite.setScale(sf::Vector2f(((float)P_SIZE / (m_sprite.getGlobalBounds().height + P_SIZE)),
+		((float)P_SIZE / (m_sprite.getGlobalBounds().width + P_SIZE ))));
 	SetPosition(m_sprite.getOrigin());
 }
 
@@ -35,9 +35,6 @@ void Mouse::setDirection(sf::Keyboard::Key direction) {
 void Mouse::move(float passedTime, sf::Vector2f boardSize)
 {
 	m_previousPostion = m_sprite.getPosition();
-
-	if (m_timerCatsStop > 0)
-		m_timerCatsStop -= int(passedTime);
 
 	float moveDistance = (REGULAR_SPEED * passedTime);
 
@@ -102,9 +99,12 @@ int Mouse::getMoreTime() const
 	return m_moreTime;
 }
 
-int Mouse::getTimerCatsStop() const
-{
+int Mouse::getTimerCatsStop() const {
 	return m_timerCatsStop;
+}
+
+void Mouse::decTimerCatsStop() {
+	m_timerCatsStop--;
 }
 
 int Mouse::getCheeseCounter() const
@@ -149,10 +149,10 @@ void Mouse::collide(Wall*)
 
 void Mouse::collide(Door* object)
 {
-	if (m_numberKeys > 0) {
+	if (m_numberKeys > 0 && object->getStatus()) {
 		setScore(SCORE_OREN_DOOR);
 		object->setStatus(false);
-		
+		m_numberKeys--;
 	}
 	if (object->getStatus())
 		m_sprite.setPosition(m_previousPostion);
@@ -169,10 +169,10 @@ void Mouse::collide(Key* object)
 
 void Mouse::collide(Gift* object)
 {
-	TypeGift witchGift = object->getType();
+	TypeGift whichGift = object->getType();
 	
 	if (object->getStatus()) {
-		switch (witchGift)
+		switch (whichGift)
 		{
 		case ADD_HEART_GIFT:
 			if (m_life < 3)

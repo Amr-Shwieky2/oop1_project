@@ -4,16 +4,16 @@
 enum Direction { RIGHT, DOWN, LEFT, UP };
 
 
-const int COLLISION_SIZE = 16; // to check varibels  Collision
+const int COLLISION_SIZE = 30; // to check varibels  Collision
 const float SWITCH_FRAME = 15; ///???
-const float REGULAR_SPEED = 360;
-const float CAT_SPEED = 100; 
+const float REGULAR_SPEED = 400;
+const float CAT_SPEED = 50; 
 
 class Movable : public Icon
 {
 public:
 	Movable();
-	void draw(sf::RenderWindow& window, float passedTime);
+	void draw(sf::RenderWindow& window, float passedTime) const;
 	//=========V
 	sf::Vector2f getPosition()const;
 	void SetPosition(sf::Vector2f newPosition);

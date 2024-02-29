@@ -29,7 +29,7 @@ private:
 	Utilities();
 
 	void iconNames(std::string);
-	void setLevels(std::string);
+	//void setLevels(std::string);
 	void checkIfValid(std::ifstream&);
 
 	sf::Texture m_CharactersTexture[NUM_OF_CHARACTERS];

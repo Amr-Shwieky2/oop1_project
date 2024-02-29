@@ -8,10 +8,11 @@ class Controller
 {
 public:
 	Controller();
-	void runGame(const int&);
-	//~Controller();
+	~Controller();
 
 private:
+	void runGame();
+
 	void startTheGame();
 	void handleMainEvents();
 
@@ -50,7 +51,7 @@ private:
 	bool m_mute = false;
 	bool m_information = false;
 
-	bool m_storyShowed = true;// to change when I want to push 
+	bool m_storyShowed = false;// to change when I want to push 
 	bool m_nowMove = false;
 
 	sf::RenderWindow m_window;
@@ -63,5 +64,5 @@ private:
 	PlayerStatus m_player;
 
 	int m_gameTime;
-	
+	int m_count_levels = 0;
 };
