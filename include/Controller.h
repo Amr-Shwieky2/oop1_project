@@ -19,7 +19,7 @@ private:
 	void handleLevelEvents();
 
 
-	bool levelEnded(const Board& board, unsigned int levelNum);
+	bool levelEnded(const Board& board, int levelNum);
 
 	void buttonReleased(sf::Event);
 

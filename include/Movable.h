@@ -6,7 +6,7 @@ enum Direction { RIGHT, DOWN, LEFT, UP };
 
 const int COLLISION_SIZE = 30; // to check varibels  Collision
 const float SWITCH_FRAME = 15; ///???
-const float REGULAR_SPEED = 400;
+const float REGULAR_SPEED = 700;
 const float CAT_SPEED = 50; 
 
 class Movable : public Icon

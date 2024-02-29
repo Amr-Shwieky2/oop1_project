@@ -26,14 +26,18 @@ public:
 	void setKeysNumber(const int& number);
 
 	int getMoreTime()const;
+
 	int getCheeseCounter()const;
-	
+	void setCheeseCounter(const int&);
+
 	void decTimerCatsStop();
 	int getTimerCatsStop()const;
 
 
 	void setStoppingPower(const bool&);
 	bool getStoppingPower()const;
+
+
 
 	virtual void collide(Icon*) {};
 	virtual void collide(Mouse*) {};
@@ -52,9 +56,10 @@ private:
 	int m_moreTime = 0;
 	int m_countCheese = 0;
 
-	float m_timerCatsStop = 0;
+	int m_timerCatsStop = 0;
 
 	bool m_isArrested = false;
 	bool m_stoppingPower = false;
+	
 };
 

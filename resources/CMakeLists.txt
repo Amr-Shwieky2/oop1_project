@@ -30,11 +30,7 @@ configure_file ("./levels/Levels.txt" ${CMAKE_BINARY_DIR} COPYONLY)
 configure_file ("./levels/Level1.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./levels/Level2.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./levels/Level3.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level4.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level5.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level006.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level007.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
-configure_file ("./levels/Level008.txt" ${CMAKE_BINARY_DIR} COPYONLY)	
+	
 
 configure_file ("./images/Tom&Jerry.png" ${CMAKE_BINARY_DIR} COPYONLY)	
 configure_file ("./images/startGame.png" ${CMAKE_BINARY_DIR} COPYONLY)	

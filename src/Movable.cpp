@@ -31,16 +31,16 @@ sf::Vector2f Movable::getNextDirection(Direction direction) {
 	switch (direction)
 	{
 	case UP:
-		nextPosition2 = sf::Vector2f(nextPosition.x, nextPosition.y - (0.1));
+		nextPosition2 = sf::Vector2f(nextPosition.x, nextPosition.y - float(0.1));
 		return nextPosition2;
 	case DOWN:
-		nextPosition2 = sf::Vector2f(nextPosition.x, nextPosition.y + (0.1));
+		nextPosition2 = sf::Vector2f(nextPosition.x, nextPosition.y + float(0.1));
 		return nextPosition2;
 	case RIGHT:
-		nextPosition2 = sf::Vector2f(nextPosition.x + (0.1), nextPosition.y);
+		nextPosition2 = sf::Vector2f(nextPosition.x + float(0.1), nextPosition.y);
 		return nextPosition2;
 	case LEFT:
-		nextPosition2 = sf::Vector2f(nextPosition.x - (0.1), nextPosition.y);
+		nextPosition2 = sf::Vector2f(nextPosition.x - float(0.1), nextPosition.y);
 		return nextPosition2;
 	}
 	return nextPosition;
@@ -71,7 +71,7 @@ void Movable::SetPosition(sf::Vector2f newPosition)
 }
 
 bool Movable::isCentered(sf::Vector2f position, sf::Vector2f centerPosition) const {
-	return abs(position.x - centerPosition.x) < P_SIZE && abs(position.y - centerPosition.y) < P_SIZE;
+	return abs(position.x - centerPosition.x) < COLLISION_SIZE && abs(position.y - centerPosition.y) < COLLISION_SIZE;
 }
 
 sf::Vector2f Movable::getCenter(sf::Vector2f position) const {

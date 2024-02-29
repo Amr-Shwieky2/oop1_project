@@ -14,8 +14,9 @@ Controller::Controller() {
 
         openLevel();
 
-        handleMainEvents();
+        
         m_window.display(); 
+        handleMainEvents();
     }
 }
 
@@ -27,7 +28,7 @@ Controller::~Controller() {
 void Controller::runGame()
 {
     int level = 1;
-    for (; level <= m_count_levels; level++) {
+    for (; level <= m_count_levels && !m_mainPage; level++) {
         
         Board board(m_mouse, m_cats, level);
         sf::Vector2f boardSize = board.getBoardSize();
@@ -65,9 +66,10 @@ void Controller::runGame()
             m_levelWindow.display();
         }
 
-        if ((!isMouseDied()) && m_gameTime > 0)
+        if ((!isMouseDied()) && m_gameTime > 0){
             m_mouse.setScore(SCORE_LEVEL + SCORE_CAT * board.getCatsNumber());
-        
+            m_mouse.setCheeseCounter(0);
+        }
         
         // +score 
     }
@@ -107,6 +109,7 @@ void Controller::handleLevelEvents() {
     if(auto event = sf::Event{}; m_levelWindow.pollEvent(event)) {
         switch (event.type) {
         case sf::Event::Closed:
+            m_mainPage = true;
             m_levelWindow.close();
             break;
         case sf::Event::KeyReleased:
@@ -124,8 +127,8 @@ void Controller::handleLevelEvents() {
     }
 }
 
-bool Controller::levelEnded(const Board& board, unsigned int levelNum) {
-    if (m_mouse.getCheeseCounter() == board.getCheeseCounter() && m_gameTime > 0) {
+bool Controller::levelEnded(const Board& board,  int levelNum) {
+    if (m_mouse.getCheeseCounter() == board.getCheeseCounter()) {
         m_levelWindow.clear();
        // m_screens.drawLevelOpening(m_levelWindow, levelNum); /// ??????????
         m_cats.clear();
@@ -134,6 +137,14 @@ bool Controller::levelEnded(const Board& board, unsigned int levelNum) {
         m_mainPage = false;
         m_levelWindow.close();
         return true;
+    }
+    else if (m_gameTime <= 0) {
+        m_newGame = false;
+        m_mainPage = true;
+        m_cats.clear();
+        m_levelWindow.close();
+        return true;
+
     }
     return false;
 }
@@ -170,21 +181,21 @@ int Controller::levelsInGame(std::string str) {
 
 void Controller::checkCollision(Movable* character, Direction direction, Board& board)
 {
-
     Icon* icon = board.getCharacters(character->getNextDirection(direction), character->getDirection());
     if (icon != nullptr)
         icon->collide(character);
+
+
 }
 
 void Controller::moveMovable(float passedTime, Board& board)
 {
-    
-    
+    checkCollision(&m_mouse, m_mouse.getDirection(), board);
     if (m_nowMove) {
         m_mouse.move(passedTime, board.getBoardSize());
         m_nowMove = false;
     }
-    checkCollision(&m_mouse, m_mouse.getDirection(), board);
+    
 
     if (m_mouse.getMouseState()) {
         returnStartingPosition();

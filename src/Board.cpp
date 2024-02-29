@@ -95,8 +95,7 @@ NonMovable* Board::getCharacters(sf::Vector2f position, Direction direction)
 	//	col = static_cast<int>(position.x / P_SIZE);
 	//}
 	//else {
-	//	row = static_cast<int>(std::round(position.y / P_SIZE ));
-	//	col = static_cast<int>(std::round(position.x / P_SIZE ));
+	//	
 	//}
 	//switch (direction)
 	//{
@@ -117,8 +116,9 @@ NonMovable* Board::getCharacters(sf::Vector2f position, Direction direction)
 	//	row = std::ceil(position.y / P_SIZE);
 	//	break;
 	//}
-	col = std::round(position.x / P_SIZE);
-	row = std::round(position.y / P_SIZE);
+	row = static_cast<int>(std::round(position.y / P_SIZE));
+	col = static_cast<int>(std::round(position.x / P_SIZE ));
+
 	return m_board[row][col].get();
 }
 

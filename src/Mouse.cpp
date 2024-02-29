@@ -112,6 +112,11 @@ int Mouse::getCheeseCounter() const
 	return m_countCheese;
 }
 
+void Mouse::setCheeseCounter(const int& s)
+{
+	m_countCheese = s;
+}
+
 void Mouse::setStoppingPower(const bool& s)
 {
 	m_stoppingPower = s;
@@ -121,6 +126,7 @@ bool Mouse::getStoppingPower() const
 {
 	return m_stoppingPower;
 }
+
 
 void Mouse::collide(Cat*)
 {
@@ -143,7 +149,6 @@ void Mouse::collide(Cheese* object)
 void Mouse::collide(Wall*)  
 {
 	m_sprite.setPosition(m_previousPostion); 
-	
 	//sound ouch
 }
 

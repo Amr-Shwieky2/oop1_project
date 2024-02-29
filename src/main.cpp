@@ -2,5 +2,5 @@
 
 int main() {
 	Controller controller;
-	return EXIT_SUCCESS;
+	return 0;
 }
