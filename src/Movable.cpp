@@ -1,14 +1,10 @@
 #include "Movable.h"
 #include <math.h>
 
-Movable::Movable(): m_frameCounter(0), m_sourceX(0) {}
+Movable::Movable(){}
 
-void Movable::draw(sf::RenderWindow& window, float passedTime)
+void Movable::draw(sf::RenderWindow& window, float)
 {
-	m_frameCounter += passedTime * REGULAR_SPEED;
-	if (m_frameCounter > SWITCH_FRAME) {
-		m_frameCounter = 0;
-	}
 	
 	window.draw(m_sprite);
 }

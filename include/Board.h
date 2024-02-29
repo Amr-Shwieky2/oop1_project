@@ -34,6 +34,7 @@ public:
 	void setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f position);
 
 	int getCheeseCounter() const;
+	int getCatsNumber()const;
 
 	NonMovable* getCharacters(sf::Vector2f position, Direction direction);
 	std::vector<std::vector<std::unique_ptr<NonMovable>>> &getMap();

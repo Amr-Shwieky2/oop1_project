@@ -4,7 +4,7 @@
 #include "Key.h"
 #include "Gift.h"
 
-Mouse::Mouse(): m_cookieCounter(0), m_score(0), m_life(3), m_numberKeys(0), m_isArrested(false)
+Mouse::Mouse()
 {
 	m_sprite.setTexture(*(Utilities::instance().getCharactersTexture(MOUSE)));
 	m_sprite.setOrigin(m_sprite.getPosition());
@@ -35,7 +35,10 @@ void Mouse::setDirection(sf::Keyboard::Key direction) {
 void Mouse::move(float passedTime, sf::Vector2f boardSize)
 {
 	m_previousPostion = m_sprite.getPosition();
-	//
+
+	if (m_timerCatsStop > 0)
+		m_timerCatsStop -= int(passedTime);
+
 	float moveDistance = (REGULAR_SPEED * passedTime);
 
 	if (isCentered(m_sprite.getPosition(), getCenter(m_sprite.getPosition())))
@@ -94,7 +97,32 @@ void Mouse::setKeysNumber(const int& number)
 	m_numberKeys = number;
 }
 
-void Mouse::collide(Cat* object)
+int Mouse::getMoreTime() const
+{
+	return m_moreTime;
+}
+
+int Mouse::getTimerCatsStop() const
+{
+	return m_timerCatsStop;
+}
+
+int Mouse::getCheeseCounter() const
+{
+	return m_countCheese;
+}
+
+void Mouse::setStoppingPower(const bool& s)
+{
+	m_stoppingPower = s;
+}
+
+bool Mouse::getStoppingPower() const
+{
+	return m_stoppingPower;
+}
+
+void Mouse::collide(Cat*)
 {
 	m_life--;
 	m_isArrested = true;
@@ -104,48 +132,18 @@ void Mouse::collide(Cat* object)
 
 void Mouse::collide(Cheese* object)
 {
-	sf::Vector2f objectPosition;
-	objectPosition.x = object->getPosition().x * P_SIZE;
-	objectPosition.y = object->getPosition().y * P_SIZE;
-
-	/*float x = abs(m_sprite.getPosition().x - objectPosition.x);
-	float y = abs(m_sprite.getPosition().y - objectPosition.y);*/
-	if (/*abs(m_sprite.getPosition().x - objectPosition.x) <= P_SIZE &&
-		abs(m_sprite.getPosition().y - objectPosition.y) <= P_SIZE &&*/
-		object->getStatus()) {
-
+	if (object->getStatus()) {
 		setScore(SCORE_CHEESE);
 		object->setStatus(false);
+		m_countCheese++;
 		// sound eat
 	}
 }
 
-void Mouse::collide(Wall* object) // mapy this 
+void Mouse::collide(Wall*)  
 {
-	m_sprite.setPosition(m_previousPostion); //getCenter(m_prevPos)
-	/*float newX, newY;
-	switch (m_newDirection)
-	{
-	case RIGHT: 
-		newX = std::ceil(m_previousPostion.x / P_SIZE) * P_SIZE;
-		newY = std::floor(m_previousPostion.y / P_SIZE) * P_SIZE;
-		break;
-	case LEFT: 
-		newX = std::floor(m_previousPostion.x / P_SIZE)  * P_SIZE;
-		newY = std::ceil(m_previousPostion.y / P_SIZE) * P_SIZE;
-		break;
-	case UP:
-		newX = std::floor(m_previousPostion.x / P_SIZE) * P_SIZE;
-		newY = std::floor(m_previousPostion.y / P_SIZE) * P_SIZE;
-		break;
-	case DOWN:
-		newX = std::ceil(m_previousPostion.x / P_SIZE) * P_SIZE;
-		newY = std::ceil(m_previousPostion.y / P_SIZE) * P_SIZE;
-		break;
-	default:
-		break;
-	}
-	m_sprite.setPosition(newX, newY);*/
+	m_sprite.setPosition(m_previousPostion); 
+	
 	//sound ouch
 }
 
@@ -154,7 +152,7 @@ void Mouse::collide(Door* object)
 	if (m_numberKeys > 0) {
 		setScore(SCORE_OREN_DOOR);
 		object->setStatus(false);
-			//m_level.clearBoard(m_level.getNumberOfLevel(), 'D');//to cler from the bord
+		
 	}
 	if (object->getStatus())
 		m_sprite.setPosition(m_previousPostion);
@@ -162,31 +160,36 @@ void Mouse::collide(Door* object)
 
 void Mouse::collide(Key* object)
 {
-	/*sf::Vector2f objectPosition;
-	objectPosition.x = object->getPosition().x * P_SIZE + P_SIZE;
-	objectPosition.y = object->getPosition().y * P_SIZE + P_SIZE;*/
-
-	if (/*abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE &&
-		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE &&*/
-		object->getStatus()) {
+	if (object->getStatus()) {
 
 		object->setStatus(false);
 		m_numberKeys++;
-		//m_level.clearBoard(m_level.getNumberOfLevel(), '%');//to cler from the bord
 	}
 }
 
 void Mouse::collide(Gift* object)
 {
-	/*sf::Vector2f objectPosition;
-	objectPosition.x = object->getPosition().x * P_SIZE + P_SIZE;
-	objectPosition.y = object->getPosition().y * P_SIZE + P_SIZE;*/
-	//object->getType();
-	if (/*abs(m_sprite.getPosition().x - objectPosition.x) < P_SIZE &&
-		abs(m_sprite.getPosition().y - objectPosition.y) < P_SIZE &&*/
-		object->getStatus()) {
-
+	TypeGift witchGift = object->getType();
+	
+	if (object->getStatus()) {
+		switch (witchGift)
+		{
+		case ADD_HEART_GIFT:
+			if (m_life < 3)
+				m_life++;
+			break;
+		case HIDE_CAT_GIFT:
+			m_timerCatsStop += 10;
+			m_stoppingPower = true;
+			break;
+		case ADD_TIME_GIFT:
+			m_moreTime += 10;
+			break;
+		default:
+			break;
+		}
 		setScore(SCORE_GIFT);
 		object->setStatus(false);
+		//add sound
 	}
 }

@@ -23,6 +23,12 @@ public:
 	int getKeysNumber()const;
 	void setKeysNumber(const int& number);
 
+	int getMoreTime()const;
+	int getTimerCatsStop()const;
+	int getCheeseCounter()const;
+
+	void setStoppingPower(const bool&);
+	bool getStoppingPower()const;
 
 	virtual void collide(Icon*) {};
 	virtual void collide(Mouse*) {};
@@ -34,14 +40,15 @@ public:
 	virtual void collide(Gift* object); 
 
 private:
-	int m_cookieCounter;
-
-	int m_score;
-	int m_life;
-	int m_numberKeys;
+	int m_score = 0;
+	int m_life = 3;
+	int m_numberKeys = 0;
 	
-	
-	bool m_isArrested;
+	int m_moreTime = 0;
+	int m_timerCatsStop = 0;
+	int m_countCheese = 0;
 
+	bool m_isArrested = false;
+	bool m_stoppingPower = false;
 };
 

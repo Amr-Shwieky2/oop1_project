@@ -14,7 +14,7 @@ void Utilities::iconNames(std::string str) {
 	int i = 0;
 	while (std::getline(inputFile, line)) {
 		m_CharactersTexture[i].loadFromFile(line);
-		m_CharactersSprite[i].setTexture(m_CharactersTexture[i]);
+		
 		i++;
 	}
 }

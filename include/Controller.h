@@ -8,20 +8,21 @@ class Controller
 {
 public:
 	Controller();
+	void runGame(const int&);
 	//~Controller();
 
 private:
 	void startTheGame();
 	void handleMainEvents();
 
-	void handleLevelEvents(sf::Clock&);
+	void handleLevelEvents();
 
 
 	bool levelEnded(const Board& board, unsigned int levelNum);
 
 	void buttonReleased(sf::Event);
 
-	void openLevel(int, int, unsigned int, Board&);
+	void openLevel();
 
 	void gameStory();
 
@@ -32,7 +33,7 @@ private:
 	int levelsInGame(std::string str);
 	void checkCollision(Movable* character, Direction direction, Board& board);
 
-	void moveDynamic(float passedTime, Board& board);
+	void moveMovable(float passedTime, Board& board);
 	bool catchMouse(Cat* cat);
 	void returnStartingPosition();
 	bool isMouseDied();
@@ -59,10 +60,8 @@ private:
 
 	Mouse m_mouse;
 	std::vector<std::unique_ptr<Cat>> m_cats;
-
 	PlayerStatus m_player;
 
 	int m_gameTime;
-
-	int m_countCheese;
+	
 };

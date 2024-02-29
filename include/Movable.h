@@ -29,15 +29,13 @@ public:
 	sf::FloatRect getGlobalBounds() const;*/
 
 protected:
-	sf::Vector2f m_startPosition;
-	sf::Vector2f m_position;
-	Direction m_direction; // change name 
+	sf::Vector2f m_startPosition = {0, 0};
+	sf::Vector2f m_position = { 0, 0 };
+	Direction m_direction = RIGHT; // change name 
 
-	Direction m_newDirection;
-	sf::Vector2f m_previousPostion;
+	Direction m_newDirection = RIGHT;
+	sf::Vector2f m_previousPostion = { 0, 0 };
 
-	float m_frameCounter;//???
-	int m_sourceX; //???
 
 	sf::Vector2f getCenter(sf::Vector2f position)const; // change name of the function 
 	bool isCentered(sf::Vector2f position, sf::Vector2f centerPosition)const; // change the name of the function

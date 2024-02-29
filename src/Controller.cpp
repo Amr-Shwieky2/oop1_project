@@ -3,51 +3,80 @@
 
 Controller::Controller() {
     int count_levels = levelsInGame("Levels.txt");
-    m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
-    static sf::Clock clock;
-   // m_screens.OpeningBackground(m_window);
-    for (int i = 0; i < count_levels; i++) {
-        Board board(m_mouse, m_cats, i + 1);
-        sf::Vector2f boardSize = board.getBoardSize();
-    //    m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
-        static sf::Clock timer;
-        timer.restart();
-        static sf::Time allottedTime = board.getTime();
-       
+    //m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
+    runGame(count_levels);
+    
+    /*m_screens.OpeningBackground(m_window); 
+    
+    while (m_window.isOpen()) {
+        m_window.clear();
+        startTheGame();
+        openInformation();
 
-        while (m_window.isOpen() || m_levelWindow.isOpen()) {
-          
-            m_mainPage ? m_window.clear() : m_levelWindow.clear(sf::Color(238, 232, 170));
-            startTheGame();
-
-            openLevel(static_cast<unsigned int>(boardSize.x), static_cast<unsigned int>(boardSize.y), int(i + 1), board);
-            openInformation();
-
-            m_gameTime = allottedTime.asSeconds() - timer.getElapsedTime().asSeconds();
-            if (m_gameTime == 0) break;
-
-            m_window.isOpen() ? handleMainEvents() : handleLevelEvents(clock);
-
-            sf::Time passedTime = clock.restart();
-            float time = passedTime.asSeconds();
-
-
-            moveDynamic(time, board);
-            //////////////////////////////////////////
-            movableDraw(time);
-
-            if (levelEnded(board, i)) break; // ????
-            m_mainPage ? m_window.display() : m_levelWindow.display();
-
-        }
-
-        // +score 
-        m_cats.clear();
+        openLevel();
+        handleMainEvents();
+        m_window.display(); 
     }
-    m_window.close(); m_levelWindow.close();
+    m_window.close(); */
 }
 
+void Controller::runGame(const int& numberOfLevel)
+{
+    for (int Level = 1; Level < numberOfLevel; Level++) {
+        
+        Board board(m_mouse, m_cats, Level);
+        sf::Vector2f boardSize = board.getBoardSize();
 
+        m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(boardSize.y),
+            static_cast<unsigned int>(boardSize.x + P_SIZE * 3)),
+            "Level" + std::to_string(Level));
+
+        while (m_levelWindow.isOpen()) {
+            static sf::Clock clock;
+            static sf::Clock timer;
+            timer.restart();
+            static sf::Time allottedTime = board.getTime();
+
+            while (!isMouseDied()) {
+                m_levelWindow.clear(sf::Color(238, 232, 170));
+
+                m_gameTime = static_cast<int>(allottedTime.asSeconds() -
+                    timer.getElapsedTime().asSeconds() +
+                    m_mouse.getMoreTime());
+
+                if (levelEnded(board, Level)) break;
+
+                handleLevelEvents();
+
+                sf::Time passedTime = clock.restart();
+                float time = passedTime.asSeconds();
+                moveMovable(time, board);
+
+                
+                board.drawBoard(m_levelWindow);
+                m_player.draw(m_levelWindow, m_mouse.getLife(), m_mouse.getScore(), Level, m_gameTime, board.getBoardSize(), m_screens.getFont());
+                movableDraw(time);
+                m_levelWindow.display();
+            }
+            break;
+        }
+        if ((!isMouseDied()) && m_gameTime > 0)
+            m_mouse.setScore(SCORE_LEVEL + SCORE_CAT * board.getCatsNumber());
+        m_levelWindow.close();
+        // m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
+        // +score 
+    }
+    m_levelWindow.close();
+}
+
+void Controller::openLevel() {
+    if (m_newGame) {
+        gameStory();
+        m_window.close();
+        m_newGame = false;
+    }
+
+}
 
 void Controller::handleMainEvents() {
     if (auto event = sf::Event{}; m_window.pollEvent(event)) {
@@ -65,7 +94,7 @@ void Controller::handleMainEvents() {
 }
 
 
-void Controller::handleLevelEvents(sf::Clock& clock) {
+void Controller::handleLevelEvents() {
     if(auto event = sf::Event{}; m_levelWindow.pollEvent(event)) {
         switch (event.type) {
         case sf::Event::Closed:
@@ -76,11 +105,12 @@ void Controller::handleLevelEvents(sf::Clock& clock) {
         case sf::Event::KeyReleased:
             if ((event.key.code == sf::Keyboard::Left) || (event.key.code == sf::Keyboard::Right) ||
                 (event.key.code == sf::Keyboard::Up) || (event.key.code == sf::Keyboard::Down)) {
-                //clock.restart();
+               
                 if (!m_nowMove) {
                     m_mouse.setDirection(event.key.code);
                     m_nowMove = true;
                 }
+                
             }
             break;
         }
@@ -88,9 +118,10 @@ void Controller::handleLevelEvents(sf::Clock& clock) {
 }
 
 bool Controller::levelEnded(const Board& board, unsigned int levelNum) {
-    if (m_levelWindow.isOpen() && m_countCheese == board.getCheeseCounter()) {
+    if (m_mouse.getCheeseCounter() == board.getCheeseCounter() || m_gameTime <= 0) {
         m_levelWindow.clear();
         m_screens.drawLevelOpening(m_levelWindow, levelNum + 1); /// ??????????
+        m_cats.clear();
         m_levelWindow.display();
         m_newGame = true;
         m_mainPage = false;
@@ -137,14 +168,11 @@ void Controller::checkCollision(Movable* character, Direction direction, Board& 
         icon->collide(character);
 }
 
-void Controller::moveDynamic(float passedTime, Board& board)
+void Controller::moveMovable(float passedTime, Board& board)
 {
-    std::vector<std::vector<sf::Vector3i>> Tree = board.getBfsTree(sf::Vector2i((int)(m_mouse.getPosition().x / P_SIZE),
-                                                                                (int)(m_mouse.getPosition().y / P_SIZE)));
     
     if (m_nowMove) {
         m_mouse.move(passedTime, board.getBoardSize());
-        
         m_nowMove = false;
     }
     checkCollision(&m_mouse, m_mouse.getDirection(), board);
@@ -152,12 +180,20 @@ void Controller::moveDynamic(float passedTime, Board& board)
     if (m_mouse.getMouseState()) {
         returnStartingPosition();
     }
+    
+    std::vector<std::vector<sf::Vector3i>> Tree = board.getBfsTree(sf::Vector2i((int)(m_mouse.getPosition().x / P_SIZE),
+        (int)(m_mouse.getPosition().y / P_SIZE)));
 
-    for (size_t i = 0; i < m_cats.size(); i++) {
-        m_cats[i]->move(passedTime, board.getBoardSize(), Tree);
-        checkCollision(m_cats[i].get(), m_cats[i].get()->getDirection(), board);
-        if (catchMouse(m_cats[i].get()))
-            m_mouse.collide(m_cats[i].get());
+    if (m_mouse.getStoppingPower()) {
+        if (m_mouse.getTimerCatsStop() <= 0)
+            m_mouse.setStoppingPower(false);
+    }else{
+        for (size_t i = 0; i < m_cats.size(); i++) {
+            m_cats[i]->move(passedTime, board.getBoardSize(), Tree);
+            checkCollision(m_cats[i].get(), m_cats[i].get()->getDirection(), board);
+            if (catchMouse(m_cats[i].get()))
+                m_mouse.collide(m_cats[i].get());
+        }
     }
 }
 
@@ -249,19 +285,7 @@ void Controller::buttonReleased(sf::Event event) {
 }
 
 
-void Controller::openLevel(int rowSize, int colSize, unsigned int levelNumber, Board& board) {
-    if (m_newGame) {
-        gameStory();
-        m_window.close();
 
-        m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(colSize), static_cast<unsigned int>(rowSize + P_SIZE * 3)), "Level" + std::to_string(levelNumber));
-        m_newGame = false;
-    }
-    if (m_levelWindow.isOpen()) {
-        board.drawBoard(m_levelWindow);
-        m_player.draw(m_levelWindow, m_mouse.getLife(), m_mouse.getScore(), levelNumber, m_gameTime, board.getBoardSize(), m_screens.getFont());
-    }
-}
 
 void Controller::gameStory() {
     int i = 0;

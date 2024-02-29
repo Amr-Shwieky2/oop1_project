@@ -10,12 +10,12 @@ Cat::Cat() : m_doorCollision(false), m_wallCollision(false), m_moving(false) {
     m_direction = RIGHT;
 }
 
-void Cat::collide(Wall* object) {
+void Cat::collide(Wall*) {
 	m_sprite.setPosition(m_previousPostion);
 	m_wallCollision = true;
 }
 
-void Cat::collide(Door* object) {
+void Cat::collide(Door*) {
 	m_sprite.setPosition(m_previousPostion);
 	m_doorCollision = true;
 }

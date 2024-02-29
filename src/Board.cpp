@@ -82,6 +82,11 @@ int Board::getCheeseCounter() const {
 	return m_numberOfCheese;
 }
 
+int Board::getCatsNumber() const
+{
+	return m_numberOfCats;
+}
+
 NonMovable* Board::getCharacters(sf::Vector2f position, Direction direction)
 {
 	int row, col;
