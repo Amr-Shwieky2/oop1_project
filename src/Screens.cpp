@@ -21,7 +21,7 @@ void Screens::setBackground() {
 
 void Screens::setLevelsOpenings(float colSize, float rowSize, unsigned int numberOfLevel){
 	sf::Texture text;
-	text.loadFromFile("new-level" + std::to_string((numberOfLevel % 5) + 1) + ".png");
+	text.loadFromFile("new-level" + std::to_string((numberOfLevel % 5)) + ".png");
 	m_levelsBackgroundsTexture.push_back(text);
 
 	sf::Sprite sprite;

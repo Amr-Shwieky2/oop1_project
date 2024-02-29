@@ -31,7 +31,7 @@ void Controller::runGame()
         
         Board board(m_mouse, m_cats, level);
         sf::Vector2f boardSize = board.getBoardSize();
-        //m_screens.setLevelsOpenings(boardSize.x, boardSize.y, level);
+        m_screens.setLevelsOpenings(boardSize.x, boardSize.y, level);
 
         m_levelWindow.create(sf::VideoMode(static_cast<unsigned int>(boardSize.y),
             static_cast<unsigned int>(boardSize.x + P_SIZE * 3)),
@@ -125,13 +125,14 @@ void Controller::handleLevelEvents() {
 }
 
 bool Controller::levelEnded(const Board& board, unsigned int levelNum) {
-    if (m_mouse.getCheeseCounter() == board.getCheeseCounter() || m_gameTime <= 0) {
+    if (m_mouse.getCheeseCounter() == board.getCheeseCounter() && m_gameTime > 0) {
         m_levelWindow.clear();
-        m_screens.drawLevelOpening(m_levelWindow, levelNum + 1); /// ??????????
+       // m_screens.drawLevelOpening(m_levelWindow, levelNum); /// ??????????
         m_cats.clear();
         m_levelWindow.display();
         m_newGame = true;
         m_mainPage = false;
+        m_levelWindow.close();
         return true;
     }
     return false;
