@@ -2,10 +2,10 @@
 #include <SFML\Graphics.hpp>
 //#include "Utilities.h"
 
-class PlayerStatus
+class LevelStatus
 {
 public:
-	PlayerStatus();
+	LevelStatus();
 	void draw(sf::RenderWindow& window, int life, int score, int level, int timer, sf::Vector2f BoardSize, sf::Font);
 
 private:

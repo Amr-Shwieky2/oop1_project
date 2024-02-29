@@ -29,23 +29,18 @@ public:
 	void drawInformation(sf::RenderWindow&) const;
 	void drawStory(sf::RenderWindow&, unsigned int, float, int);
 	void drawInfoButton(sf::RenderWindow& window) const;
-	void drawLevelOpening(sf::RenderWindow&, unsigned int);
 
 	void playPauseSound(int, bool);
 	Buttons checkButtons(int x, int y);
 	void OpeningBackground(sf::RenderWindow&);
 
-	void setLevelsOpenings(float, float, unsigned int);
-
 	sf::Font getFont() const;
 
 
 private:
-	//void drawStarter(sf::RenderWindow&) const;
 	void drawStarter(sf::RenderWindow& window, int spriteIndex) const;
 	sf::Text createText(const std::string&, const sf::Font&, unsigned int);
 	void drawTextInStarter(sf::Text&, sf::RenderWindow&, int);
-	//sf::Text createText(std::string, sf::Font, unsigned int, sf::RenderWindow&);
 
 	void setBackground();
 	void setCounters();
@@ -55,9 +50,6 @@ private:
 	void setSoundTexture();
 	void setSoundBuffers();
 	void setStory();
-
-	std::vector<sf::Texture> m_levelsBackgroundsTexture;
-	std::vector<sf::Sprite> m_levelsBackgroundsSprite;
 
 	sf::Texture m_countersTexture[5];
 	sf::Sprite m_countersSprite[5];

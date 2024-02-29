@@ -1,5 +1,4 @@
-
-#include "Board.h"
+#include "Board.h"         // Including necessary header files
 #include "Cheese.h"
 #include "Door.h"
 #include "Wall.h"
@@ -9,14 +8,16 @@
 #include "TimeGift.h"
 #include "SmartCat.h"
 #include "RandomCat.h"
-#include <queue>
+#include <queue>            // Including queue for BFS algorithm
 
+// Constructor for Board class, initializes member variables and reads level from file
 Board::Board(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
 	: m_row(0), m_col(0), m_numberOfLevel(0), m_numberOfCats(0), m_numberOfCheese(0)
 {
 	readLevel(mouse, cats, numberOfLevel);
 }
 
+// Function to get the size of the board
 sf::Vector2f Board::getBoardSize()
 {
 	sf::Vector2f boardSize;
@@ -25,8 +26,8 @@ sf::Vector2f Board::getBoardSize()
 	return boardSize;
 }
 
-
-void Board::drawBoard(sf::RenderWindow &window) {
+// Function to draw the board on the window
+void Board::drawBoard(sf::RenderWindow& window) {
 	for (size_t i = 0; i < m_board.size(); i++) {
 		for (size_t j = 0; j < m_board[i].size(); j++) {
 			if (m_board[i][j] != nullptr) {
@@ -36,6 +37,7 @@ void Board::drawBoard(sf::RenderWindow &window) {
 	}
 }
 
+// Function to read level from file and populate the board
 void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, const int& numberOfLevel)
 {
 	m_numberOfLevel = numberOfLevel;
@@ -59,12 +61,14 @@ void Board::readLevel(Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats, con
 	m_file.close();
 }
 
+// Function to set the mouse's position on the board
 void Board::setMouse(Mouse& mouse, sf::Vector2f position)
 {
 	mouse.SetPosition(position);
 	mouse.setStartPosition(position);
 }
 
+// Function to set a cat's position on the board
 void Board::setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f position)
 {
 	m_numberOfCats++;
@@ -78,55 +82,34 @@ void Board::setCat(std::vector<std::unique_ptr<Cat>>& cats, sf::Vector2f positio
 	cats[catSize]->setStartPosition(position);
 }
 
+// Function to get the counter for cheese on the board
 int Board::getCheeseCounter() const {
 	return m_numberOfCheese;
 }
 
+// Function to get the number of cats on the board
 int Board::getCatsNumber() const
 {
 	return m_numberOfCats;
 }
 
+// Function to get the character at a specific position on the board
 NonMovable* Board::getCharacters(sf::Vector2f position, Direction direction)
 {
 	int row = 0, col = 0;
-	//if (direction == LEFT || direction == UP) {
-	//	row = static_cast<int>(position.y / P_SIZE);
-	//	col = static_cast<int>(position.x / P_SIZE);
-	//}
-	//else {
-	//	
-	//}
-	//switch (direction)
-	//{
-	//case RIGHT:
-	//	col = std::ceil(position.x / P_SIZE) ;
-	//	row = std::floor(position.y / P_SIZE);
-	//	break;
-	//case LEFT:
-	//	col = std::floor(position.x / P_SIZE);
-	//	row = std::ceil(position.y / P_SIZE);
-	//	break;
-	//case UP: 
-	//	col = std::floor(position.x / P_SIZE);
-	//	row = std::floor(position.y / P_SIZE);
-	//	break;
-	//case DOWN:
-	//	col = std::ceil(position.x / P_SIZE);
-	//	row = std::ceil(position.y / P_SIZE);
-	//	break;
-	//}
 	row = static_cast<int>(std::round(position.y / P_SIZE));
-	col = static_cast<int>(std::round(position.x / P_SIZE ));
+	col = static_cast<int>(std::round(position.x / P_SIZE));
 
 	return m_board[row][col].get();
 }
 
+// Function to get the reference to the board map
 std::vector<std::vector<std::unique_ptr<NonMovable>>>& Board::getMap()
 {
 	return m_board;
 }
 
+// Function to check if a position is out of the map boundaries
 bool Board::checkOutOfMap(sf::Vector2f position)
 
 {
@@ -134,16 +117,19 @@ bool Board::checkOutOfMap(sf::Vector2f position)
 		position.y >= m_board.size());
 }
 
+// Function to get the time remaining on the board
 sf::Time Board::getTime()const
 {
 	return m_time;
 }
 
-int Board::getnumberOfLevel() const
+// Function to get the number of the current level
+int Board::getNumberOfLevel() const
 {
 	return m_numberOfLevel;
 }
 
+// Function to open the level file
 void Board::openFile() {
 
 	std::string file = "Level" + std::to_string(m_numberOfLevel) + ".txt";
@@ -155,6 +141,7 @@ void Board::openFile() {
 	}
 }
 
+// Function to set the size of the board
 void Board::setBoardSize()
 {
 	m_board.resize(m_row);
@@ -162,6 +149,7 @@ void Board::setBoardSize()
 		m_board[i].resize(m_col);
 }
 
+// Function to push characters read from file to the board map
 void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 	Mouse& mouse, std::vector<std::unique_ptr<Cat>>& cats)
 {
@@ -180,13 +168,13 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 	case KEY_CH:
 		m_board[row][col] = std::make_unique <Key>();
 		break;
-	case REMOVE_CAT_GIFT_CH:  
+	case REMOVE_CAT_GIFT_CH:
 		m_board[row][col] = std::make_unique <HideCatGift>();
 		break;
-	case ADD_HEART_GIFT_CH: 
+	case ADD_HEART_GIFT_CH:
 		m_board[row][col] = std::make_unique <HeartGift>();
 		break;
-	case ADD_TIME_GIFT_CH: 
+	case ADD_TIME_GIFT_CH:
 		m_board[row][col] = std::make_unique <TimeGift>();
 		break;
 	case CAT_CH:
@@ -200,10 +188,8 @@ void Board::pushToMap(const char& characters, size_t& row, size_t& col,
 	}
 }
 
-
-
-
-std::vector<std::vector<sf::Vector3i>> Board::getBfsTree(sf::Vector2i start)
+// Function to perform Breadth First Search algorithm on the board
+std::vector<std::vector<sf::Vector3i>> Board::bfsAlgo(sf::Vector2i start)
 {
 	// Initialize the BFS tree with distances and parent coordinates
 	std::vector<std::vector<sf::Vector3i>> bfsTree;
@@ -225,7 +211,7 @@ std::vector<std::vector<sf::Vector3i>> Board::getBfsTree(sf::Vector2i start)
 		coordinatesQueue.pop();
 
 		// Get neighboring coordinates
-		std::vector<sf::Vector2i> neighbors = searchNeighbors(currentCoord);
+		std::vector<sf::Vector2i> neighbors = search(currentCoord);
 
 		// Explore neighbors
 		for (unsigned int i = 0; i < neighbors.size(); i++)
@@ -252,7 +238,8 @@ std::vector<std::vector<sf::Vector3i>> Board::getBfsTree(sf::Vector2i start)
 	return bfsTree;
 }
 
-std::vector<sf::Vector2i> Board::searchNeighbors(const sf::Vector2i center)
+// Function to search for valid neighboring coordinates
+std::vector<sf::Vector2i> Board::search(const sf::Vector2i center)
 {
 	// Define shifts for moving in all four directions
 	std::vector<sf::Vector2i> directions = { { 1,0 },{ -1,0 },{ 0,1 },{ 0,-1 } };
