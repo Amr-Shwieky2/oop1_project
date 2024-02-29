@@ -6,7 +6,7 @@ Controller::Controller() {
     m_window.create(sf::VideoMode(40 * P_SIZE, 22 * P_SIZE), "Tom&Jerry - Catch me if you CAN!");
    // m_screens.OpeningBackground(m_window);
     for (size_t i = 0; i < count_levels; i++) {
-        Board board(m_mouse, m_cats, int(i + 1));
+        Board board(m_mouse, m_cats, int(4));
         sf::Vector2f boardSize = board.getBoardSize();
     //    m_screens.setLevelsOpenings(boardSize.x, boardSize.y, i);
         sf::Clock clock;
