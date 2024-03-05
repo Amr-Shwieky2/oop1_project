@@ -1,79 +1,66 @@
 #include "Movable.h"
 #include <math.h>
 
-Movable::Movable(){}
+Movable::Movable() {}
 
 void Movable::draw(sf::RenderWindow& window, float) const {
 	window.draw(m_sprite);
 }
 
-
+// Get the starting position of the movable object
 sf::Vector2f Movable::getStartPosition() const {
 	return m_startPosition;
 }
 
+// Get the current position of the movable object
 sf::Vector2f Movable::getPosition() const {
 	return m_position;
 }
 
+// Set the starting position of the movable object
 void Movable::setStartPosition(sf::Vector2f position) {
 	m_startPosition = position;
 }
 
+// Get the direction of the movable object
 Direction Movable::getDirection() const {
 	return m_direction;
 }
 
+// Get the next position of the movable object based on a given direction
 sf::Vector2f Movable::getNextDirection(Direction direction) {
 	sf::Vector2f nextPosition = m_sprite.getPosition();
-	sf::Vector2f nextPosition2;
 
 	switch (direction)
 	{
 	case UP:
-		nextPosition2 = sf::Vector2f(nextPosition.x, nextPosition.y - float(0.1));
-		return nextPosition2;
+		nextPosition.y -= 0.1f;
+		break;
 	case DOWN:
-		nextPosition2 = sf::Vector2f(nextPosition.x, nextPosition.y + float(0.1));
-		return nextPosition2;
+		nextPosition.y += 0.1f;
+		break;
 	case RIGHT:
-		nextPosition2 = sf::Vector2f(nextPosition.x + float(0.1), nextPosition.y);
-		return nextPosition2;
+		nextPosition.x += 0.1f;
+		break;
 	case LEFT:
-		nextPosition2 = sf::Vector2f(nextPosition.x - float(0.1), nextPosition.y);
-		return nextPosition2;
+		nextPosition.x -= 0.1f;
+		break;
 	}
 	return nextPosition;
 }
 
-//sf::FloatRect Movable::getNextGlobalBounds(float moveDistance) const {
-//	sf::FloatRect nextBounds = m_sprite.getGlobalBounds();
-//	switch (m_newDirection) {
-//	case UP:
-//		nextBounds.top -= moveDistance;
-//		break;
-//	case DOWN:
-//		nextBounds.top += moveDistance;
-//		break;
-//	case RIGHT:
-//		nextBounds.left += moveDistance;
-//		break;
-//	case LEFT:
-//		nextBounds.left -= moveDistance;
-//		break;
-//	}
-//	return nextBounds;
-//}
-
+// Set the position of the movable object
 void Movable::SetPosition(sf::Vector2f newPosition)
 {
 	m_sprite.setPosition(newPosition);
 }
 
+// Check if the movable object is centered at a given position
 bool Movable::isCentered(sf::Vector2f position, sf::Vector2f centerPosition) const {
 	return abs(position.x - centerPosition.x) < COLLISION_SIZE && abs(position.y - centerPosition.y) < COLLISION_SIZE;
 }
 
+// Get the centered position of a given position
 sf::Vector2f Movable::getCenter(sf::Vector2f position) const {
 	sf::Vector2f newPosition;
 	newPosition.x = (position.x - ((int)position.x % P_SIZE));
@@ -81,12 +68,14 @@ sf::Vector2f Movable::getCenter(sf::Vector2f position) const {
 	return newPosition;
 }
 
-bool Movable::outOfBoard(sf::Vector2f BoardSize) //V
+// Check if the movable object is out of the board boundaries
+bool Movable::outOfBoard(sf::Vector2f BoardSize)
 {
 	return m_sprite.getPosition().x < BoardSize.x - P_SIZE && m_sprite.getPosition().y < BoardSize.y - P_SIZE &&
-		m_sprite.getPosition().x > 0  && m_sprite.getPosition().y > 0 ;
+		m_sprite.getPosition().x > 0 && m_sprite.getPosition().y > 0;
 }
 
+// Move the movable object in a specific direction by a certain distance
 void Movable::moveDirection(float moveDistance)
 {
 	switch (m_direction)
@@ -109,5 +98,3 @@ void Movable::moveDirection(float moveDistance)
 		break;
 	}
 }
-
-

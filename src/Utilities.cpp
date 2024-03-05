@@ -1,51 +1,43 @@
 #include "Utilities.h"
-#include "Icon.h"
 
 Utilities::Utilities() {
-	iconNames("Names_images.txt");
+    iconNames("Names_images.txt");
 }
-
 
 void Utilities::iconNames(std::string str) {
-	std::ifstream inputFile(str);
-	checkIfValid(inputFile);
-	std::string line;
-	int i = 0;
-	while (std::getline(inputFile, line)) {
-		m_CharactersTexture[i].loadFromFile(line);
-		
-		i++;
-	}
+    std::ifstream inputFile(str);
+    checkIfValid(inputFile);
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        sf::Texture texture;
+        texture.loadFromFile(line);
+        m_CharactersTexture.push_back(texture); // Add texture to the vector
+    }
 }
 
-
-void Utilities::checkIfValid(std::ifstream &inputFile) {
-	// Check if the file is successfully opened
-	if (!inputFile.is_open()) {
-		std::cerr << "Unable to open file 'Names_images.txt'" << std::endl; // ????????????????
-		exit(EXIT_FAILURE);
-	}
-}
-
-std::vector<std::string> Utilities::getLevels() {
-	return m_levels;
+void Utilities::checkIfValid(std::ifstream& inputFile) {
+    // Check if the file is successfully opened
+    if (!inputFile.is_open()) {
+        std::cerr << "Unable to open file 'Names_images.txt'" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 sf::Texture* Utilities::getCharactersTexture(size_t shape) {
-	return &m_CharactersTexture[shape];
+    if (shape < m_CharactersTexture.size()) {
+        return &m_CharactersTexture[shape];
+    }
+    else {
+        // Handle out-of-bounds access gracefully
+        return nullptr;
+    }
 }
 
-//sf::Texture* Utilities::getScreen(size_t screen)
-//{
-//	return &m_Screeen[screen];
-//}
-
-sf::Texture* Utilities::getLifeTexture()
-{
-	return  &m_lifeCounter;
+sf::Texture* Utilities::getLifeTexture() {
+    return  &m_lifeCounter;
 }
 
 Utilities& Utilities::instance() {
-	static Utilities instance;
-	return instance;
+    static Utilities instance;
+    return instance;
 }

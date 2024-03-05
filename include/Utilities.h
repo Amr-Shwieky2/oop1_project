@@ -4,44 +4,37 @@
 #include <fstream>
 #include <iostream>
 #include "Icon.h"
-
-
-//enum Characters { MOUSE, CAT, CHEESE, WALL, KEY, DOOR, GIFT };
-//enum MouseSound { MUNCH, DEATH, HEALTH_GIFT, TIME_GIFT, DELETE };
-//enum gameSound { LEVEL_UP, GAME_OVER };
+#include <vector>
 
 const int NUM_OF_CHARACTERS = 7;
-//const int NUM_OF_SCREENS = 7; // noor you want to change this 
 
-class Utilities
-{
+class Utilities {
 public:
+    // Function to retrieve the texture corresponding to a character shape
+    sf::Texture* getCharactersTexture(size_t shape);
 
-	std::vector<std::string>getLevels();
+    // Function to retrieve the texture for the life counter
+    sf::Texture* getLifeTexture();
 
-// amr
-	sf::Texture* getCharactersTexture(size_t shape);
-	//sf::Texture* getScreen(size_t screen);
-	sf::Texture* getLifeTexture();
+    // Function to get the instance of the Utilities class (singleton pattern)
+    static Utilities& instance();
 
-	static Utilities& instance();
 private:
-	Utilities();
+    // Constructor (private to enforce singleton pattern)
+    Utilities();
 
-	void iconNames(std::string);
-	//void setLevels(std::string);
-	void checkIfValid(std::ifstream&);
+    // Function to load icon names from a file
+    void iconNames(std::string str);
 
-	sf::Texture m_CharactersTexture[NUM_OF_CHARACTERS];
-	
+    // Function to check if a file is valid
+    void checkIfValid(std::ifstream& inputFile);
 
-	std::vector<std::string> m_levels;
+    // Vector to store character textures
+    std::vector<sf::Texture> m_CharactersTexture;
 
-	/*sf::Texture m_Screeen[NUM_OF_SCREENS];*/
+    // Texture for the life counter
+    sf::Texture m_lifeCounter;
 
-	sf::Texture m_lifeCounter;
+    // Vector to store level information
+    std::vector<std::string> m_levels;
 };
-
-
-
-
